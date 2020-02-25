@@ -1,0 +1,31 @@
+
+body {
+  background-color: #2E4857 !important;
+}
+
+#app {}
+
+.plugin-ctrl, .plugin-container {
+  padding: 1.4em;
+}
+
+.plugin-ctrl {
+  background-color: #DBF1FF;
+  margin: auto;
+  margin-bottom: 2em;
+}
+
+.plugin-container {
+  background-color: #eaeaeb;
+  margin: 2em;
+  border: 1px solid #dcdee2;
+  border-radius: 4px;
+}
+
+.plugin-ctrl .plugin-select {
+  min-width: 180px;
+}
+
+.plugin-ctrl .resource-id-input {
+  min-width: 860px;
+}

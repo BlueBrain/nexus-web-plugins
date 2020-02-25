@@ -1,0 +1,8 @@
+.campaign-simulations-table .ant-table-row {
+  cursor: pointer;
+  background-color: white;
+}
+
+.expand-sim-list-btn {
+  margin-top: 0.6em;
+}
