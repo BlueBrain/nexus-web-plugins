@@ -11,12 +11,12 @@ define HELPTEXT
 Makefile usage
  Targets:
     run_dev               Run development web server.
-		test                  Run tests.
+    test                  Run tests.
     build_ts              Transpile and bundle plugin code.
-		build_manifest        Create a plugin manifest based on packages built.
+    build_manifest        Create a plugin manifest based on packages built.
     build_image           Build a docker image containing plugins and a manifest file.
-		push_image            Push current image into a docker registry. To customize
-		                        check environment variables in Makefile.
+    push_image            Push current image into a docker registry. To customize
+                            check environment variables in Makefile.
 endef
 export HELPTEXT
 
