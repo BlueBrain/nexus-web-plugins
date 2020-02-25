@@ -1,4 +1,4 @@
-.PHONY: help build_js build_manifest build_image push_image
+.PHONY: help run_dev test build_ts build_manifest build_image push_image
 
 APP_NAME?=studio-plugins
 PROJECT?=bbp-ou-nexus
@@ -11,12 +11,12 @@ define HELPTEXT
 Makefile usage
  Targets:
     run_dev               Run development web server.
-    build                 Build web app into dist folder.
-    docker_build_version  Build frontend local docker image with the version tag.
-    docker_build_latest   Build frontend local docker image with the latest tag.
-    docker_push_version   Tag docker image with version and push to OpenShift registy.
-    docker_push_latest    Tag docker image with latest and push to OpenShift registy
-                            This will result in the updated frontend running in OpenShift.
+		test                  Run tests.
+    build_ts              Transpile and bundle plugin code.
+		build_manifest        Create a plugin manifest based on packages built.
+    build_image           Build a docker image containing plugins and a manifest file.
+		push_image            Push current image into a docker registry. To customize
+		                        check environment variables in Makefile.
 endef
 export HELPTEXT
 
@@ -29,12 +29,12 @@ $(NODE_MODULES):
 run_dev: $(NODE_MODULES)
 	npm run start
 
-build_js: | $(NODE_MODULES)
-	rm -f dist/*
-	npx webpack
-
 test: | $(NODE_MODULES)
 	npm run test
+
+build_ts: | $(NODE_MODULES)
+	rm -f dist/*
+	npx webpack
 
 build_manifest: build_js
 	node build-tools/generate-manifest.js
