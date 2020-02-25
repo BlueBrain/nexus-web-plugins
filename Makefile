@@ -42,7 +42,7 @@ build_manifest: build_js
 build_image: build_manifest
 	docker build -t $(APP_NAME) .
 
-push_image: build_image
+push_image:
 	docker tag \
 		$(APP_NAME):latest \
 		$(DOCKER_REGISTRY)/$(PROJECT)/$(APP_NAME):$(IMAGE_TAG)
