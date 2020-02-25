@@ -23,13 +23,18 @@ module.exports = {
         test: /\.(le|sa|sc|c)ss$/,
         use: [
           'style-loader',
-          'css-loader'
+          'css-loader',
         ]
       },
       {
         test: /\.tsx?$/,
-        use: 'ts-loader',
-        exclude: /node_modules/
+        loader: 'ts-loader',
+        exclude: /node_modules/,
+        options: {
+          compilerOptions: {
+            noEmit: false,
+          },
+        },
       }
     ]
   },
