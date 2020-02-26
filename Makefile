@@ -36,7 +36,7 @@ build_ts: | $(NODE_MODULES)
 	rm -f dist/*
 	npx webpack
 
-build_manifest: build_js
+build_manifest: build_ts
 	node build-tools/generate-manifest.js
 
 build_image: build_manifest
