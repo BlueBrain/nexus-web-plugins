@@ -1,7 +1,7 @@
 .PHONY: help run_dev test build_ts build_manifest build_image push_image
 
 APP_NAME?=studio-plugins
-PROJECT?=bbp-ou-nexus
+PROJECT?=bbp-ou-nse
 IMAGE_TAG?=latest
 DOCKER_REGISTRY?=docker-registry-default.ocp.bbp.epfl.ch
 
