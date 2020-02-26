@@ -12,9 +12,10 @@ cache:
 space:
   stage: space
   script:
+    - ls -la /cache
     - df -h
-    - rm -rf /cache/*
-    - df -h
+    - ls -la /
+    - ls -la /builds
 
 node-modules:
   stage: node-modules
