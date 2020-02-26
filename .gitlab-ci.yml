@@ -1,0 +1,17 @@
+image: node
+
+stages:
+  - node-modules
+  - build
+
+node-modules:
+  stage: node-modules
+  script:
+    - npm install
+
+build:
+  stage: build
+  dependencies:
+    - node-modules
+  script:
+    - make build_ts
