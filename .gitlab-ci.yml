@@ -13,6 +13,8 @@ space:
   stage: space
   script:
     - df -h
+    - rm -rf /cache/*
+    - df -h
 
 node-modules:
   stage: node-modules
