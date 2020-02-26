@@ -1,12 +1,18 @@
 image: node
 
 stages:
+  - space
   - node-modules
   - build
 
 cache:
   paths:
   - node_modules/
+
+space:
+  stage: space
+  script:
+    - df -h
 
 node-modules:
   stage: node-modules
