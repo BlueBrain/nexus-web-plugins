@@ -17,7 +17,7 @@ interface CopyProps {
 export const Copy: React.FunctionComponent<CopyProps> = ({
   textToCopy,
   render,
-  revertDelay = DEFAULT_REVERT_DELAY
+  revertDelay = DEFAULT_REVERT_DELAY,
 }) => {
   const [copySuccess, setCopySuccess] = React.useState(false);
 

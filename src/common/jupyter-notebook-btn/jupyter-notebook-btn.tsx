@@ -1,5 +1,4 @@
-
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import moment from 'moment';
 import {
   Popover,
@@ -11,8 +10,8 @@ import {
   Select,
   Row,
   Col,
-  notification
-} from "antd";
+  notification,
+} from 'antd';
 import { NexusClient } from '@bbp/nexus-sdk';
 
 import {
@@ -21,21 +20,21 @@ import {
   DEFAULT_MEM,
   DEFAULT_ALLOCATION_TIME,
   API_TOKEN_KEY,
-  PARTITIONS
-} from "./config";
+  PARTITIONS,
+} from './config';
 
 import {
   waitServerReady,
   getNotebookUrl,
-  getRunAllocationBaseUrl
-} from "./api";
+  getRunAllocationBaseUrl,
+} from './api';
 
 import { ApiServer } from './types';
 
-import "./jupyter-notebook-btn.css";
+import './jupyter-notebook-btn.css';
 
 const { Option } = Select;
-const TIME_FORMAT = "HH:mm";
+const TIME_FORMAT = 'HH:mm';
 
 export interface JupyterNotebookBtnProps {
   path: string;
@@ -55,7 +54,9 @@ export const JupyterNotebookBtn = (props: JupyterNotebookBtnProps) => {
   const [memory, setMemory] = useState(DEFAULT_MEM);
   const [account, setAccount] = useState(props.account);
   const [allocationTime, setAllocationTime] = useState(DEFAULT_ALLOCATION_TIME);
-  const [apiToken, setApiToken] = useState(localStorage.getItem(API_TOKEN_KEY) || '');
+  const [apiToken, setApiToken] = useState(
+    localStorage.getItem(API_TOKEN_KEY) || ''
+  );
 
   const [allocationRunning, setAllocationRunning] = useState(false);
 
@@ -75,8 +76,9 @@ export const JupyterNotebookBtn = (props: JupyterNotebookBtnProps) => {
     localStorage.setItem(API_TOKEN_KEY, apiToken || '');
 
     const identityRes = await nexus.Identity.list();
-    const identity = identityRes.identities
-      .find(identity => identity["@type"] === 'User');
+    const identity = identityRes.identities.find(
+      identity => identity['@type'] === 'User'
+    );
 
     if (!identity) {
       throw new Error('No User identity found');
@@ -93,23 +95,23 @@ export const JupyterNotebookBtn = (props: JupyterNotebookBtnProps) => {
 
     try {
       const allocationRes = await fetch(runAllocationUrl, {
-        method: "post",
+        method: 'post',
         headers: new Headers({
           Authorization: `token ${apiToken}`,
-          Accept: "application/json",
-          "Content-Type": "application/json"
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
         }),
         body: JSON.stringify({
           account,
           partition,
           cpus,
           memory: `${memory}gb`,
-          timelimit: allocationTime.format("HH:mm:ss")
-        })
+          timelimit: allocationTime.format('HH:mm:ss'),
+        }),
       });
 
       if (!allocationRes.ok && allocationRes.status !== 400) {
-        notification.error({ message: "JupyterHub API error" });
+        notification.error({ message: 'JupyterHub API error' });
         return;
       }
 
@@ -119,15 +121,17 @@ export const JupyterNotebookBtn = (props: JupyterNotebookBtnProps) => {
         server = await waitServerReady(apiToken, userName, serverName);
       } catch {
         notification.error({
-          message: "Allocation or notebook run error"
+          message: 'Allocation or notebook run error',
         });
         return;
       }
 
       const allocationStartTime = moment(server.started);
-      const [allocHours, allocMinutes, allocSeconds] = server.user_options.timelimit
-        .split(':')
-        .map(parseInt);
+      const [
+        allocHours,
+        allocMinutes,
+        allocSeconds,
+      ] = server.user_options.timelimit.split(':').map(parseInt);
 
       const allocDuration = moment.duration({
         hours: allocHours,
@@ -142,17 +146,17 @@ export const JupyterNotebookBtn = (props: JupyterNotebookBtnProps) => {
       setNotebookUrl(notebookUrl);
     } catch (error) {
       notification.error({
-        message: "Error contacting JupyterHub API",
+        message: 'Error contacting JupyterHub API',
         description: (
           <span>
-            If your network connection is up, ensure that your browser trusts{" "}
+            If your network connection is up, ensure that your browser trusts{' '}
             <a href={notebookUrl} target="_blank" rel="noopener noreferrer">
               JupyterHub
-            </a>{" "}
+            </a>{' '}
             https certificate.
           </span>
         ),
-        duration: 9
+        duration: 9,
       });
     } finally {
       setAllocationRunning(false);
@@ -194,7 +198,7 @@ export const JupyterNotebookBtn = (props: JupyterNotebookBtnProps) => {
             <Form.Item required label="CPUs">
               <InputNumber
                 value={cpus}
-                style={{ width: "100%" }}
+                style={{ width: '100%' }}
                 size="small"
                 min={1}
                 max={144}
@@ -206,7 +210,7 @@ export const JupyterNotebookBtn = (props: JupyterNotebookBtnProps) => {
             <Form.Item required label="Memory, GB">
               <InputNumber
                 value={memory}
-                style={{ width: "100%" }}
+                style={{ width: '100%' }}
                 size="small"
                 min={1}
                 max={768}
@@ -266,7 +270,9 @@ export const JupyterNotebookBtn = (props: JupyterNotebookBtnProps) => {
                 Click here to open a notebook
               </Button>
               <br />
-              <span className="mr inline-block">Allocation expires {allocationExpire}</span>
+              <span className="mr inline-block">
+                Allocation expires {allocationExpire}
+              </span>
             </div>
           ) : (
             <div className="text-right mt">
@@ -277,8 +283,8 @@ export const JupyterNotebookBtn = (props: JupyterNotebookBtnProps) => {
                 onClick={() => runAllocation()}
               >
                 {allocationRunning
-                  ? "Allocating resources"
-                  : "Allocate and run"}
+                  ? 'Allocating resources'
+                  : 'Allocate and run'}
               </Button>
             </div>
           )}

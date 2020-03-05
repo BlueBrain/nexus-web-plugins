@@ -33,9 +33,7 @@ const DetailedCircuit = (props: CircuitProps) => {
               <Button
                 type="link"
                 size="small"
-                onClick={() =>
-                  goToResource && goToResource(resource._self)
-                }
+                onClick={() => goToResource && goToResource(resource._self)}
               >
                 {resource.name}
               </Button>

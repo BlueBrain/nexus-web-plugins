@@ -1,14 +1,12 @@
-
 import { Resource } from '@bbp/nexus-sdk';
 
 import { ResourceLink } from '../../common';
-
 
 export enum SimulationStatusEnum {
   RUNNING = 'Running',
   FAILED = 'Failed',
   DONE = 'Done',
-  PENDING = 'Pending'
+  PENDING = 'Pending',
 }
 
 export interface SimulationResource extends Resource {

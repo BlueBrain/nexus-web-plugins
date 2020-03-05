@@ -1,10 +1,8 @@
-
 import React from 'react';
 import { Input, Button, Row, Col } from 'antd';
 
 import { SimulationResource } from '../types';
 import { Copy } from '../../../common';
-
 
 interface BasicInfoProps {
   resource: SimulationResource;
@@ -68,6 +66,5 @@ const BasicInfo = (props: BasicInfoProps) => {
     </div>
   );
 };
-
 
 export default BasicInfo;

@@ -47,7 +47,6 @@ export interface DetailedCircuitResource extends Resource, MINDSResource {
   speciesId?: string;
 }
 
-
 // Plugin related types
 
 export type CallbackFn = () => void;

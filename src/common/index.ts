@@ -1,4 +1,3 @@
-
 import './styles.css';
 
 export * from './brayns-btn/brayns-btn';

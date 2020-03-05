@@ -1,10 +1,8 @@
+import React, { useState } from 'react';
+import { Form, Input, InputNumber, Button, Popover, Select } from 'antd';
+import qs from 'query-string';
 
-import React, { useState } from "react";
-import { Form, Input, InputNumber, Button, Popover, Select } from "antd";
-import qs from "query-string";
-
-import "./brayns-btn.css";
-
+import './brayns-btn.css';
 
 export interface BraynsBtnProps {
   className?: string;
@@ -12,12 +10,11 @@ export interface BraynsBtnProps {
   configPath: string;
 }
 
-
 const { Option } = Select;
 
-const BRAYNS_BASE_URL = "http://webbrayns.ocp.bbp.epfl.ch";
+const BRAYNS_BASE_URL = 'http://webbrayns.ocp.bbp.epfl.ch';
 
-const PARTITIONS = ["prod", "prod_small", "interactive"];
+const PARTITIONS = ['prod', 'prod_small', 'interactive'];
 
 const DEFAULT_PARTITION = PARTITIONS[0];
 const DEFAULT_CPUS = 36;
@@ -41,13 +38,13 @@ export const BraynsBtn = (props: BraynsBtnProps) => {
       partition,
       cpus,
       memory: memory * 1024,
-      host: "auto",
-      load: props.configPath
+      host: 'auto',
+      load: props.configPath,
     };
 
     const query = qs.stringify(braynsConfig, { encode: false });
     const braynsUrl = `${BRAYNS_BASE_URL}/?${query}`;
-    window.open(braynsUrl, "_blank");
+    window.open(braynsUrl, '_blank');
   };
 
   return (
@@ -89,7 +86,7 @@ export const BraynsBtn = (props: BraynsBtnProps) => {
             <Form.Item required label="CPUs">
               <InputNumber
                 value={cpus}
-                style={{ width: "100%" }}
+                style={{ width: '100%' }}
                 size="small"
                 min={1}
                 max={144}
@@ -101,7 +98,7 @@ export const BraynsBtn = (props: BraynsBtnProps) => {
             <Form.Item required label="Memory, GB">
               <InputNumber
                 value={memory}
-                style={{ width: "100%" }}
+                style={{ width: '100%' }}
                 size="small"
                 min={8}
                 max={768}

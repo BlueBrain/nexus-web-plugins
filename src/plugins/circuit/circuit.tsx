@@ -1,19 +1,17 @@
-
-import * as React from "react";
-import { Button, Input } from "antd";
-import get from "lodash/get";
+import * as React from 'react';
+import { Button, Input } from 'antd';
+import get from 'lodash/get';
 import { NexusClient } from '@bbp/nexus-sdk';
 
-import "./circuit.css";
+import './circuit.css';
 
-import { DetailedCircuitResource } from "./types";
+import { DetailedCircuitResource } from './types';
 import {
   Copy,
   BraynsBtn,
   JupyterNotebookBtn,
   PairRecordingBtn,
-} from "../../common/";
-
+} from '../../common/';
 
 export interface CircuitProps {
   resource: DetailedCircuitResource;
@@ -25,9 +23,9 @@ export const Circuit = (props: CircuitProps) => {
 
   console.log({ props });
 
-  const circuitBase = get(resource, "circuitBase.url", "").replace(
-    "file://",
-    ""
+  const circuitBase = get(resource, 'circuitBase.url', '').replace(
+    'file://',
+    ''
   );
   const circuitConfigPath = `${circuitBase}/CircuitConfig`;
 
@@ -37,7 +35,7 @@ export const Circuit = (props: CircuitProps) => {
   return (
     <div>
       <p>
-        <strong>Circuit type:</strong> {resource.circuitType || "NA"}
+        <strong>Circuit type:</strong> {resource.circuitType || 'NA'}
       </p>
       <Input
         className="mt"
@@ -45,7 +43,7 @@ export const Circuit = (props: CircuitProps) => {
         addonBefore="Base circuit path"
         addonAfter={
           <Copy
-            textToCopy={circuitBase || ""}
+            textToCopy={circuitBase || ''}
             render={(copySuccess, triggerCopy) => (
               <Button
                 block
@@ -54,12 +52,12 @@ export const Circuit = (props: CircuitProps) => {
                 icon="copy"
                 onClick={() => triggerCopy()}
               >
-                {copySuccess ? "Copied!" : "Copy"}
+                {copySuccess ? 'Copied!' : 'Copy'}
               </Button>
             )}
           />
         }
-        defaultValue={circuitBase || ""}
+        defaultValue={circuitBase || ''}
       />
       {circuitBase ? (
         <div>
@@ -82,11 +80,7 @@ export const Circuit = (props: CircuitProps) => {
             configPath={circuitConfigPath}
           />
 
-          <JupyterNotebookBtn
-            path={circuitBase}
-            account={proj}
-            nexus={nexus}
-          />
+          <JupyterNotebookBtn path={circuitBase} account={proj} nexus={nexus} />
         </div>
       ) : (
         <h3 className="mt">No actions available due to missing circuit path</h3>
@@ -94,6 +88,5 @@ export const Circuit = (props: CircuitProps) => {
     </div>
   );
 };
-
 
 export default Circuit;

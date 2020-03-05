@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import get from 'lodash/get';
 
@@ -9,7 +8,6 @@ import { parseUrl } from '../../../common';
 import { SimWriterConfigResource } from '../types';
 import SimWriterConfigComponent from '../components/sim-writer-config';
 
-
 interface SimWriterConfigContainerProps {
   resourceId: string;
   nexus: NexusClient;
@@ -18,7 +16,10 @@ interface SimWriterConfigContainerProps {
 const SimWriterConfigContainer = (props: SimWriterConfigContainerProps) => {
   const { resourceId, nexus } = props;
 
-  const [simWriterConfig, setSimWriterConfig] = useState<SimWriterConfigResource | null>(null);
+  const [
+    simWriterConfig,
+    setSimWriterConfig,
+  ] = useState<SimWriterConfigResource | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -48,7 +49,7 @@ const SimWriterConfigContainer = (props: SimWriterConfigContainerProps) => {
         })
         .then(() =>
           nexus.File.get(parsedTmplUrl.org, parsedTmplUrl.project, tmplId, {
-            as: 'text'
+            as: 'text',
           })
         )
         .then(tmplData => {
@@ -73,18 +74,19 @@ const SimWriterConfigContainer = (props: SimWriterConfigContainerProps) => {
     nexus
       .httpGet({ path: resourceId })
       .then(getSimWriterConf)
-      .then(simWriterConfig => setSimWriterConfig(simWriterConfig as SimWriterConfigResource))
+      .then(simWriterConfig =>
+        setSimWriterConfig(simWriterConfig as SimWriterConfigResource)
+      )
       .finally(() => setLoading(false));
   }, []);
 
   return (
     <Spin spinning={loading}>
-      {simWriterConfig &&
+      {simWriterConfig && (
         <SimWriterConfigComponent resource={simWriterConfig} />
-      }
+      )}
     </Spin>
   );
 };
-
 
 export default SimWriterConfigContainer;

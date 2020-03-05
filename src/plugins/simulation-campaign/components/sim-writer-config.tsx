@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Collapse, Card } from 'antd';
 import { Controlled as CodeMirror } from 'react-codemirror2';
@@ -13,7 +12,6 @@ import 'codemirror/lib/codemirror.css';
 import 'codemirror/theme/base16-light.css';
 
 import './sim-writer-config.css';
-
 
 interface SimWriterConfigProps {
   resource: SimWriterConfigResource;
@@ -47,20 +45,24 @@ const SimWriterConfig = (props: SimWriterConfigProps) => {
             <CodeMirror
               value={prettyJsonStringify(props.resource.configuration.data, {
                 indent: '  ',
-                maxLength: 80
+                maxLength: 80,
               })}
               options={{
                 mode: { name: 'javascript', json: true },
                 readOnly: true,
                 theme: 'base16-light',
                 lineNumbers: true,
-                lineWrapping: true
+                lineWrapping: true,
               }}
               onBeforeChange={() => {}}
             />
           </Panel>
-          {props.resource.template.data &&
-            <Panel className="panel--no-padding" header="Template" key="template">
+          {props.resource.template.data && (
+            <Panel
+              className="panel--no-padding"
+              header="Template"
+              key="template"
+            >
               <CodeMirror
                 value={props.resource.template.data}
                 options={{
@@ -68,12 +70,12 @@ const SimWriterConfig = (props: SimWriterConfigProps) => {
                   readOnly: true,
                   theme: 'base16-light',
                   lineNumbers: true,
-                  lineWrapping: true
+                  lineWrapping: true,
                 }}
                 onBeforeChange={() => {}}
               />
             </Panel>
-          }
+          )}
           {props.resource.target && props.resource.target.data && (
             <Panel className="panel--no-padding" header="Target" key="target">
               <CodeMirror
@@ -82,7 +84,7 @@ const SimWriterConfig = (props: SimWriterConfigProps) => {
                   readOnly: true,
                   theme: 'base16-light',
                   lineNumbers: true,
-                  lineWrapping: true
+                  lineWrapping: true,
                 }}
                 onBeforeChange={() => {}}
               />

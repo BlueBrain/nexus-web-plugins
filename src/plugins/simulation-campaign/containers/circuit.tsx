@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import get from 'lodash/get';
 import { Spin } from 'antd';
@@ -6,7 +5,6 @@ import { DEFAULT_SPARQL_VIEW_ID, NexusClient } from '@bbp/nexus-sdk';
 
 import { parseUrl, DetailedCircuitResource } from '../../../common';
 import Circuit from '../components/circuit';
-
 
 interface CircuitContainerProps {
   resourceId: string;
@@ -33,7 +31,9 @@ const CircuitContainer = (props: CircuitContainerProps) => {
 
   const query = getQuery(resourceId);
 
-  const [resource, setResource] = useState<DetailedCircuitResource | null>(null);
+  const [resource, setResource] = useState<DetailedCircuitResource | null>(
+    null
+  );
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -73,10 +73,9 @@ const CircuitContainer = (props: CircuitContainerProps) => {
 
   return (
     <Spin spinning={loading}>
-      {resource && <Circuit resource={resource} goToResource={goToResource}/>}
+      {resource && <Circuit resource={resource} goToResource={goToResource} />}
     </Spin>
   );
 };
-
 
 export default CircuitContainer;

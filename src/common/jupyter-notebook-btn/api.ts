@@ -30,8 +30,8 @@ export function waitServerReady(
         headers: new Headers({
           Authorization: `token ${apiToken}`,
           Accept: 'application/json',
-          'Content-Type': 'application/json'
-        })
+          'Content-Type': 'application/json',
+        }),
       });
 
       const user: ApiUser = await userStatusRes.json();

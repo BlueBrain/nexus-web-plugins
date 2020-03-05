@@ -1,0 +1,7 @@
+.morpho-viewer,
+canvas {
+  width: 100%;
+  min-width: 200px;
+  height: 100%;
+  min-height: 400px;
+}
