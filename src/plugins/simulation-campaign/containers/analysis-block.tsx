@@ -1,4 +1,3 @@
-
 import React from 'react';
 import get from 'lodash/get';
 import sortBy from 'lodash/sortBy';
@@ -8,7 +7,6 @@ import { NexusClient } from '@bbp/nexus-sdk';
 
 import { NexusImage } from '../../../common';
 import SimulationAnalysisBlock from '../components/analysis-block';
-
 
 interface AnalysisReport {
   simulationId: string;
@@ -35,7 +33,7 @@ const AnalysisBlockContainer = (props: AnalysisBlockContainerProps) => {
 
   const sortedReports = sortBy(analysisReports, [
     'analysisName',
-    'analysisDescription'
+    'analysisDescription',
   ]);
 
   const simulationSelf = get(props.analysisReports, '[0].simulationSelf');
@@ -51,17 +49,12 @@ const AnalysisBlockContainer = (props: AnalysisBlockContainerProps) => {
       ))}
       {params.length ? params.map((param: string) => <p>{param}</p>) : ''}
       <div className="text-center mt">
-        <Button
-        onClick={() =>
-          goToResource && goToResource(simulationSelf)
-        }
-        >
+        <Button onClick={() => goToResource && goToResource(simulationSelf)}>
           <Icon type="more" />
         </Button>
       </div>
     </SimulationAnalysisBlock>
   );
 };
-
 
 export default AnalysisBlockContainer;

@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Spin } from 'antd';
 import { DEFAULT_SPARQL_VIEW_ID, NexusClient } from '@bbp/nexus-sdk';
@@ -7,7 +6,6 @@ import { SimulationCampaignResource, Simulation } from '../types';
 
 import { parseUrl, mapSparqlResults } from '../../../common';
 import SimulationList from '../components/simulation-list';
-
 
 interface SimulationListContainerProps {
   resource: SimulationCampaignResource;
@@ -44,37 +42,37 @@ const sparqlMapperConf = {
   mappings: [
     {
       source: 'job_id',
-      target: 'jobId'
+      target: 'jobId',
     },
     {
       source: 'name',
-      target: 'name'
+      target: 'name',
     },
     {
       source: 'status',
-      target: 'status'
+      target: 'status',
     },
     {
       source: 'startedAtTime',
-      target: 'startedAtTime'
+      target: 'startedAtTime',
     },
     {
       source: 'endedAtTime',
-      target: 'endedAtTime'
+      target: 'endedAtTime',
     },
     {
       source: 'ca',
-      target: 'ca'
+      target: 'ca',
     },
     {
       source: 'depolarization',
-      target: 'depolarization'
+      target: 'depolarization',
     },
     {
       source: 'self',
-      target: 'self'
-    }
-  ]
+      target: 'self',
+    },
+  ],
 };
 
 const SimulationListContainer = (props: SimulationListContainerProps) => {
@@ -102,15 +100,11 @@ const SimulationListContainer = (props: SimulationListContainerProps) => {
 
   return (
     <Spin spinning={loading}>
-      {simulations.length &&
-        <SimulationList
-          simulations={simulations}
-          goToResource={goToResource}
-        />
-      }
+      {simulations.length && (
+        <SimulationList simulations={simulations} goToResource={goToResource} />
+      )}
     </Spin>
   );
 };
-
 
 export default SimulationListContainer;

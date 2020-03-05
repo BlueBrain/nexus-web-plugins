@@ -1,4 +1,3 @@
-
 export default {
   defaultRealm: { _issuer: 'https://bbpteam.epfl.ch/auth/realms/BBP' },
   preferredRealmKey: 'preferredRealm',
@@ -6,5 +5,5 @@ export default {
   serviceAccountName: 'serviceaccounts',
   clientId: 'bbp-workflow-web',
   redirectUrl: 'http://localhost:3000',
-  environment: 'https://staging.nexus.ocp.bbp.epfl.ch/v1',
+  environment: 'https://bbp.epfl.ch/nexus/v1',
 };

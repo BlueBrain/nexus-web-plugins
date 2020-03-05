@@ -1,21 +1,19 @@
+import { Realm } from '@bbp/nexus-sdk';
+import { Operation, Link, Observable } from '@bbp/nexus-link';
+import { UserManager, User, WebStorageStateStore } from 'oidc-client';
 
-import { Realm } from "@bbp/nexus-sdk";
-import { Operation, Link, Observable } from "@bbp/nexus-link";
-import { UserManager, User, WebStorageStateStore } from "oidc-client";
-
-import config from "../config";
-
+import config from '../config';
 
 function getConfig(realm?: Realm) {
   return {
     userStore: new WebStorageStateStore({ store: window.localStorage }),
-    authority: realm ? realm._issuer : "",
+    authority: realm ? realm._issuer : '',
     client_id: config.clientId,
     redirect_uri: config.redirectUrl,
     popup_redirect_uri: config.redirectUrl,
     post_logout_redirect_uri: config.redirectUrl,
-    response_type: "id_token token",
-    loadUserInfo: true
+    response_type: 'id_token token',
+    loadUserInfo: true,
   };
 }
 
@@ -29,13 +27,13 @@ function deleteAccessToken() {
 
 export const setToken: Link = (operation: Operation, forward?: Link) => {
   const token = localStorage.getItem(config.bearerTokenKey);
-  if (!token) console.log("No access token in localstorage");
+  if (!token) console.log('No access token in localstorage');
   const nextHeaders: any = { ...operation.headers };
-  token && (nextHeaders["Authorization"] = `Bearer ${token}`);
+  token && (nextHeaders['Authorization'] = `Bearer ${token}`);
 
   const nextOperation = {
     ...operation,
-    headers: nextHeaders
+    headers: nextHeaders,
   };
 
   return forward ? forward(nextOperation) : new Observable();
@@ -56,7 +54,7 @@ export async function setUpSession(): Promise<[UserManager, User | null]> {
     : await userManager.getUser();
 
   window.history.pushState(
-    "",
+    '',
     document.title,
     window.location.pathname + window.location.search
   );

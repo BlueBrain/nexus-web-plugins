@@ -6,10 +6,14 @@ import { NexusPluginProps } from '../../common/types';
 import SimulationCampaign from './simulation-campaign';
 import { SimulationCampaignResource } from './types';
 
-
 export { SimulationCampaign };
 
-export default ({ ref, resource, nexusClient, goToResource }: NexusPluginProps<SimulationCampaignResource>) => {
+export default ({
+  ref,
+  resource,
+  nexusClient,
+  goToResource,
+}: NexusPluginProps<SimulationCampaignResource>) => {
   ReactDOM.render(
     <SimulationCampaign
       resource={resource}

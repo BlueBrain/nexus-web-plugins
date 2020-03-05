@@ -1,0 +1,21 @@
+.sweeps-container {
+  display: flex;
+}
+.sweeps-container > .sweeps {
+  display: flex;
+}
+.sweeps-container > .sweeps > .sweep {
+  opacity: 0.5;
+  height: 20px;
+  width: 20px;
+  display: inline-block;
+  margin: 6px;
+  cursor: pointer;
+  border: 1px solid #333;
+  border-radius: 2px;
+}
+
+.sweeps-container > .sweeps > .sweep.selected {
+  border: 1px solid #1890ff;
+  box-shadow: 0px 0px 2px 0px #1890ff;
+}

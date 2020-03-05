@@ -1,4 +1,3 @@
-
 export interface ApiServer {
   name: string;
   last_activity: string;

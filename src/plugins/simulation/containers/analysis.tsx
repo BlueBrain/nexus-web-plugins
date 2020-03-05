@@ -1,14 +1,11 @@
-
 import React, { useEffect, useState } from 'react';
 import { Col, Row } from 'antd';
-import { DEFAULT_SPARQL_VIEW_ID } from '@bbp/nexus-sdk';
-import { NexusClient } from '@bbp/nexus-sdk';
+import { DEFAULT_SPARQL_VIEW_ID, NexusClient } from '@bbp/nexus-sdk';
 
 import { parseUrl, mapSparqlResults, NexusImage } from '../../../common';
 import { SimulationResource } from '../types';
 
 import './analysis.css';
-
 
 interface AnalysisReport {
   name: string;
@@ -40,17 +37,17 @@ const sparqlMapperConfig = {
   mappings: [
     {
       source: 'imageUrl',
-      target: 'imageUrl'
+      target: 'imageUrl',
     },
     {
       source: 'name',
-      target: 'name'
+      target: 'name',
     },
     {
       source: 'description',
-      target: 'description'
-    }
-  ]
+      target: 'description',
+    },
+  ],
 };
 
 const AnalysisContainer = (props: AnalysisContainerProps) => {
@@ -91,6 +88,5 @@ const AnalysisContainer = (props: AnalysisContainerProps) => {
     </div>
   );
 };
-
 
 export default AnalysisContainer;

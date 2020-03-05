@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import groupBy from 'lodash/groupBy';
 import { DEFAULT_SPARQL_VIEW_ID, NexusClient } from '@bbp/nexus-sdk';
@@ -8,7 +7,6 @@ import { SimulationCampaignResource } from '../types';
 
 import SimulationAnalysisCarousel from '../components/analysis-carousel';
 import SimulationAnalysisBlock from './analysis-block';
-
 
 interface AnalysisReport {
   simulationId: string;
@@ -29,33 +27,33 @@ const sparqlMapperConfig = {
   mappings: [
     {
       source: 'simulationId',
-      target: 'simulationId'
+      target: 'simulationId',
     },
     {
       source: 'simulationSelf',
-      target: 'simulationSelf'
+      target: 'simulationSelf',
     },
     {
       source: 'simulationDescription',
-      target: 'simulationDescription'
+      target: 'simulationDescription',
     },
     {
       source: 'analysisName',
-      target: 'analysisName'
+      target: 'analysisName',
     },
     {
       source: 'analysisId',
-      target: 'analysisId'
+      target: 'analysisId',
     },
     {
       source: 'analysisDescription',
-      target: 'analysisDescription'
+      target: 'analysisDescription',
     },
     {
       source: 'imageUrl',
-      target: 'imageUrl'
-    }
-  ]
+      target: 'imageUrl',
+    },
+  ],
 };
 
 function getQuery(resourceId: string) {
@@ -85,7 +83,9 @@ const AnalysisCarouselContainer = (props: AnalysisCarouselContainerProps) => {
 
   const query = getQuery(resource['@id']);
 
-  const [reportsGrouped, setReportsGrouped] = useState<{[reportId: string]: any}>({});
+  const [reportsGrouped, setReportsGrouped] = useState<{
+    [reportId: string]: any;
+  }>({});
   const [simulationIds, setSimulationIds] = useState<string[]>([]);
 
   useEffect(() => {
@@ -119,6 +119,5 @@ const AnalysisCarouselContainer = (props: AnalysisCarouselContainerProps) => {
     <div />
   );
 };
-
 
 export default AnalysisCarouselContainer;

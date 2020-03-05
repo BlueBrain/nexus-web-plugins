@@ -1,10 +1,10 @@
-import * as React from "react";
-import qs from "query-string";
-import { Button } from "antd";
+import * as React from 'react';
+import qs from 'query-string';
+import { Button } from 'antd';
 
-import "./pair-recording-btn.css";
+import './pair-recording-btn.css';
 
-const pairRecordingAppBaseUrl = "http://bp.ocp.bbp.epfl.ch";
+const pairRecordingAppBaseUrl = 'http://bp.ocp.bbp.epfl.ch';
 
 export interface PairRecordingBtnProps {
   name: string;
@@ -15,7 +15,7 @@ export interface PairRecordingBtnProps {
 export const PairRecordingBtn = (props: PairRecordingBtnProps) => {
   const params = {
     name: props.name,
-    path: props.configPath
+    path: props.configPath,
   };
   const query = qs.stringify(params);
   const href = `${pairRecordingAppBaseUrl}/circuits/?${query}`;

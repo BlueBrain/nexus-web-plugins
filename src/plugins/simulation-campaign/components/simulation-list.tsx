@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import moment from 'moment';
 import { Table, Badge, Button, Icon } from 'antd';
@@ -6,7 +5,6 @@ import { Table, Badge, Button, Icon } from 'antd';
 import { Simulation } from '../types';
 
 import './simulation-list.css';
-
 
 interface BadgeStatus {
   [simStatus: string]:
@@ -26,7 +24,7 @@ const badgeStatus: BadgeStatus = {
   Pending: 'default',
   Running: 'processing',
   Failed: 'error',
-  Done: 'success'
+  Done: 'success',
 };
 
 function getTableColumns(additionalColumns: string[], simStatuses: string[]) {
@@ -37,7 +35,7 @@ function getTableColumns(additionalColumns: string[], simStatuses: string[]) {
       key: 'name',
       ellipsis: true,
       render: (name: string) =>
-        name ? (name.length > 70 ? `...${name.slice(-67)}` : name) : ''
+        name ? (name.length > 70 ? `...${name.slice(-67)}` : name) : '',
     },
     additionalColumns.includes('ca')
       ? {
@@ -54,7 +52,8 @@ function getTableColumns(additionalColumns: string[], simStatuses: string[]) {
           dataIndex: 'depolarization',
           key: 'depolarization',
           width: 120,
-          sorter: (a: any, b: any) => parseFloat(a.depolarization) - parseFloat(b.depolarization),
+          sorter: (a: any, b: any) =>
+            parseFloat(a.depolarization) - parseFloat(b.depolarization),
         }
       : null,
     {
@@ -63,7 +62,8 @@ function getTableColumns(additionalColumns: string[], simStatuses: string[]) {
       key: 'startedAtTime',
       width: 150,
       render: (timeStr: string) => moment(timeStr).format('L HH:mm'),
-      sorter: (a: any, b: any) => moment(a.startedAtTime).diff(moment(b.startedAtTime)),
+      sorter: (a: any, b: any) =>
+        moment(a.startedAtTime).diff(moment(b.startedAtTime)),
     },
     {
       title: 'Ended at',
@@ -72,7 +72,8 @@ function getTableColumns(additionalColumns: string[], simStatuses: string[]) {
       width: 150,
       render: (timeStr: string | null) =>
         timeStr ? moment(timeStr).format('L HH:mm') : '-',
-        sorter: (a: any, b: any) => moment(b.endedAtTime).diff(moment(a.endedAtTime)),
+      sorter: (a: any, b: any) =>
+        moment(b.endedAtTime).diff(moment(a.endedAtTime)),
     },
     {
       title: 'Status',
@@ -82,11 +83,12 @@ function getTableColumns(additionalColumns: string[], simStatuses: string[]) {
       render: (status: string) => (
         <Badge status={badgeStatus[status]} text={status} />
       ),
-      filters: simStatuses.length > 1
-        ? simStatuses.map(status => ({ text: status, value: status }))
-        : [],
+      filters:
+        simStatuses.length > 1
+          ? simStatuses.map(status => ({ text: status, value: status }))
+          : [],
       onFilter: (status: any, record: any) => record.status === status,
-    }
+    },
   ].filter(Boolean);
 }
 
@@ -109,7 +111,10 @@ const SimulationList = (props: SimulationListProps) => {
     additionalColumns.push('depolarization');
   }
   const simStatuses = Array.from(new Set(simulations.map(sim => sim.status)));
-  const simulationTableColumns = getTableColumns(additionalColumns, simStatuses);
+  const simulationTableColumns = getTableColumns(
+    additionalColumns,
+    simStatuses
+  );
 
   return (
     <div className="mt">

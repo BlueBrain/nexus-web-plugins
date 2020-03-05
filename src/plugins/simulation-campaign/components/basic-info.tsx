@@ -21,7 +21,7 @@ const badgeStatus: BadgeStatus = {
   Pending: 'default',
   Running: 'processing',
   Failed: 'error',
-  Done: 'success'
+  Done: 'success',
 };
 
 const BasicInfo = (props: BasicInfoProps) => {

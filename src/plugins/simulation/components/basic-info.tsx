@@ -1,4 +1,3 @@
-
 import React from 'react';
 import moment from 'moment';
 import { Badge, Input, Button, Row, Col } from 'antd';
@@ -11,7 +10,6 @@ import {
   JupyterNotebookBtn,
   PairRecordingBtn,
 } from '../../../common';
-
 
 interface BadgeStatus {
   [simStatus: string]:
@@ -31,7 +29,7 @@ const badgeStatus: BadgeStatus = {
   Pending: 'default',
   Running: 'processing',
   Failed: 'error',
-  Done: 'success'
+  Done: 'success',
 };
 
 const BasicInfo = (props: BasicInfoProps) => {
@@ -104,20 +102,15 @@ const BasicInfo = (props: BasicInfoProps) => {
         configPath={blueConfigPath}
       />
 
-      {proj &&
+      {proj && (
         <BraynsBtn className="mr" account={proj} configPath={blueConfigPath} />
-      }
+      )}
 
-      {proj &&
-        <JupyterNotebookBtn
-          path={resource.path}
-          account={proj}
-          nexus={nexus}
-        />
-      }
+      {proj && (
+        <JupyterNotebookBtn path={resource.path} account={proj} nexus={nexus} />
+      )}
     </div>
   );
 };
-
 
 export default BasicInfo;

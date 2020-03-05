@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { NexusClient } from '@bbp/nexus-sdk';
 
@@ -11,7 +10,6 @@ import CircuitContainer from './containers/circuit';
 import SimWriterConfigContainer from './containers/sim-writer-config';
 import AnalysisCarouselContainer from './containers/analysis-carousel';
 import AnalysisPdf from './containers/analysis-pdf';
-
 
 interface SimulationCampaignContainerProps {
   resource: SimulationCampaignResource;
@@ -40,20 +38,20 @@ const SimulationCampaignContainer = (
     <div className="simulation-campaign-container">
       <BasicInfoComponent resource={props.resource} />
 
-      {simWriterConfigId &&
+      {simWriterConfigId && (
         <SimWriterConfigContainer
           resourceId={simWriterConfigId}
           nexus={nexus}
         />
-      }
+      )}
 
-      {circuitId &&
+      {circuitId && (
         <CircuitContainer
           resourceId={circuitId}
           nexus={nexus}
           goToResource={props.goToResource}
         />
-      }
+      )}
 
       <AnalysisCarouselContainer
         resource={props.resource}
@@ -71,6 +69,5 @@ const SimulationCampaignContainer = (
     </div>
   );
 };
-
 
 export default SimulationCampaignContainer;

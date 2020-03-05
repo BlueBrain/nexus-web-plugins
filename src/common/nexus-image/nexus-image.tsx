@@ -1,13 +1,12 @@
-import * as React from "react";
-import { useState, useEffect } from "react";
-import { Spin } from "antd";
-import Lightbox from "react-image-lightbox";
-import { NexusClient } from "@bbp/nexus-sdk";
+import * as React from 'react';
+import { Spin } from 'antd';
+import Lightbox from 'react-image-lightbox';
+import { NexusClient } from '@bbp/nexus-sdk';
 
-import { parseUrl } from "../nexus-tools/nexus-tools";
+import { parseUrl } from '../nexus-tools/nexus-tools';
 
-import "react-image-lightbox/style.css";
-import "./nexus-image.css";
+import 'react-image-lightbox/style.css';
+import './nexus-image.css';
 
 interface NexusImageContainerProps {
   imageUrl: string;
@@ -45,11 +44,11 @@ export const NexusImage = (props: NexusImageContainerProps) => {
   const { imageUrl, nexus } = props;
   const { org, project } = parseUrl(imageUrl);
 
-  const [loading, setLoading] = useState(true);
-  const [imageData, setImageData] = useState<string | null>(null);
+  const [loading, setLoading] = React.useState(true);
+  const [imageData, setImageData] = React.useState<string | null>(null);
 
-  useEffect(() => {
-    nexus.File.get(org, project, encodeURIComponent(imageUrl), { as: "blob" })
+  React.useEffect(() => {
+    nexus.File.get(org, project, encodeURIComponent(imageUrl), { as: 'blob' })
       .then(imageData => setImageData(imageData as string))
       .catch(() => {})
       .finally(() => setLoading(false));

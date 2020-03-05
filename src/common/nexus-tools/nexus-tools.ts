@@ -15,7 +15,7 @@ const nexusEntities = [
   'acls',
   'views',
   'resources',
-  'files'
+  'files',
 ];
 
 const nexusUrlR = new RegExp(
@@ -33,7 +33,7 @@ const nexusUrlR = new RegExp(
     '/?',
     '([^/]+)?', // id [optional]
     '/?',
-    '$'
+    '$',
   ].join('')
 );
 
@@ -69,7 +69,7 @@ export const parseUrl = (nexusUrl: string): ParsedNexusUrl => {
     org: matches[3],
     project: matches[4],
     schema: matches[5],
-    id: matches[6]
+    id: matches[6],
   };
 };
 
@@ -112,8 +112,8 @@ export const mapSparqlResults = (
           binding,
           `${mapping.source}.value`,
           mapping.defaultVal
-        )
-      }
+        ),
+      },
     });
 
     return config.mappings.reduce(reduceFn, {});

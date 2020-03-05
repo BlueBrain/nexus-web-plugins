@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import get from 'lodash/get';
 import { DEFAULT_SPARQL_VIEW_ID, NexusClient } from '@bbp/nexus-sdk';
@@ -7,7 +6,6 @@ import { parseUrl, mapSparqlResults } from '../../../common';
 import { SimulationCampaignResource } from '../types';
 
 import AnalysisPdf from '../components/analysis-pdf';
-
 
 interface AnalysisPdfContainerProps {
   resource: SimulationCampaignResource;
@@ -18,9 +16,9 @@ const sparqlMapperConfig = {
   mappings: [
     {
       source: 'pdfUrl',
-      target: 'pdfUrl'
-    }
-  ]
+      target: 'pdfUrl',
+    },
+  ],
 };
 
 function getQuery(resourceId: string) {
@@ -66,6 +64,5 @@ const AnalysisPdfContainer = (props: AnalysisPdfContainerProps) => {
 
   return src ? <AnalysisPdf src={src} /> : <div />;
 };
-
 
 export default AnalysisPdfContainer;
