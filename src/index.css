@@ -11,3 +11,39 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.float-right {
+  float: right;
+}
+
+.color-success {
+  color: #19be6b;
+}
+
+.bg-color-success {
+  background-color: #19be6b;
+}
+
+.color-info {
+  color: #2db7f5;
+}
+
+.bg-color-info {
+  background-color: #2db7f5;
+}
+
+.color-warning {
+  color: #ff9900;
+}
+
+.bg-color-warning {
+  background-color: #ff9900;
+}
+
+.color-error {
+  color: #ed4014;
+}
+
+.bg-color-error {
+  background-color: #ed4014;
+}

@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from 'react';
+
+import React, { useEffect, useState, useContext } from 'react';
 import { Spin } from 'antd';
-import { DEFAULT_SPARQL_VIEW_ID, NexusClient } from '@bbp/nexus-sdk';
+import { DEFAULT_SPARQL_VIEW_ID } from '@bbp/nexus-sdk';
 
 import { SimulationCampaignResource, Simulation } from '../types';
 
-import { parseUrl, mapSparqlResults } from '../../../common';
-import SimulationList from '../components/simulation-list';
+import { parseUrl, mapSparqlResults, NexusClientContext } from '../../../common';
+import SimList from '../components/sim-list';
 
-interface SimulationListContainerProps {
+
+interface SimListContainerProps {
   resource: SimulationCampaignResource;
-  nexus: NexusClient;
   goToResource?: (selfUrl: string) => void;
 }
 
@@ -24,7 +25,7 @@ function getSimulationsQuery(resourceId: string) {
     SELECT DISTINCT ?name ?self ?startedAtTime ?endedAtTime ?status ?job_id ?path ?ca ?depolarization
 
     WHERE {
-      ?simulation prov:wasInformedBy <${resourceId}> .
+      ?simulation prov:wasStartedBy <${resourceId}> .
       ?simulation nexus:self ?self .
       OPTIONAL { ?simulation schema:name ?name }
       OPTIONAL { ?simulation nxv:project ?project }
@@ -75,8 +76,9 @@ const sparqlMapperConf = {
   ],
 };
 
-const SimulationListContainer = (props: SimulationListContainerProps) => {
-  const { resource, nexus, goToResource } = props;
+const SimListContainer = (props: SimListContainerProps) => {
+  const { resource, goToResource } = props;
+  const nexus = useContext(NexusClientContext);
 
   const [simulations, setSimulations] = useState<Simulation[]>([]);
   const [loading, setLoading] = useState(true);
@@ -100,11 +102,15 @@ const SimulationListContainer = (props: SimulationListContainerProps) => {
 
   return (
     <Spin spinning={loading}>
-      {simulations.length && (
-        <SimulationList simulations={simulations} goToResource={goToResource} />
-      )}
+      {simulations.length &&
+        <SimList
+          simulations={simulations}
+          goToResource={goToResource}
+        />
+      }
     </Spin>
   );
 };
 
-export default SimulationListContainer;
+
+export default SimListContainer;

@@ -4,7 +4,7 @@ import { Table, Badge, Button, Icon } from 'antd';
 
 import { Simulation } from '../types';
 
-import './simulation-list.css';
+import './sim-list.css';
 
 interface BadgeStatus {
   [simStatus: string]:

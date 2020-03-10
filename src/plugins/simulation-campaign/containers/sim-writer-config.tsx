@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from 'react';
+
+import React, { useEffect, useState, useContext } from 'react';
 import get from 'lodash/get';
 
 import { Spin } from 'antd';
-import { NexusClient } from '@bbp/nexus-sdk';
 
-import { parseUrl } from '../../../common';
+import { parseUrl, NexusClientContext } from '../../../common';
 import { SimWriterConfigResource } from '../types';
 import SimWriterConfigComponent from '../components/sim-writer-config';
 
 interface SimWriterConfigContainerProps {
   resourceId: string;
-  nexus: NexusClient;
 }
 
 const SimWriterConfigContainer = (props: SimWriterConfigContainerProps) => {
-  const { resourceId, nexus } = props;
+  const { resourceId } = props;
+  const nexus = useContext(NexusClientContext);
 
   const [
     simWriterConfig,

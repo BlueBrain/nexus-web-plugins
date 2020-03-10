@@ -1,6 +1,6 @@
 import { Resource } from '@bbp/nexus-sdk';
 
-import { ResourceLink } from '../../common';
+import { ActivityStatusEnum, ResourceLink, Distribution } from '../../common';
 
 export interface Simulation {
   startedAtTime: string;
@@ -23,7 +23,7 @@ export enum SimulationStatusEnum {
 export interface SimulationCampaignResource extends Resource {
   startedAtTime: string;
   endedAtTime: string;
-  status: SimulationStatusEnum;
+  status: ActivityStatusEnum;
   simulations: Simulation[];
   used?: ResourceLink[];
 }
@@ -44,3 +44,20 @@ export interface SimWriterConfigResource extends Resource {
     data: string | undefined;
   };
 }
+
+export interface CampaignAnalysisResource extends Resource {
+  startedAtTime: string;
+  endedAtTime: string;
+  status: ActivityStatusEnum;
+  used: ResourceLink;
+}
+
+export interface CampaignAnalysisReportResource {
+  distribution: Distribution;
+  image?: Distribution;
+  wasGeneratedBy: ResourceLink;
+};
+
+export interface CampaignAnalysisConfigResource extends Resource {
+  distrubution: Distribution;
+};

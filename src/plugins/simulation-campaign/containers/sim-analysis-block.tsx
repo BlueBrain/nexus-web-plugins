@@ -1,14 +1,14 @@
-import React from 'react';
+
+import React, { useContext } from 'react';
 import get from 'lodash/get';
 import sortBy from 'lodash/sortBy';
 import { Button, Icon } from 'antd';
 
-import { NexusClient } from '@bbp/nexus-sdk';
+import { NexusImage, NexusClientContext } from '../../../common';
+import SimAnalysisBlock from '../components/sim-analysis-block';
 
-import { NexusImage } from '../../../common';
-import SimulationAnalysisBlock from '../components/analysis-block';
 
-interface AnalysisReport {
+interface SimAnalysisReport {
   simulationId: string;
   simulationDescription: string;
   analysisId: string;
@@ -17,14 +17,14 @@ interface AnalysisReport {
   imageUrl: string;
 }
 
-interface AnalysisBlockContainerProps {
-  analysisReports: AnalysisReport[];
-  nexus: NexusClient;
+interface SimAnalysisBlockContainerProps {
+  analysisReports: SimAnalysisReport[];
   goToResource?: (selfUrl: string) => void;
 }
 
-const AnalysisBlockContainer = (props: AnalysisBlockContainerProps) => {
-  const { analysisReports, nexus, goToResource } = props;
+const SimAnalysisBlockContainer = (props: SimAnalysisBlockContainerProps) => {
+  const { analysisReports, goToResource } = props;
+  const nexus = useContext(NexusClientContext);
 
   const params = get(analysisReports, '[0].simulationDescription', '')
     .replace(/=/g, ':')
@@ -39,7 +39,7 @@ const AnalysisBlockContainer = (props: AnalysisBlockContainerProps) => {
   const simulationSelf = get(props.analysisReports, '[0].simulationSelf');
 
   return (
-    <SimulationAnalysisBlock>
+    <SimAnalysisBlock>
       {sortedReports.map(report => (
         <NexusImage
           imageUrl={report.imageUrl}
@@ -47,14 +47,20 @@ const AnalysisBlockContainer = (props: AnalysisBlockContainerProps) => {
           key={report.analysisId}
         />
       ))}
-      {params.length ? params.map((param: string) => <p>{param}</p>) : ''}
+
+      {params.length
+        ? params.map((param: string) => <p key={param}>{param}</p>)
+        : ''
+      }
+
       <div className="text-center mt">
         <Button onClick={() => goToResource && goToResource(simulationSelf)}>
           <Icon type="more" />
         </Button>
       </div>
-    </SimulationAnalysisBlock>
+    </SimAnalysisBlock>
   );
 };
 
-export default AnalysisBlockContainer;
+
+export default SimAnalysisBlockContainer;

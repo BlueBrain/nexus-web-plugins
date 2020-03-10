@@ -15,9 +15,30 @@ export interface BrainLocation {
   layer: Layer[] | undefined;
 }
 
+export enum DigestAlgorithmEnum {
+  SHA256 = 'SHA-256',
+}
+
+export enum EncodingFormatEnum {
+  PDF = 'application/pdf',
+  JSON = 'application/json',
+  HDF5 = 'application/x-hdf5',
+}
+
 export interface Distribution {
   '@type': string;
   contentUrl: string;
+  contentSize: {
+    unitCode: string;
+    value: number;
+  };
+  digest: {
+    algorithm: DigestAlgorithmEnum;
+    value: string;
+  };
+  encodingFormat: EncodingFormatEnum;
+  name: string;
+  url: string;
 }
 
 export interface ResourceLink {
@@ -45,6 +66,13 @@ export interface DetailedCircuitResource extends Resource, MINDSResource {
   circuitType?: string;
   speciesLabel?: string;
   speciesId?: string;
+}
+
+export enum ActivityStatusEnum {
+  RUNNING = 'Running',
+  FAILED = 'Failed',
+  DONE = 'Done',
+  PENDING = 'Pending'
 }
 
 // Plugin related types

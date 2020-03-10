@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import get from 'lodash/get';
-import { DEFAULT_SPARQL_VIEW_ID, NexusClient } from '@bbp/nexus-sdk';
 
-import { parseUrl, mapSparqlResults } from '../../../common';
+import React, { useEffect, useState, useContext } from 'react';
+import get from 'lodash/get';
+import { DEFAULT_SPARQL_VIEW_ID } from '@bbp/nexus-sdk';
+
+import { parseUrl, mapSparqlResults, NexusClientContext } from '../../../common';
 import { SimulationCampaignResource } from '../types';
 
 import AnalysisPdf from '../components/analysis-pdf';
 
 interface AnalysisPdfContainerProps {
   resource: SimulationCampaignResource;
-  nexus: NexusClient;
 }
 
 const sparqlMapperConfig = {
@@ -37,7 +37,8 @@ function getQuery(resourceId: string) {
 }
 
 const AnalysisPdfContainer = (props: AnalysisPdfContainerProps) => {
-  const { resource, nexus } = props;
+  const { resource } = props;
+  const nexus = useContext(NexusClientContext);
 
   const query = getQuery(resource['@id']);
   const { org, project } = parseUrl(resource._project);
