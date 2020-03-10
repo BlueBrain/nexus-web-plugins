@@ -5,7 +5,6 @@ import { Row, Col } from 'antd';
 import { SimulationCampaignResource } from '../types';
 import { ActivityStatus } from '../../../common';
 
-
 interface BasicInfoProps {
   resource: SimulationCampaignResource;
 }

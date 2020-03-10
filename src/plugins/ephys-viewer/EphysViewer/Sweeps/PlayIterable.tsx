@@ -1,6 +1,8 @@
 import * as React from 'react';
 import useIterable, { onIterateFunction } from './useIterable';
 
+import './play-iterable.css';
+
 interface PlayIterableProps {
   className?: string;
   iterables: any[];

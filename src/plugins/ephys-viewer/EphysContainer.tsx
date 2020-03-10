@@ -18,7 +18,11 @@ const EphysContainer: React.FC<{
   const [{ loading, error, data }, setData] = React.useState<{
     loading: boolean;
     error: Error | null;
-    data: ProcessedTraceData | null;
+    data: {
+      processedTrace: ProcessedTraceData;
+      iUnit: string;
+      vUnit: string;
+    } | null;
   }>({
     loading: true,
     error: null,
@@ -56,13 +60,13 @@ const EphysContainer: React.FC<{
 
     nexus.File.get(orgLabel, projectLabel, id, { as: 'text' })
       .then(file => {
-        // TODO: remove this when nexus SDK
-        // File has a type argument
-        // Ticket: https://github.com/BlueBrain/nexus/issues/1073
-        // @ts-ignore
-        const data = processTrace(file as Trace);
+        const trace = JSON.parse(file as string) as Trace;
         setData({
-          data,
+          data: {
+            processedTrace: processTrace(trace),
+            iUnit: trace.i_unit,
+            vUnit: trace.v_unit,
+          },
           loading: false,
           error: null,
         });
@@ -79,7 +83,13 @@ const EphysContainer: React.FC<{
   return (
     <div className={loading ? 'ephys-wapper loading' : 'ephys-wapper'}>
       {error && <p>{error.message}</p>}
-      {data && !error && <EphysViewer dataset={data} />}
+      {data && !error && (
+        <EphysViewer
+          dataset={data.processedTrace}
+          iUnit={data.iUnit}
+          vUnit={data.vUnit}
+        />
+      )}
     </div>
   );
 };

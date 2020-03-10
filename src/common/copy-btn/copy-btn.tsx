@@ -1,10 +1,8 @@
-
 import React from 'react';
 import { Button } from 'antd';
 import { ButtonType, ButtonSize } from 'antd/es/button';
 
 import { Copy } from '../copy/copy';
-
 
 interface CopyBtnProps {
   text: string;
@@ -12,7 +10,7 @@ interface CopyBtnProps {
   size?: ButtonSize;
   type?: ButtonType;
   block?: boolean;
-};
+}
 
 export const CopyBtn = (props: CopyBtnProps) => {
   const { label, size, type, block, text } = props;
@@ -35,6 +33,5 @@ export const CopyBtn = (props: CopyBtnProps) => {
     />
   );
 };
-
 
 export default CopyBtn;

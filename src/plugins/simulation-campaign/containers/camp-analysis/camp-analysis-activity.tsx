@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useContext } from 'react';
 import { Button } from 'antd';
 
@@ -18,7 +17,6 @@ import {
 } from '../../../../common';
 
 import CampAnalysisActivity from '../../components/camp-analysis/camp-analysis-activity';
-
 
 interface CampAnalysisActivityProps {
   analysisReportId: string;
@@ -41,7 +39,9 @@ const CampAnalysisActivityContainer = (props: CampAnalysisActivityProps) => {
   };
 
   const fetchData = async () => {
-    const analysisReport: Report = await nexus.httpGet({ path: analysisReportId });
+    const analysisReport: Report = await nexus.httpGet({
+      path: analysisReportId,
+    });
     setAnalysisReport(analysisReport);
 
     const analysisId = analysisReport.wasGeneratedBy['@id'];
@@ -52,38 +52,42 @@ const CampAnalysisActivityContainer = (props: CampAnalysisActivityProps) => {
     setConfigResource(configResource);
 
     setLoading(false);
-  }
+  };
 
   useEffect(() => {
     fetchData();
   }, []);
 
-  const footer = analysisReport?.distribution
-    ? <FileDownloadBtn distribution={analysisReport.distribution} icon="download">
-          {distributionFormatLabel(analysisReport.distribution)}
-      </FileDownloadBtn>
-    : null;
+  const footer = analysisReport?.distribution ? (
+    <FileDownloadBtn distribution={analysisReport.distribution} icon="download">
+      {distributionFormatLabel(analysisReport.distribution)}
+    </FileDownloadBtn>
+  ) : null;
 
-  const reportPreview = (analysisReport?.distribution && isViewable(analysisReport?.distribution))
-    ? <FileViewer
+  const reportPreview =
+    analysisReport?.distribution && isViewable(analysisReport?.distribution) ? (
+      <FileViewer
         mainDistribution={analysisReport.distribution}
         previewDistribution={analysisReport?.image}
       />
-    : null;
+    ) : null;
 
-  const configBtn = configResource
-    ? <FilePreviewBtn distribution={configResource.distribution}>Show config</FilePreviewBtn>
-    : null;
+  const configBtn = configResource ? (
+    <FilePreviewBtn distribution={configResource.distribution}>
+      Show config
+    </FilePreviewBtn>
+  ) : null;
 
-  return (analysis && configResource)
-    ? <CampAnalysisActivity
-        analysis={analysis}
-        configBtn={configBtn}
-        footer={footer}
-        reportPreview={reportPreview}
-      />
-    : <span>Loading</span>;
-}
-
+  return analysis && configResource ? (
+    <CampAnalysisActivity
+      analysis={analysis}
+      configBtn={configBtn}
+      footer={footer}
+      reportPreview={reportPreview}
+    />
+  ) : (
+    <span>Loading</span>
+  );
+};
 
 export default CampAnalysisActivityContainer;

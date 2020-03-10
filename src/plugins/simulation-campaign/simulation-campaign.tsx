@@ -11,15 +11,12 @@ import SimAnalysisCarouselContainer from './containers/sim-analysis-carousel';
 import AnalysisPdfContainer from './containers/analysis-pdf';
 import CampAnalysisContainer from './containers/camp-analysis/camp-analysis';
 
-
 interface SimCampaignContainerProps {
   resource: SimCampaignResource;
   goToResource?: (selfUrl: string) => void;
 }
 
-const SimCampaignContainer = (
-  props: SimCampaignContainerProps
-) => {
+const SimCampaignContainer = (props: SimCampaignContainerProps) => {
   const { resource } = props;
 
   const circuitEntry = (resource.used || []).find(
@@ -38,18 +35,16 @@ const SimCampaignContainer = (
     <div className="simulation-campaign-container">
       <BasicInfoComponent resource={resource} />
 
-      {simWriterConfigId &&
-        <SimWriterConfigContainer
-          resourceId={simWriterConfigId}
-        />
-      }
+      {simWriterConfigId && (
+        <SimWriterConfigContainer resourceId={simWriterConfigId} />
+      )}
 
-      {circuitId &&
+      {circuitId && (
         <CircuitContainer
           resourceId={circuitId}
           goToResource={props.goToResource}
         />
-      }
+      )}
 
       <CampAnalysisContainer simId="dummy" />
 
@@ -67,6 +62,5 @@ const SimCampaignContainer = (
     </div>
   );
 };
-
 
 export default SimCampaignContainer;

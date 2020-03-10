@@ -1,9 +1,12 @@
-
 import React, { useEffect, useState, useContext } from 'react';
 import get from 'lodash/get';
 import { DEFAULT_SPARQL_VIEW_ID } from '@bbp/nexus-sdk';
 
-import { parseUrl, mapSparqlResults, NexusClientContext } from '../../../common';
+import {
+  parseUrl,
+  mapSparqlResults,
+  NexusClientContext,
+} from '../../../common';
 import { SimulationCampaignResource } from '../types';
 
 import AnalysisPdf from '../components/analysis-pdf';

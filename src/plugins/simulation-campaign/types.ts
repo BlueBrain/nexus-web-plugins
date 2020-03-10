@@ -56,8 +56,8 @@ export interface CampaignAnalysisReportResource {
   distribution: Distribution;
   image?: Distribution;
   wasGeneratedBy: ResourceLink;
-};
+}
 
 export interface CampaignAnalysisConfigResource extends Resource {
   distrubution: Distribution;
-};
+}

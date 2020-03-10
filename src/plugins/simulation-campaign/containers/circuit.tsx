@@ -1,10 +1,13 @@
-
 import React, { useState, useEffect, useContext } from 'react';
 import get from 'lodash/get';
 import { Spin } from 'antd';
 import { DEFAULT_SPARQL_VIEW_ID } from '@bbp/nexus-sdk';
 
-import { parseUrl, DetailedCircuitResource, NexusClientContext } from '../../../common';
+import {
+  parseUrl,
+  DetailedCircuitResource,
+  NexusClientContext,
+} from '../../../common';
 import Circuit from '../components/circuit';
 
 interface CircuitContainerProps {

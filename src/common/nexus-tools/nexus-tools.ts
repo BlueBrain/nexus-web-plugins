@@ -1,8 +1,6 @@
-
 import get from 'lodash/get';
 
 import { Distribution, EncodingFormatEnum } from '../types';
-
 
 interface ParsedNexusUrl {
   deployment: string;
@@ -125,10 +123,7 @@ export const mapSparqlResults = (
 };
 
 // TODO: add the rest (png, jpeg, etc.)
-const VIEWABLE_ENCODING_FORMATS = [
-  'application/pdf',
-  'application/json',
-];
+const VIEWABLE_ENCODING_FORMATS = ['application/pdf', 'application/json'];
 
 export const isViewable = (distribution?: Distribution) => {
   return distribution
@@ -139,10 +134,12 @@ export const isViewable = (distribution?: Distribution) => {
 const ENCODING_FORMAT_LABEL: { [format: string]: string } = {
   'application/pdf': 'PDF',
   'application/json': 'JSON',
-  'application/x-hdf5': 'HDF5'
+  'application/x-hdf5': 'HDF5',
 };
 
 export const distributionFormatLabel = (distribution: Distribution): string => {
-  return ENCODING_FORMAT_LABEL[distribution.encodingFormat]
-    || distribution.encodingFormat.split('/').slice(-1)[0];
+  return (
+    ENCODING_FORMAT_LABEL[distribution.encodingFormat] ||
+    distribution.encodingFormat.split('/').slice(-1)[0]
+  );
 };

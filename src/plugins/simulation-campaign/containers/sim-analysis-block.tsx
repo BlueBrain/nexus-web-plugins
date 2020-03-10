@@ -1,4 +1,3 @@
-
 import React, { useContext } from 'react';
 import get from 'lodash/get';
 import sortBy from 'lodash/sortBy';
@@ -6,7 +5,6 @@ import { Button, Icon } from 'antd';
 
 import { NexusImage, NexusClientContext } from '../../../common';
 import SimAnalysisBlock from '../components/sim-analysis-block';
-
 
 interface SimAnalysisReport {
   simulationId: string;
@@ -50,8 +48,7 @@ const SimAnalysisBlockContainer = (props: SimAnalysisBlockContainerProps) => {
 
       {params.length
         ? params.map((param: string) => <p key={param}>{param}</p>)
-        : ''
-      }
+        : ''}
 
       <div className="text-center mt">
         <Button onClick={() => goToResource && goToResource(simulationSelf)}>
@@ -61,6 +58,5 @@ const SimAnalysisBlockContainer = (props: SimAnalysisBlockContainerProps) => {
     </SimAnalysisBlock>
   );
 };
-
 
 export default SimAnalysisBlockContainer;

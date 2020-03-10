@@ -1,10 +1,9 @@
-
 import React, { FunctionComponent, ReactNode } from 'react';
 import { Divider, Row, Col } from 'antd';
 import moment from 'moment';
 
 import get from 'lodash/get';
-import startCase from 'lodash/startCase'
+import startCase from 'lodash/startCase';
 import upperFirst from 'lodash/upperFirst';
 
 import { CampaignAnalysisResource } from '../../types';
@@ -12,17 +11,16 @@ import { ActivityStatus, CopyBtn } from '../../../../common';
 
 import './camp-analysis-activity.css';
 
-
 interface CampAnalysisActivityProps {
   analysis: CampaignAnalysisResource;
   configBtn: ReactNode;
   footer?: ReactNode;
   reportPreview?: ReactNode;
-};
+}
 
 const TIME_FORMAT = 'DD/MM/YY HH:mm';
 
-const CampAnalysisActivity: FunctionComponent<CampAnalysisActivityProps> = (props) => {
+const CampAnalysisActivity: FunctionComponent<CampAnalysisActivityProps> = props => {
   const { analysis, configBtn, footer, reportPreview } = props;
 
   const rawName = get(analysis, '@id', '')
@@ -45,7 +43,7 @@ const CampAnalysisActivity: FunctionComponent<CampAnalysisActivityProps> = (prop
             <strong>{name}</strong>
           </Col>
           <Col span={6} className="text-right">
-            <ActivityStatus status={analysis.status}/>
+            <ActivityStatus status={analysis.status} />
           </Col>
         </Row>
 
@@ -53,45 +51,42 @@ const CampAnalysisActivity: FunctionComponent<CampAnalysisActivityProps> = (prop
 
         <div className="mt time-block">
           <Row>
-            <Col span={12}><strong>Started:</strong></Col>
-            <Col span={12} className="text-right">{started}</Col>
+            <Col span={12}>
+              <strong>Started:</strong>
+            </Col>
+            <Col span={12} className="text-right">
+              {started}
+            </Col>
           </Row>
           <Row>
-            <Col span={12}><strong>Ended:</strong></Col>
-            <Col span={12} className="text-right">{ended}</Col>
+            <Col span={12}>
+              <strong>Ended:</strong>
+            </Col>
+            <Col span={12} className="text-right">
+              {ended}
+            </Col>
           </Row>
         </div>
 
         <Row className="mt">
-          <Col span={16}>
-            {configBtn}
-          </Col>
+          <Col span={16}>{configBtn}</Col>
           <Col span={8} className="text-right">
-            <CopyBtn
-              block
-              label="Id"
-              text={analysis['@id']}
-            />
+            <CopyBtn block label="Id" text={analysis['@id']} />
           </Col>
         </Row>
 
-        <Divider className="ant-divider-small"/>
+        <Divider className="ant-divider-small" />
 
-        <div className="text-right">
-          {footer}
-        </div>
+        <div className="text-right">{footer}</div>
       </div>
 
-      {reportPreview &&
+      {reportPreview && (
         <div className="report-preview-container-outer">
-          <div className="report-preview-container-inner">
-            {reportPreview}
-          </div>
+          <div className="report-preview-container-inner">{reportPreview}</div>
         </div>
-      }
+      )}
     </div>
-  )
-}
-
+  );
+};
 
 export default CampAnalysisActivity;
