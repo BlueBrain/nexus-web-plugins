@@ -1,13 +1,15 @@
-
 import React, { useEffect, useState, useContext } from 'react';
 import { Spin } from 'antd';
 import { DEFAULT_SPARQL_VIEW_ID } from '@bbp/nexus-sdk';
 
 import { SimulationCampaignResource, Simulation } from '../types';
 
-import { parseUrl, mapSparqlResults, NexusClientContext } from '../../../common';
+import {
+  parseUrl,
+  mapSparqlResults,
+  NexusClientContext,
+} from '../../../common';
 import SimList from '../components/sim-list';
-
 
 interface SimListContainerProps {
   resource: SimulationCampaignResource;
@@ -102,15 +104,11 @@ const SimListContainer = (props: SimListContainerProps) => {
 
   return (
     <Spin spinning={loading}>
-      {simulations.length &&
-        <SimList
-          simulations={simulations}
-          goToResource={goToResource}
-        />
-      }
+      {simulations.length && (
+        <SimList simulations={simulations} goToResource={goToResource} />
+      )}
     </Spin>
   );
 };
-
 
 export default SimListContainer;

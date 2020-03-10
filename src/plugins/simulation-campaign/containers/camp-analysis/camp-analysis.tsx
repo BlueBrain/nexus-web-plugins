@@ -1,4 +1,3 @@
-
 import React, { useContext } from 'react';
 import { Icon } from 'antd';
 
@@ -7,7 +6,6 @@ import { NexusClientContext } from '../../../../common';
 
 import CampAnalysis from '../../components/camp-analysis/camp-analysis';
 import CampAnalysisBlock from '../../components/camp-analysis/camp-analysis-block';
-
 
 interface CampAnalysisContainerProps {
   simId: string;
@@ -32,27 +30,28 @@ const CampAnalysisContainer = (props: CampAnalysisContainerProps) => {
 
   return (
     <CampAnalysis>
-      {analysisList.map((analysisReportIds, idx) =>
+      {analysisList.map((analysisReportIds, idx) => (
         <CampAnalysisBlock key={idx}>
-          {analysisReportIds.map((analysisReportId, analysisReportIdx) =>
+          {analysisReportIds.map((analysisReportId, analysisReportIdx) => (
             <span key={analysisReportId}>
-              <CampAnalysisActivityContainer analysisReportId={analysisReportId} />
-              {analysisReportIdx < (analysisReportIds.length - 1) &&
+              <CampAnalysisActivityContainer
+                analysisReportId={analysisReportId}
+              />
+              {analysisReportIdx < analysisReportIds.length - 1 && (
                 <Icon
                   type="arrow-right"
                   style={{
                     marginLeft: '0.6em',
-                    marginRight: '0.6em'
+                    marginRight: '0.6em',
                   }}
                 />
-              }
+              )}
             </span>
-          )}
+          ))}
         </CampAnalysisBlock>
-      )}
+      ))}
     </CampAnalysis>
   );
-}
-
+};
 
 export default CampAnalysisContainer;

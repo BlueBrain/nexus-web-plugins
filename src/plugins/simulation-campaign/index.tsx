@@ -16,10 +16,7 @@ export default ({
 }: NexusPluginProps<SimulationCampaignResource>) => {
   ReactDOM.render(
     <NexusClientContext.Provider value={nexusClient}>
-      <SimulationCampaign
-        resource={resource}
-        goToResource={goToResource}
-      />
+      <SimulationCampaign resource={resource} goToResource={goToResource} />
     </NexusClientContext.Provider>,
     ref
   );

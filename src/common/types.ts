@@ -72,7 +72,7 @@ export enum ActivityStatusEnum {
   RUNNING = 'Running',
   FAILED = 'Failed',
   DONE = 'Done',
-  PENDING = 'Pending'
+  PENDING = 'Pending',
 }
 
 // Plugin related types

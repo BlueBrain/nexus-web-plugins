@@ -1,13 +1,13 @@
 import * as React from 'react';
-import processTrace from './processTrace';
-import { Trace, ZoomRange, ProcessedTraceData } from '../types.js';
+import { ZoomRange, ProcessedTraceData } from '../types.js';
 import Graph from './Graph';
-import ephys from '../test-ephys.json';
 import Sweeps from './Sweeps';
 
 const EphysSweepsViewer: React.FC<{
   dataset: ProcessedTraceData;
-}> = ({ dataset }) => {
+  iUnit: string;
+  vUnit: string;
+}> = ({ dataset, iUnit, vUnit }) => {
   const [zoomRange, setZoomRange] = React.useState<ZoomRange>();
   const [selectedSweep, setSelectedSweep] = React.useState<string | null>(
     dataset.sweeps[0].sweepKey
@@ -34,7 +34,7 @@ const EphysSweepsViewer: React.FC<{
       />
       <Graph
         title="Stimulus"
-        yLabel={(ephys as Trace).i_unit}
+        yLabel={iUnit}
         data={dataset.stimulusData}
         selectedSweep={selectedSweep}
         onSeriesHighlight={handleOnSeriesHighlight}
@@ -44,7 +44,7 @@ const EphysSweepsViewer: React.FC<{
       />
       <Graph
         title="Response"
-        yLabel={(ephys as Trace).v_unit}
+        yLabel={vUnit}
         data={dataset.responseData}
         selectedSweep={selectedSweep}
         onSeriesHighlight={handleOnSeriesHighlight}

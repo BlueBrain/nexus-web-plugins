@@ -1,4 +1,3 @@
-
 import React, { FunctionComponent, useContext } from 'react';
 import { saveAs } from 'file-saver';
 import get from 'lodash/get';
@@ -9,7 +8,6 @@ import { Distribution } from '../types';
 import { parseUrl } from '../nexus-tools/nexus-tools';
 import { NexusClientContext } from '../nexus-client-context/nexus-client-context';
 
-
 interface FileDownloadBtnProps {
   size?: ButtonSize;
   type?: ButtonType;
@@ -19,7 +17,7 @@ interface FileDownloadBtnProps {
   distribution: Distribution;
 }
 
-export const FileDownloadBtn: FunctionComponent<FileDownloadBtnProps> = (props) => {
+export const FileDownloadBtn: FunctionComponent<FileDownloadBtnProps> = props => {
   const { size, type, block, icon, children, distribution } = props;
   const nexus = useContext(NexusClientContext);
 
@@ -28,15 +26,18 @@ export const FileDownloadBtn: FunctionComponent<FileDownloadBtnProps> = (props) 
   const { org, project } = parseUrl(contentUrl);
   const fileId = encodeURIComponent(contentUrl);
 
-  const notifyError = (err: Error) => notification.error({
-    message: 'Error',
-    description: get(err, 'message', err),
-  });
+  const notifyError = (err: Error) =>
+    notification.error({
+      message: 'Error',
+      description: get(err, 'message', err),
+    });
 
   const download = async () => {
     let fileBlob;
     try {
-      fileBlob = await nexus.File.get(org, project, fileId, { as: 'blob'}) as Blob;
+      fileBlob = (await nexus.File.get(org, project, fileId, {
+        as: 'blob',
+      })) as Blob;
     } catch (err) {
       notifyError(err);
     }

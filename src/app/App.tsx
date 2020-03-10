@@ -185,11 +185,7 @@ export const App = (props: AppProps) => {
       {!loading && Plugin && resource && (
         <div className="plugin-container">
           <NexusClientContext.Provider value={nexus}>
-            <Plugin
-              resource={resource as any}
-              nexus={nexus}
-              key={pluginKey}
-            />
+            <Plugin resource={resource as any} nexus={nexus} key={pluginKey} />
           </NexusClientContext.Provider>
         </div>
       )}

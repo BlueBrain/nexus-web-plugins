@@ -1,16 +1,10 @@
-
 import React from 'react';
 import { Badge } from 'antd';
 
 import { ActivityStatusEnum } from '../types';
 
-
 interface BadgeStatus {
-  [activityStatus: string]:
-    | 'processing'
-    | 'error'
-    | 'success'
-    | 'warning';
+  [activityStatus: string]: 'processing' | 'error' | 'success' | 'warning';
 }
 
 interface ActivityStatusProps {
@@ -21,19 +15,13 @@ const badgeStatus: BadgeStatus = {
   Pending: 'warning',
   Running: 'processing',
   Failed: 'error',
-  Done: 'success'
+  Done: 'success',
 };
 
 export const ActivityStatus = (props: ActivityStatusProps) => {
   const { status } = props;
 
-  return (
-    <Badge
-      status={badgeStatus[status]}
-      text={status}
-    />
-  )
-}
-
+  return <Badge status={badgeStatus[status]} text={status} />;
+};
 
 export default ActivityStatus;

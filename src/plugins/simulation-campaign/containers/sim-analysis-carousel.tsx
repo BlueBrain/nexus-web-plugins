@@ -1,14 +1,16 @@
-
 import React, { useState, useEffect, useContext } from 'react';
 import groupBy from 'lodash/groupBy';
 import { DEFAULT_SPARQL_VIEW_ID } from '@bbp/nexus-sdk';
 
-import { parseUrl, mapSparqlResults, NexusClientContext } from '../../../common';
+import {
+  parseUrl,
+  mapSparqlResults,
+  NexusClientContext,
+} from '../../../common';
 import { SimulationCampaignResource } from '../types';
 
 import SimulationAnalysisCarousel from '../components/sim-analysis-carousel';
 import SimulationAnalysisBlock from './sim-analysis-block';
-
 
 interface SimAnalysisReport {
   simulationId: string;
@@ -77,7 +79,9 @@ function getQuery(resourceId: string) {
   `;
 }
 
-const SimAnalysisCarouselContainer = (props: SimAnalysisCarouselContainerProps) => {
+const SimAnalysisCarouselContainer = (
+  props: SimAnalysisCarouselContainerProps
+) => {
   const { resource } = props;
   const nexus = useContext(NexusClientContext);
 
@@ -120,6 +124,5 @@ const SimAnalysisCarouselContainer = (props: SimAnalysisCarouselContainerProps) 
     <div />
   );
 };
-
 
 export default SimAnalysisCarouselContainer;
