@@ -5,4 +5,7 @@
   /* background-color: #fafafa; */
   background-color: #e4f0fa;
   border-radius: 4px;
+
+  white-space: nowrap;
+  overflow-x: scroll;
 }
