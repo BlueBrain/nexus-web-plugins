@@ -4,6 +4,7 @@ import { NexusClient } from '@bbp/nexus-sdk';
 import get from 'lodash/get';
 import { Form, Input, Select, Button, notification } from 'antd';
 
+import { NexusClientContext } from '../common';
 import { Circuit } from '../plugins/circuit';
 import { Simulation } from '../plugins/simulation';
 import { SimulationCampaign } from '../plugins/simulation-campaign';
@@ -183,7 +184,13 @@ export const App = (props: AppProps) => {
 
       {!loading && Plugin && resource && (
         <div className="plugin-container">
-          <Plugin resource={resource as any} nexus={nexus} key={pluginKey} />
+          <NexusClientContext.Provider value={nexus}>
+            <Plugin
+              resource={resource as any}
+              nexus={nexus}
+              key={pluginKey}
+            />
+          </NexusClientContext.Provider>
         </div>
       )}
     </div>

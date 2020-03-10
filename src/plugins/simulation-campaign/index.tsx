@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { NexusPluginProps } from '../../common/types';
+import { NexusPluginProps, NexusClientContext } from '../../common';
 
 import SimulationCampaign from './simulation-campaign';
 import { SimulationCampaignResource } from './types';
@@ -15,11 +15,12 @@ export default ({
   goToResource,
 }: NexusPluginProps<SimulationCampaignResource>) => {
   ReactDOM.render(
-    <SimulationCampaign
-      resource={resource}
-      nexus={nexusClient}
-      goToResource={goToResource}
-    />,
+    <NexusClientContext.Provider value={nexusClient}>
+      <SimulationCampaign
+        resource={resource}
+        goToResource={goToResource}
+      />
+    </NexusClientContext.Provider>,
     ref
   );
   return () => ReactDOM.unmountComponentAtNode(ref);

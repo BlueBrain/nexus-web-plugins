@@ -1,0 +1,39 @@
+
+.camp-analysis-activity {
+  vertical-align: middle;
+  height: 230px;
+  background-color: white;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+.camp-analysis-activity .info {
+  width: 260px;
+  height: 100%;
+  padding: 0.6em;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.camp-analysis-activity .report-preview-container-outer {
+  width: 280px;
+  height: 100%;
+  display: inline-block;
+  text-align: center;
+  border-left: 1px solid #d9d9d9;
+  position: relative;
+}
+
+.camp-analysis-activity .report-preview-container-inner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.camp-analysis-activity .time-block {
+  background-color: #f8f8f9;
+  padding: 8px;
+}

@@ -36,6 +36,14 @@
   padding: 1em;
 }
 
+.m-0 {
+  margin: 0;
+}
+
+.p-0 {
+  padding: 0;
+}
+
 .float-right {
   float: right;
 }
@@ -48,6 +56,14 @@
   text-align: center;
 }
 
+.text-error {
+  color: #ed4014;
+}
+
 .inline-block {
   display: inline-block;
+}
+
+.ant-divider-horizontal.ant-divider-small {
+  margin: 12px 0;
 }

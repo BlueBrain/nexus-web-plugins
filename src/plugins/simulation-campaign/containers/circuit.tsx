@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react';
+
+import React, { useState, useEffect, useContext } from 'react';
 import get from 'lodash/get';
 import { Spin } from 'antd';
-import { DEFAULT_SPARQL_VIEW_ID, NexusClient } from '@bbp/nexus-sdk';
+import { DEFAULT_SPARQL_VIEW_ID } from '@bbp/nexus-sdk';
 
-import { parseUrl, DetailedCircuitResource } from '../../../common';
+import { parseUrl, DetailedCircuitResource, NexusClientContext } from '../../../common';
 import Circuit from '../components/circuit';
 
 interface CircuitContainerProps {
   resourceId: string;
-  nexus: NexusClient;
   goToResource?: (selfUrl: string) => void;
 }
 
@@ -27,7 +27,8 @@ function getQuery(resourceId: string) {
 }
 
 const CircuitContainer = (props: CircuitContainerProps) => {
-  const { resourceId, nexus, goToResource } = props;
+  const { resourceId, goToResource } = props;
+  const nexus = useContext(NexusClientContext);
 
   const query = getQuery(resourceId);
 

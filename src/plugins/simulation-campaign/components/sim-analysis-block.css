@@ -1,5 +1,6 @@
 .analysis-block {
   width: calc(25% - 22px);
+  max-width: 300px;
   display: inline-block;
   margin-right: 16px;
 }

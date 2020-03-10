@@ -1,28 +1,14 @@
 import React from 'react';
 import moment from 'moment';
-import { Badge, Row, Col } from 'antd';
+import { Row, Col } from 'antd';
 
 import { SimulationCampaignResource } from '../types';
+import { ActivityStatus } from '../../../common';
 
-interface BadgeStatus {
-  [simStatus: string]:
-    | 'default'
-    | 'processing'
-    | 'error'
-    | 'success'
-    | 'warning';
-}
 
 interface BasicInfoProps {
   resource: SimulationCampaignResource;
 }
-
-const badgeStatus: BadgeStatus = {
-  Pending: 'default',
-  Running: 'processing',
-  Failed: 'error',
-  Done: 'success',
-};
 
 const BasicInfo = (props: BasicInfoProps) => {
   const { resource } = props;
@@ -53,7 +39,7 @@ const BasicInfo = (props: BasicInfoProps) => {
           <div className="white-box">
             <strong className="mr">Status:</strong>
             <span className="float-right">
-              <Badge status={badgeStatus[status]} text={status} />
+              <ActivityStatus status={status} />
             </span>
           </div>
         </Col>

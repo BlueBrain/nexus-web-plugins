@@ -2,60 +2,28 @@
   "name": "studio-plugins",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "@bbp/nexus-sdk": "^1.3.0",
-    "@types/dygraphs": "^1.1.10",
-    "@types/randomcolor": "^0.5.3",
-    "antd": "^3.26.11",
-    "codemirror": "^5.52.0",
-    "dygraphs": "^2.1.0",
-    "husky": "^4.2.3",
-    "json-stringify-pretty-compact": "^2.0.0",
-    "lint-staged": "^10.0.8",
-    "lodash": "^4.17.15",
-    "mini-css-extract-plugin": "^0.9.0",
-    "moment": "^2.24.0",
-    "morphoviewer": "^0.1.15",
-    "oidc-client": "^1.10.1",
-    "randomcolor": "^0.5.4",
-    "react": "^16.12.0",
-    "react-codemirror2": "^6.0.0",
-    "react-dom": "^16.12.0",
-    "react-image-lightbox": "^5.1.1",
-    "react-scripts": "3.4.0",
-    "swcmorphologyparser": "^0.1.4",
-    "typescript": "~3.7.2"
-  },
-  "devDependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
-    "@types/jest": "^24.0.0",
-    "@types/lodash": "^4.14.149",
-    "@types/node": "^12.0.0",
-    "@types/query-string": "^6.3.0",
-    "@types/react": "^16.9.0",
-    "@types/react-dom": "^16.9.0",
-    "less": "^3.11.1",
-    "less-loader": "^5.0.0",
-    "prettier": "^1.19.1",
-    "ts-lint": "^4.5.1",
-    "ts-loader": "^6.2.1",
-    "tslint": "^6.0.0",
-    "tslint-config-airbnb": "^5.11.2",
-    "tslint-config-prettier": "^1.18.0",
-    "tslint-react-hooks": "^2.2.1",
-    "webpack-cli": "^3.3.11"
-  },
   "scripts": {
-    "start": "react-scripts start",
-    "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "tslint --project tsconfig.json",
-    "style": "prettier --check \"./src/**/*.{ts,tsx,js,jsx,less}\""
+    "start": "react-scripts start",
+    "style": "prettier --check \"./src/**/*.{ts,tsx,js,jsx,less}\"",
+    "test": "react-scripts test"
   },
-  "eslintConfig": {
-    "extends": "react-app"
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "yarn lint && yarn style && echo 'tests not configured for precommit hook'"
+    }
+  },
+  "lint-staged": {
+    "!(package).json": [
+      "prettier --write",
+      "git add"
+    ],
+    "*.{ts, tsx, js, jsx, less}": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "browserslist": {
     "production": [
@@ -73,20 +41,54 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "lint-staged": {
-    "*.{ts, tsx, js, jsx, less}": [
-      "prettier --write",
-      "git add"
-    ],
-    "!(package).json": [
-      "prettier --write",
-      "git add"
-    ]
+  "eslintConfig": {
+    "extends": "react-app"
   },
-  "husky": {
-    "hooks": {
-      "pre-push": "yarn lint && yarn style && echo 'tests not configured for precommit hook'",
-      "pre-commit": "lint-staged"
-    }
+  "dependencies": {
+    "@bbp/nexus-sdk": "^1.3.0",
+    "antd": "^3.26.12",
+    "codemirror": "^5.52.0",
+    "dygraphs": "^2.1.0",
+    "file-saver": "^2.0.2",
+    "json-stringify-pretty-compact": "^2.0.0",
+    "lodash": "^4.17.15",
+    "moment": "^2.24.0",
+    "morphoviewer": "^0.1.15",
+    "oidc-client": "^1.10.1",
+    "randomcolor": "^0.5.4",
+    "react": "^16.12.0",
+    "react-codemirror2": "^6.0.0",
+    "react-dom": "^16.12.0",
+    "react-image-lightbox": "^5.1.1",
+    "swcmorphologyparser": "^0.1.4"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
+    "@types/dygraphs": "^1.1.10",
+    "@types/file-saver": "^2.0.1",
+    "@types/jest": "^24.0.0",
+    "@types/lodash": "^4.14.149",
+    "@types/node": "^12.0.0",
+    "@types/query-string": "^6.3.0",
+    "@types/randomcolor": "^0.5.3",
+    "@types/react": "^16.9.0",
+    "@types/react-dom": "^16.9.0",
+    "husky": "^4.2.3",
+    "less": "^3.11.1",
+    "less-loader": "^5.0.0",
+    "lint-staged": "^10.0.8",
+    "mini-css-extract-plugin": "^0.9.0",
+    "prettier": "^1.19.1",
+    "react-scripts": "3.4.0",
+    "ts-lint": "^4.5.1",
+    "ts-loader": "^6.2.1",
+    "tslint": "^6.0.0",
+    "tslint-config-airbnb": "^5.11.2",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-react-hooks": "^2.2.1",
+    "typescript": "~3.7.2",
+    "webpack-cli": "^3.3.11"
   }
 }

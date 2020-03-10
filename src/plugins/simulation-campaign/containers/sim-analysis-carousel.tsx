@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import groupBy from 'lodash/groupBy';
-import { DEFAULT_SPARQL_VIEW_ID, NexusClient } from '@bbp/nexus-sdk';
 
-import { parseUrl, mapSparqlResults } from '../../../common';
+import React, { useState, useEffect, useContext } from 'react';
+import groupBy from 'lodash/groupBy';
+import { DEFAULT_SPARQL_VIEW_ID } from '@bbp/nexus-sdk';
+
+import { parseUrl, mapSparqlResults, NexusClientContext } from '../../../common';
 import { SimulationCampaignResource } from '../types';
 
-import SimulationAnalysisCarousel from '../components/analysis-carousel';
-import SimulationAnalysisBlock from './analysis-block';
+import SimulationAnalysisCarousel from '../components/sim-analysis-carousel';
+import SimulationAnalysisBlock from './sim-analysis-block';
 
-interface AnalysisReport {
+
+interface SimAnalysisReport {
   simulationId: string;
   simulationSelf: string;
   analysisId: string;
@@ -17,9 +19,8 @@ interface AnalysisReport {
   imageUrl: string;
 }
 
-interface AnalysisCarouselContainerProps {
+interface SimAnalysisCarouselContainerProps {
   resource: SimulationCampaignResource;
-  nexus: NexusClient;
   goToResource?: (selfUrl: string) => void;
 }
 
@@ -64,7 +65,7 @@ function getQuery(resourceId: string) {
 
     SELECT DISTINCT ?simulationId ?simulationSelf ?simulationDescription ?analysisId ?analysisName ?analysisDescription ?imageUrl
     WHERE {
-      ?simulationId prov:wasInformedBy <${resourceId}> .
+      ?simulationId prov:wasStartedBy <${resourceId}> .
       ?simulationId nexus:self ?simulationSelf .
       OPTIONAL {?simulationId schema:description ?simulationDescription} .
       ?simulationId prov:generated ?simulationGenId .
@@ -76,8 +77,9 @@ function getQuery(resourceId: string) {
   `;
 }
 
-const AnalysisCarouselContainer = (props: AnalysisCarouselContainerProps) => {
-  const { nexus, resource } = props;
+const SimAnalysisCarouselContainer = (props: SimAnalysisCarouselContainerProps) => {
+  const { resource } = props;
+  const nexus = useContext(NexusClientContext);
 
   const { org, project } = parseUrl(resource._project);
 
@@ -94,7 +96,7 @@ const AnalysisCarouselContainer = (props: AnalysisCarouselContainerProps) => {
         const reports = mapSparqlResults(
           sparqlQueryData as any,
           sparqlMapperConfig
-        ) as AnalysisReport[];
+        ) as SimAnalysisReport[];
 
         const reportsGrouped = groupBy(reports, 'simulationId');
         setReportsGrouped(reportsGrouped);
@@ -110,7 +112,6 @@ const AnalysisCarouselContainer = (props: AnalysisCarouselContainerProps) => {
         <SimulationAnalysisBlock
           analysisReports={reportsGrouped[simulationId]}
           key={simulationId}
-          nexus={nexus}
           goToResource={props.goToResource}
         />
       ))}
@@ -120,4 +121,5 @@ const AnalysisCarouselContainer = (props: AnalysisCarouselContainerProps) => {
   );
 };
 
-export default AnalysisCarouselContainer;
+
+export default SimAnalysisCarouselContainer;

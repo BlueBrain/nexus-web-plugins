@@ -1,26 +1,26 @@
 import React from 'react';
-import { NexusClient } from '@bbp/nexus-sdk';
 
-import { SimulationCampaignResource } from './types';
+import { SimulationCampaignResource as SimCampaignResource } from './types';
 
 import BasicInfoComponent from './components/basic-info';
 
-import SimulationListContainer from './containers/simulation-list';
+import SimListContainer from './containers/sim-list';
 import CircuitContainer from './containers/circuit';
 import SimWriterConfigContainer from './containers/sim-writer-config';
-import AnalysisCarouselContainer from './containers/analysis-carousel';
-import AnalysisPdf from './containers/analysis-pdf';
+import SimAnalysisCarouselContainer from './containers/sim-analysis-carousel';
+import AnalysisPdfContainer from './containers/analysis-pdf';
+import CampAnalysisContainer from './containers/camp-analysis/camp-analysis';
 
-interface SimulationCampaignContainerProps {
-  resource: SimulationCampaignResource;
-  nexus: NexusClient;
+
+interface SimCampaignContainerProps {
+  resource: SimCampaignResource;
   goToResource?: (selfUrl: string) => void;
 }
 
-const SimulationCampaignContainer = (
-  props: SimulationCampaignContainerProps
+const SimCampaignContainer = (
+  props: SimCampaignContainerProps
 ) => {
-  const { resource, nexus } = props;
+  const { resource } = props;
 
   const circuitEntry = (resource.used || []).find(
     entry => entry['@type'] === 'DetailedCircuit'
@@ -36,38 +36,37 @@ const SimulationCampaignContainer = (
 
   return (
     <div className="simulation-campaign-container">
-      <BasicInfoComponent resource={props.resource} />
+      <BasicInfoComponent resource={resource} />
 
-      {simWriterConfigId && (
+      {simWriterConfigId &&
         <SimWriterConfigContainer
           resourceId={simWriterConfigId}
-          nexus={nexus}
         />
-      )}
+      }
 
-      {circuitId && (
+      {circuitId &&
         <CircuitContainer
           resourceId={circuitId}
-          nexus={nexus}
           goToResource={props.goToResource}
         />
-      )}
+      }
 
-      <AnalysisCarouselContainer
+      <CampAnalysisContainer simId="dummy" />
+
+      <SimAnalysisCarouselContainer
         resource={props.resource}
-        nexus={nexus}
         goToResource={props.goToResource}
       />
 
-      <AnalysisPdf resource={props.resource} nexus={nexus} />
+      <AnalysisPdfContainer resource={props.resource} />
 
-      <SimulationListContainer
+      <SimListContainer
         resource={props.resource}
-        nexus={nexus}
         goToResource={props.goToResource}
       />
     </div>
   );
 };
 
-export default SimulationCampaignContainer;
+
+export default SimCampaignContainer;
