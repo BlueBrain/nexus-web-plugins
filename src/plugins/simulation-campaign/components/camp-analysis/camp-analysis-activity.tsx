@@ -39,10 +39,10 @@ const CampAnalysisActivity: FunctionComponent<CampAnalysisActivityProps> = props
     <div className="camp-analysis-activity">
       <div className="info">
         <Row>
-          <Col span={18} className="ellipsis">
+          <Col span={16} className="ellipsis">
             <strong>{name}</strong>
           </Col>
-          <Col span={6} className="text-right">
+          <Col span={8} className="text-right">
             <ActivityStatus status={analysis.status} />
           </Col>
         </Row>
@@ -69,8 +69,8 @@ const CampAnalysisActivity: FunctionComponent<CampAnalysisActivityProps> = props
         </div>
 
         <Row className="mt">
-          <Col span={16}>{configBtn}</Col>
-          <Col span={8} className="text-right">
+          <Col span={15}>{configBtn}</Col>
+          <Col span={9} className="text-right">
             <CopyBtn block label="Id" text={analysis['@id']} />
           </Col>
         </Row>
