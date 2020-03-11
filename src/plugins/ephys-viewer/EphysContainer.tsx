@@ -41,7 +41,11 @@ const EphysContainer: React.FC<{
       return;
     }
 
-    const traceDistro = resource.distribution.find(matches(SHAPE));
+    const distribution = Array.isArray(resource.distribution)
+      ? resource.distribution
+      : [resource.distribution];
+
+    const traceDistro = distribution.find(matches(SHAPE));
 
     if (!traceDistro) {
       setData({
