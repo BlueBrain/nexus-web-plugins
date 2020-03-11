@@ -4,7 +4,6 @@ import React, {
   useContext,
   useEffect,
 } from 'react';
-import sample from 'lodash/sample';
 import { Button, Modal, Spin } from 'antd';
 import { ButtonType, ButtonSize } from 'antd/es/button';
 import prettyJsonStringify from 'json-stringify-pretty-compact';
