@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useContext } from 'react';
+import React, { FunctionComponent, useContext, useState } from 'react';
 import { saveAs } from 'file-saver';
 import get from 'lodash/get';
 import { Button, notification } from 'antd';
@@ -21,6 +21,8 @@ export const FileDownloadBtn: FunctionComponent<FileDownloadBtnProps> = props =>
   const { size, type, block, icon, children, distribution } = props;
   const nexus = useContext(NexusClientContext);
 
+  const [loading, setLoading] = useState<boolean>(false);
+
   const { name, contentUrl } = distribution;
 
   const { org, project } = parseUrl(contentUrl);
@@ -33,6 +35,8 @@ export const FileDownloadBtn: FunctionComponent<FileDownloadBtnProps> = props =>
     });
 
   const download = async () => {
+    setLoading(true);
+
     let fileBlob;
     try {
       fileBlob = (await nexus.File.get(org, project, fileId, {
@@ -42,6 +46,7 @@ export const FileDownloadBtn: FunctionComponent<FileDownloadBtnProps> = props =>
       notifyError(err);
     }
 
+    setLoading(false);
     if (!fileBlob) return;
 
     saveAs(fileBlob, name);
@@ -52,7 +57,8 @@ export const FileDownloadBtn: FunctionComponent<FileDownloadBtnProps> = props =>
       block={block}
       type={type}
       size={size ? size : 'small'}
-      icon={icon}
+      disabled={loading}
+      icon={loading ? 'loading' : icon}
       onClick={() => download()}
     >
       {children}
