@@ -51,7 +51,7 @@ function getTableColumns(additionalColumns: string[], simStatuses: string[]) {
           title: 'Depolarization',
           dataIndex: 'depolarization',
           key: 'depolarization',
-          width: 120,
+          width: 140,
           sorter: (a: any, b: any) =>
             parseFloat(a.depolarization) - parseFloat(b.depolarization),
         }
