@@ -228,7 +228,11 @@ export const FileViewer: FunctionComponent<FilePreviewBtnProps> = props => {
         <Modal
           title="File preview"
           visible={opened}
-          width={860}
+          width={1024}
+          bodyStyle={{
+            height: 'calc(100vh - 250px)',
+            overflowY: 'scroll',
+          }}
           destroyOnClose
           footer={null}
           onCancel={() => close()}
