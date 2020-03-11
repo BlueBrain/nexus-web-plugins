@@ -39,8 +39,10 @@ build_ts: | $(NODE_MODULES)
 build_manifest: build_ts
 	node build-tools/generate-manifest.js
 
-build_image: build_manifest
+_build_image:
 	docker build -t $(APP_NAME) .
+
+build_image: build_manifest _build_image
 
 push_image:
 	docker tag \
