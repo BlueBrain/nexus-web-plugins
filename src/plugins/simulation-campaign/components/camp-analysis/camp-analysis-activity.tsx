@@ -2,10 +2,6 @@ import React, { FunctionComponent, ReactNode } from 'react';
 import { Divider, Row, Col } from 'antd';
 import moment from 'moment';
 
-import get from 'lodash/get';
-import startCase from 'lodash/startCase';
-import upperFirst from 'lodash/upperFirst';
-
 import { CampaignAnalysisResource } from '../../types';
 import { ActivityStatus, CopyBtn } from '../../../../common';
 
@@ -23,13 +19,6 @@ const TIME_FORMAT = 'DD/MM/YY HH:mm';
 const CampAnalysisActivity: FunctionComponent<CampAnalysisActivityProps> = props => {
   const { analysis, configBtn, footer, reportPreview } = props;
 
-  const rawName = get(analysis, '@id', '')
-    .split('/')
-    .slice(-1)[0]
-    .split('_')[0];
-
-  const name = upperFirst(startCase(rawName).toLowerCase());
-
   const started = moment(analysis.startedAtTime).format(TIME_FORMAT);
   const ended = analysis.endedAtTime
     ? moment(analysis.endedAtTime).format(TIME_FORMAT)
@@ -40,7 +29,7 @@ const CampAnalysisActivity: FunctionComponent<CampAnalysisActivityProps> = props
       <div className="info">
         <Row>
           <Col span={16} className="ellipsis">
-            <strong>{name}</strong>
+            <strong>{analysis.name}</strong>
           </Col>
           <Col span={8} className="text-right">
             <ActivityStatus status={analysis.status} />
