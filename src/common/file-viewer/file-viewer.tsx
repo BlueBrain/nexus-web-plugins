@@ -28,13 +28,20 @@ interface ViewerComponentProps<T> {
 }
 
 interface ImageViewerProps {
-  src: string;
+  imageBlob: Blob;
   onClose: Function;
 }
 
 const ImageViewer = (props: ImageViewerProps) => {
-  const { src, onClose } = props;
-  return <Lightbox mainSrc={src} onCloseRequest={() => onClose()} />;
+  const { imageBlob, onClose } = props;
+
+  const [imageObjectUrl] = useState<string>(URL.createObjectURL(imageBlob));
+
+  useEffect(() => {
+    return () => URL.revokeObjectURL(imageObjectUrl);
+  }, []);
+
+  return <Lightbox mainSrc={imageObjectUrl} onCloseRequest={() => onClose()} />;
 };
 
 interface NexusImageProps {
@@ -43,12 +50,13 @@ interface NexusImageProps {
   className?: string;
   onClick?: Function;
 }
+
 const NexusImage = (props: NexusImageProps) => {
   const { distribution, alt, className, onClick } = props;
   const nexus = useContext(NexusClientContext);
 
   const [loading, setLoading] = useState<boolean>(true);
-  const [imageBlob, setImageBlob] = useState<Blob | null>(null);
+  const [imageObjectUrl, setImageObjectUrl] = useState<string | null>(null);
 
   const fileId = distribution.contentUrl;
   const { org, project } = parseUrl(distribution.url);
@@ -61,23 +69,31 @@ const NexusImage = (props: NexusImageProps) => {
       { as: 'blob' }
     )) as Blob;
 
-    setImageBlob(imageBlob);
+    setImageObjectUrl(URL.createObjectURL(imageBlob));
     setLoading(false);
+  };
+
+  const onDestroy = () => {
+    if (imageObjectUrl) {
+      URL.revokeObjectURL(imageObjectUrl);
+    }
   };
 
   useEffect(() => {
     fetch();
+
+    return () => onDestroy();
   }, []);
 
   if (loading) {
     return <Spin />;
   }
 
-  if (imageBlob) {
+  if (imageObjectUrl) {
     return (
       <img
         className={className}
-        src={URL.createObjectURL(imageBlob)}
+        src={imageObjectUrl}
         alt={alt}
         onClick={() => onClick && onClick()}
       />
@@ -88,11 +104,19 @@ const NexusImage = (props: NexusImageProps) => {
 };
 
 const PdfViewer: FunctionComponent<ViewerComponentProps<Blob>> = props => {
-  const src = URL.createObjectURL(props.fileContent);
+  const [objectUrl] = useState<string>(URL.createObjectURL(props.fileContent));
+
+  useEffect(() => {
+    return () => URL.revokeObjectURL(objectUrl);
+  }, []);
 
   return (
-    <object className="modal-pdf-viewer" data={src} type="application/pdf">
-      <embed className="modal-pdf-viewer" src={src} />
+    <object
+      className="modal-pdf-viewer"
+      data={objectUrl}
+      type="application/pdf"
+    >
+      <embed className="modal-pdf-viewer" src={objectUrl} />
     </object>
   );
 };
@@ -218,10 +242,7 @@ export const FileViewer: FunctionComponent<FilePreviewBtnProps> = props => {
       )}
 
       {componentType === 'image' && opened && fileContent && (
-        <ImageViewer
-          src={URL.createObjectURL(fileContent)}
-          onClose={() => close()}
-        />
+        <ImageViewer imageBlob={fileContent} onClose={() => close()} />
       )}
 
       {['pdf', 'json'].includes(componentType) && (

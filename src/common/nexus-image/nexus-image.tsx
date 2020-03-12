@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Spin } from 'antd';
 import Lightbox from 'react-image-lightbox';
 import { NexusClient } from '@bbp/nexus-sdk';
@@ -18,14 +18,22 @@ interface NexusImageProps {
 }
 
 const NexusImageComponent = (props: NexusImageProps) => {
-  const src = URL.createObjectURL(props.imageData);
+  const [isOpen, setIsOpen] = useState(false);
+  const [imageObjectUrl] = useState<string>(
+    URL.createObjectURL(props.imageData)
+  );
 
-  const [isOpen, setIsOpen] = React.useState(false);
+  useEffect(() => {
+    return () => URL.revokeObjectURL(imageObjectUrl);
+  }, []);
 
   return (
     <>
       {isOpen && (
-        <Lightbox mainSrc={src} onCloseRequest={() => setIsOpen(false)} />
+        <Lightbox
+          mainSrc={imageObjectUrl}
+          onCloseRequest={() => setIsOpen(false)}
+        />
       )}
       <div
         className="nexus-image-container"
@@ -34,7 +42,7 @@ const NexusImageComponent = (props: NexusImageProps) => {
           e.stopPropagation();
         }}
       >
-        <img src={src} alt="" />
+        <img src={imageObjectUrl} alt="" />
       </div>
     </>
   );

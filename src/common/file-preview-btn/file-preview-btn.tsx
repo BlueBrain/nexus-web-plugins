@@ -29,11 +29,21 @@ const ImageViewer: FunctionComponent<ViewerComponentProps<Blob>> = props => {
 };
 
 const PdfViewer: FunctionComponent<ViewerComponentProps<Blob>> = props => {
-  const src = URL.createObjectURL(props.fileContent);
+  const [pdfObjectUrl] = useState<string>(
+    URL.createObjectURL(props.fileContent)
+  );
+
+  useEffect(() => {
+    return () => URL.revokeObjectURL(pdfObjectUrl);
+  }, []);
 
   return (
-    <object className="modal-pdf-viewer" data={src} type="application/pdf">
-      <embed className="modal-pdf-viewer" src={src} />
+    <object
+      className="modal-pdf-viewer"
+      data={pdfObjectUrl}
+      type="application/pdf"
+    >
+      <embed className="modal-pdf-viewer" src={pdfObjectUrl} />
     </object>
   );
 };

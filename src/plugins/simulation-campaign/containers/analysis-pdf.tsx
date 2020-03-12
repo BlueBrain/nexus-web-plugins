@@ -58,12 +58,20 @@ const AnalysisPdfContainer = (props: AnalysisPdfContainerProps) => {
 
   const createSrc = (blob: any) => (blob ? URL.createObjectURL(blob) : null);
 
+  const onDestroy = () => {
+    if (src) {
+      URL.revokeObjectURL(src);
+    }
+  };
+
   useEffect(() => {
     nexus.View.sparqlQuery(org, project, DEFAULT_SPARQL_VIEW_ID, query)
       .then(extractPdfUrl)
       .then(downloadPdf)
       .then(createSrc)
       .then(src => setSrc(src));
+
+    return () => onDestroy();
   }, []);
 
   return src ? <AnalysisPdf src={src} /> : <div />;
