@@ -5,9 +5,11 @@ import get from 'lodash/get';
 import { Form, Input, Select, Button, notification } from 'antd';
 
 import { NexusClientContext } from '../common';
+
 import { Circuit } from '../plugins/circuit';
 import { Simulation } from '../plugins/simulation';
 import { SimulationCampaign } from '../plugins/simulation-campaign';
+import { SimWriterConfig } from '../plugins/sim-writer-config';
 import { EphysContainer } from '../plugins/ephys-viewer';
 import { MorphoViewerContainer } from '../plugins/morphology';
 
@@ -24,6 +26,7 @@ const plugins: { [pluginName: string]: React.FC<any> } = {
   circuit: Circuit,
   simulation: Simulation,
   simulationCampaign: SimulationCampaign,
+  simWriterConfig: SimWriterConfig,
   ephysViewer: EphysContainer,
   mophoViewer: MorphoViewerContainer,
 };

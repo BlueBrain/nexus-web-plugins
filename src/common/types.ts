@@ -68,6 +68,23 @@ export interface DetailedCircuitResource extends Resource, MINDSResource {
   speciesId?: string;
 }
 
+export interface SimWriterConfigResource extends Resource {
+  name: string;
+  description: string;
+  template: {
+    url: string;
+    data: string | undefined;
+  };
+  configuration: {
+    url: string;
+    data: string | undefined;
+  };
+  target?: {
+    url: string;
+    data: string | undefined;
+  };
+}
+
 export enum ActivityStatusEnum {
   RUNNING = 'Running',
   FAILED = 'Failed',

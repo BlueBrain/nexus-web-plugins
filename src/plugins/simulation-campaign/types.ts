@@ -28,23 +28,6 @@ export interface SimulationCampaignResource extends Resource {
   used?: ResourceLink[];
 }
 
-export interface SimWriterConfigResource extends Resource {
-  name: string;
-  description: string;
-  template: {
-    url: string;
-    data: string | undefined;
-  };
-  configuration: {
-    url: string;
-    data: string | undefined;
-  };
-  target?: {
-    url: string;
-    data: string | undefined;
-  };
-}
-
 export interface CampaignAnalysisResource extends Resource {
   startedAtTime: string;
   endedAtTime: string;

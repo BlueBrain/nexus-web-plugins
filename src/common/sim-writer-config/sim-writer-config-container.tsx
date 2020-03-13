@@ -3,15 +3,17 @@ import get from 'lodash/get';
 
 import { Spin } from 'antd';
 
-import { parseUrl, NexusClientContext } from '../../../common';
+import { parseUrl, NexusClientContext } from '../';
 import { SimWriterConfigResource } from '../types';
-import SimWriterConfigComponent from '../components/sim-writer-config';
+import SimWriterConfigComponent from './sim-writer-config-component';
 
 interface SimWriterConfigContainerProps {
   resourceId: string;
 }
 
-const SimWriterConfigContainer = (props: SimWriterConfigContainerProps) => {
+export const SimWriterConfigContainer = (
+  props: SimWriterConfigContainerProps
+) => {
   const { resourceId } = props;
   const nexus = useContext(NexusClientContext);
 

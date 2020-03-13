@@ -6,7 +6,7 @@ import BasicInfoComponent from './components/basic-info';
 
 import SimListContainer from './containers/sim-list';
 import CircuitContainer from './containers/circuit';
-import SimWriterConfigContainer from './containers/sim-writer-config';
+import { SimWriterConfigContainer } from '../../common';
 import SimAnalysisCarouselContainer from './containers/sim-analysis-carousel';
 import AnalysisPdfContainer from './containers/analysis-pdf';
 import CampAnalysisContainer from './containers/camp-analysis/camp-analysis';
