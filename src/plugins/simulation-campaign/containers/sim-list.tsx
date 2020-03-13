@@ -27,7 +27,7 @@ function getSimulationsQuery(resourceId: string) {
     SELECT DISTINCT ?name ?self ?startedAtTime ?endedAtTime ?status ?job_id ?path ?ca ?depolarization
 
     WHERE {
-      ?simulation prov:wasStartedBy <${resourceId}> .
+      ?simulation prov:wasInformedBy <${resourceId}> .
       ?simulation nexus:self ?self .
       OPTIONAL { ?simulation schema:name ?name }
       OPTIONAL { ?simulation nxv:project ?project }
