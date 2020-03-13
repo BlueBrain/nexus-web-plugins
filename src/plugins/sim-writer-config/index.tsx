@@ -16,7 +16,7 @@ export default ({
 }: NexusPluginProps<SimWriterConfigResource>) => {
   ReactDOM.render(
     <NexusClientContext.Provider value={nexusClient}>
-      <SimWriterConfig resource={resource} />,
+      <SimWriterConfig resource={resource} />
     </NexusClientContext.Provider>,
     ref
   );
