@@ -4,6 +4,7 @@ import { Controlled as CodeMirror } from 'react-codemirror2';
 import prettyJsonStringify from 'json-stringify-pretty-compact';
 
 import { SimWriterConfigResource } from '../types';
+import { CopyBtn } from '../copy-btn/copy-btn';
 
 import 'codemirror/mode/javascript/javascript';
 import 'codemirror/mode/shell/shell';
@@ -20,16 +21,22 @@ interface SimWriterConfigProps {
 const { Panel } = Collapse;
 
 const SimWriterConfig = (props: SimWriterConfigProps) => {
+  const { resource } = props;
+
   return (
     <div>
       <div className="mt">
-        <Card className="card--no-padding" title="SimWriter configuration">
+        <Card
+          className="card--no-padding"
+          title="SimWriter configuration"
+          extra={<CopyBtn text={resource._self} label="Self URL" />}
+        >
           <div className="config-info-container">
             <p>
-              <strong>Name: </strong> {props.resource.name}
+              <strong>Name: </strong> {resource.name}
             </p>
             <p>
-              <strong>Description: </strong> {props.resource.description}
+              <strong>Description: </strong> {resource.description}
             </p>
           </div>
         </Card>
@@ -43,7 +50,7 @@ const SimWriterConfig = (props: SimWriterConfigProps) => {
             key="simWriterConfig"
           >
             <CodeMirror
-              value={prettyJsonStringify(props.resource.configuration.data, {
+              value={prettyJsonStringify(resource.configuration.data, {
                 indent: '  ',
                 maxLength: 80,
               })}
@@ -57,14 +64,14 @@ const SimWriterConfig = (props: SimWriterConfigProps) => {
               onBeforeChange={() => {}}
             />
           </Panel>
-          {props.resource.template.data && (
+          {resource.template.data && (
             <Panel
               className="panel--no-padding"
               header="Template"
               key="template"
             >
               <CodeMirror
-                value={props.resource.template.data}
+                value={resource.template.data}
                 options={{
                   mode: { name: 'shell' },
                   readOnly: true,
@@ -76,10 +83,10 @@ const SimWriterConfig = (props: SimWriterConfigProps) => {
               />
             </Panel>
           )}
-          {props.resource.target && props.resource.target.data && (
+          {resource.target && resource.target.data && (
             <Panel className="panel--no-padding" header="Target" key="target">
               <CodeMirror
-                value={props.resource.target.data}
+                value={resource.target.data}
                 options={{
                   readOnly: true,
                   theme: 'base16-light',

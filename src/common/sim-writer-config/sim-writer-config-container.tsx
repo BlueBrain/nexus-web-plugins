@@ -35,7 +35,7 @@ export const SimWriterConfigContainer = (
       const targetIdMatch = targetUrl.match(/.*\/(.*?)$/);
       const targetId = targetIdMatch ? targetIdMatch[1] : '';
 
-      const { name, description } = simWriterResource;
+      const { name, description, _self } = simWriterResource;
 
       const parsedTmplUrl = parseUrl(tmplUrl);
 
@@ -69,7 +69,14 @@ export const SimWriterConfigContainer = (
             target.data = targetData as string;
           });
         })
-        .then(() => ({ name, description, configuration, template, target }));
+        .then(() => ({
+          name,
+          description,
+          configuration,
+          template,
+          target,
+          _self,
+        }));
     };
 
     nexus
