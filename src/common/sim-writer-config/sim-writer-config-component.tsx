@@ -29,7 +29,7 @@ const SimWriterConfig = (props: SimWriterConfigProps) => {
         <Card
           className="card--no-padding"
           title="SimWriter configuration"
-          extra={<CopyBtn text={resource._self} label="Self URL" />}
+          extra={<CopyBtn text={resource._self} label="URL" />}
         >
           <div className="config-info-container">
             <p>
