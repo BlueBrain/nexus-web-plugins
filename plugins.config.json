@@ -1,0 +1,20 @@
+{
+  "circuit": {
+    "@type": ["DetailedCircuit"]
+  },
+  "ephys-viewer": {
+    "@type": ["Trace", "Dataset"]
+  },
+  "morphology": {
+    "@type": ["ReconstructedCell"]
+  },
+  "simulation-campaign": {
+    "@type": ["SimulationCampaign"]
+  },
+  "simulation": {
+    "@type": ["Simulation"]
+  },
+  "sim-writer-config": {
+    "@type": ["SimWriterConfiguration"]
+  }
+}
