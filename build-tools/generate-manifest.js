@@ -1,9 +1,11 @@
 
 const fs = require('fs');
-
+const path = require('path');
 const _ = require('lodash');
 
 const modulePathRe = /^([a-zA-Z0-9-]*)\.\w*\.js$/;
+const pluginConfig = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../plugins.config.json')));
+
 
 const pluginModulePaths = fs.readdirSync('./dist')
   .filter(path => modulePathRe.test(path));
@@ -19,6 +21,7 @@ const manifest = pluginModulePaths.reduce((acc, modulePath) => {
     tags: [],
     author: '',
     license: '',
+    mapping: pluginConfig[pluginId] || {}
   };
 
   return {
