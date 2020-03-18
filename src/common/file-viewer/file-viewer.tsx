@@ -106,6 +106,8 @@ const NexusImage = (props: NexusImageProps) => {
 const PdfViewer: FunctionComponent<ViewerComponentProps<Blob>> = props => {
   const [objectUrl] = useState<string>(URL.createObjectURL(props.fileContent));
 
+  const fullObjectUrl = `${objectUrl}#view=fit`;
+
   useEffect(() => {
     return () => URL.revokeObjectURL(objectUrl);
   }, []);
@@ -113,10 +115,10 @@ const PdfViewer: FunctionComponent<ViewerComponentProps<Blob>> = props => {
   return (
     <object
       className="modal-pdf-viewer"
-      data={objectUrl}
+      data={fullObjectUrl}
       type="application/pdf"
     >
-      <embed className="modal-pdf-viewer" src={objectUrl} />
+      <embed className="modal-pdf-viewer" src={fullObjectUrl} />
     </object>
   );
 };
