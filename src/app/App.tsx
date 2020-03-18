@@ -11,7 +11,7 @@ import { Simulation } from '../plugins/simulation';
 import { SimulationCampaign } from '../plugins/simulation-campaign';
 import { SimWriterConfig } from '../plugins/sim-writer-config';
 import { EphysContainer } from '../plugins/ephys-viewer';
-import { MorphoViewerContainer } from '../plugins/morphology';
+import { MorphoViewerContainer } from '../plugins/neuron-morphology';
 
 import './app.css';
 

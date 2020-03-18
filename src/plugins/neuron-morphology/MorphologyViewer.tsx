@@ -1,9 +1,21 @@
 import * as React from 'react';
-import './style.css';
+
+import './morpho-viewer.css';
+
 const morphoviewer = require('morphoviewer').default;
 const swcmorphologyparser = require('swcmorphologyparser').default;
 
-export const MorphologyViewer: React.FC<{ data: any }> = ({ data }) => {
+export type MorphoViewerOptions = {
+  asPolyline?: boolean;
+  focusOn?: boolean;
+  onDone?: VoidFunction;
+  somaMode?: string;
+};
+
+export const MorphologyViewer: React.FC<{
+  data: any;
+  options: MorphoViewerOptions;
+}> = ({ data, options }) => {
   const ref = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
@@ -16,20 +28,21 @@ export const MorphologyViewer: React.FC<{ data: any }> = ({ data }) => {
       swcParser.parse(data);
       const parsedFile = swcParser.getRawMorphology();
 
+      console.log({ parsedFile });
+
       morphoViewer = new morphoviewer.MorphoViewer(ref.current);
       morphoViewer.addMorphology(parsedFile, {
-        focusOn: true,
-        asPolyline: true,
-        onDone: null,
-        somaMode: 'fromOrphanSections',
+        ...options,
       });
+
+      console.log({ morphoViewer });
     } catch (error) {
       console.log(error);
     }
     return () => {
       morphoViewer && morphoViewer.destroy();
     };
-  }, [ref, data]);
+  }, [ref, data, options]);
 
   return <div className="morpho-viewer" ref={ref}></div>;
 };

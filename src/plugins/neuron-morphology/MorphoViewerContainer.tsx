@@ -2,7 +2,8 @@ import * as React from 'react';
 import { Resource, NexusClient } from '@bbp/nexus-sdk';
 import { matches } from 'lodash';
 
-import MorphologyViewer from './MorphologyViewer';
+import MorphoWrapper from './MorphoWrapper';
+import { MorphoViewerOptions } from './MorphologyViewer';
 
 const SHAPE = {
   '@type': 'DataDownload',
@@ -21,6 +22,12 @@ const MorphoViewerContainer: React.FC<{
     loading: true,
     error: null,
     data: null,
+  });
+
+  const [options, setOptions] = React.useState<MorphoViewerOptions>({
+    asPolyline: false,
+    focusOn: true,
+    somaMode: 'fromOrphanSections',
   });
 
   React.useEffect(() => {
@@ -56,7 +63,7 @@ const MorphoViewerContainer: React.FC<{
       .split('/')
       .reverse();
 
-    const [id, ...otherRest] = traceDistro.contentUrl.split('/').reverse();
+    const [id] = traceDistro.contentUrl.split('/').reverse();
 
     nexus.File.get(orgLabel, projectLabel, id, { as: 'text' })
       .then(data => {
@@ -75,11 +82,17 @@ const MorphoViewerContainer: React.FC<{
       });
   }, [resource['@id']]);
 
+  const handleAsPolyline = () => {
+    setOptions({
+      ...options,
+      asPolyline: !options.asPolyline,
+    });
+  };
+
   return (
-    <div className={loading ? 'ephys-wapper loading' : 'ephys-wapper'}>
-      {error && <p>{error.message}</p>}
-      {data && !error && <MorphologyViewer data={data} />}
-    </div>
+    <MorphoWrapper
+      {...{ loading, error, data, options, onPolylineClick: handleAsPolyline }}
+    />
   );
 };
 

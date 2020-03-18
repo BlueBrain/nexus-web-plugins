@@ -1,0 +1,27 @@
+.morpho-wrapper {
+  width: 100%;
+  min-width: 200px;
+  height: 100%;
+  min-height: 400px;
+  position: relative;
+}
+
+.morpho-wrapper > .legend {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+}
+
+.morpho-wrapper > .legend > ul {
+  list-style: none;
+  padding: none;
+}
+
+.morpho-wrapper > .legend > ul li::before {
+  content: '\2022';
+  color: red;
+  font-weight: bold;
+  display: inline-block;
+  width: 1em;
+  margin-left: -1em;
+}
