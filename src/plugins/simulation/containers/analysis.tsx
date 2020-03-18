@@ -18,17 +18,19 @@ interface AnalysisContainerProps {
   nexus: NexusClient;
 }
 
-function getQuery(id: string) {
+function getQuery(simId: string) {
   return `
     prefix schema: <http://schema.org/>
     prefix prov: <http://www.w3.org/ns/prov#>
 
     SELECT ?analysis ?imageUrl ?name ?description
     WHERE {
-        ?analysis prov:used <${id}> ;
-        prov:generated / schema:distribution / schema:contentUrl ?imageUrl ;
-        prov:generated / schema:name ?name ;
-        prov:generated / schema:description ?description
+        ?variableReportId prov:wasGeneratedBy <${simId}> .
+        ?analysisId prov:used ?variableReportId .
+        ?analysisReportId prov:wasGeneratedBy ?analysisId .
+        ?analysisReportId schema:distribution / schema:contentUrl ?imageUrl .
+        OPTIONAL {?analysisReportId schema:name ?name} .
+        OPTIONAL {?analysisReportId schema:description ?description}
     }
   `;
 }
@@ -53,10 +55,10 @@ const sparqlMapperConfig = {
 const AnalysisContainer = (props: AnalysisContainerProps) => {
   const { resource, nexus } = props;
 
-  const variableReportId = resource.generated['@id'];
+  const simId = resource['@id'];
   const [reports, setReports] = useState<AnalysisReport[]>([]);
 
-  const query = getQuery(variableReportId);
+  const query = getQuery(simId);
 
   const { org, project } = parseUrl(resource._project);
 
