@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, Input } from 'antd';
+import { Button, Input, Row, Col } from 'antd';
 import get from 'lodash/get';
 import { NexusClient } from '@bbp/nexus-sdk';
 
@@ -8,6 +8,7 @@ import './circuit.css';
 import { DetailedCircuitResource } from './types';
 import {
   Copy,
+  CopyBtn,
   BraynsBtn,
   JupyterNotebookBtn,
   PairRecordingBtn,
@@ -21,8 +22,6 @@ export interface CircuitProps {
 export const Circuit = (props: CircuitProps) => {
   const { resource, nexus } = props;
 
-  console.log({ props });
-
   const circuitBase = get(resource, 'circuitBase.url', '').replace(
     'file://',
     ''
@@ -34,9 +33,15 @@ export const Circuit = (props: CircuitProps) => {
 
   return (
     <div>
-      <p>
-        <strong>Circuit type:</strong> {resource.circuitType || 'NA'}
-      </p>
+      <Row gutter={12}>
+        <Col span={16}>
+          <strong>Circuit type:</strong> {resource.circuitType || 'NA'}
+        </Col>
+        <Col className="text-right" span={8}>
+          <CopyBtn text={resource._self} label="URL" />
+        </Col>
+      </Row>
+
       <Input
         className="mt"
         readOnly
