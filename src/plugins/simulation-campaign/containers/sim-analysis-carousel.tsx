@@ -67,14 +67,15 @@ function getQuery(resourceId: string) {
 
     SELECT DISTINCT ?simulationId ?simulationSelf ?simulationDescription ?analysisId ?analysisName ?analysisDescription ?imageUrl
     WHERE {
-      ?simulationId prov:wasStartedBy <${resourceId}> .
+      ?simulationId prov:wasInformedBy <${resourceId}> .
       ?simulationId nexus:self ?simulationSelf .
       OPTIONAL {?simulationId schema:description ?simulationDescription} .
-      ?simulationId prov:generated ?simulationGenId .
-      ?analysisId  prov:used ?simulationGenId .
-      ?analysisId  prov:generated / schema:distribution / schema:contentUrl ?imageUrl .
-      OPTIONAL {?analysisId prov:generated / schema:description ?analysisDescription} .
-      OPTIONAL {?analysisId prov:generated / schema:name ?analysisName} .
+      ?variableReportId prov:wasGeneratedBy ?simulationId .
+      ?analysisId  prov:used ?variableReportId .
+      ?analysisReportId prov:wasGeneratedBy ?analysisId .
+      ?analysisReportId schema:distribution / schema:contentUrl ?imageUrl .
+      OPTIONAL {?analysisReportId schema:description ?analysisDescription} .
+      OPTIONAL {?analysisReportId schema:name ?analysisName} .
     }
   `;
 }
