@@ -1,0 +1,43 @@
+:root {
+  --soma: #555555;
+}
+
+.morpho-wrapper {
+  width: 100%;
+  min-width: 200px;
+  height: 100%;
+  min-height: 400px;
+  position: relative;
+}
+
+.morpho-wrapper > .legend {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+}
+
+.morpho-wrapper > .legend > ul {
+  list-style: none;
+  padding: none;
+}
+
+.morpho-wrapper > .legend > ul li::before {
+  content: '\2022';
+  font-weight: bold;
+  display: inline-block;
+  width: 1em;
+  margin-left: -1em;
+}
+
+.morpho-wrapper > .legend > ul li.axon::before {
+  color: #1111ff;
+}
+.morpho-wrapper > .legend > ul li.basal-dendrites::before {
+  color: #ff1111;
+}
+.morpho-wrapper > .legend > ul li.apical-dendrites::before {
+  color: #f442ad;
+}
+.morpho-wrapper > .legend > ul li.soma::before {
+  color: var(--soma);
+}
