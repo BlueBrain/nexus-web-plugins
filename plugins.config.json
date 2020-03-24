@@ -5,7 +5,7 @@
   "ephys-viewer": {
     "@type": ["Trace", "Dataset"]
   },
-  "morphology": {
+  "neuron-morphology": {
     "@type": ["ReconstructedCell"]
   },
   "simulation-campaign": {
@@ -19,6 +19,6 @@
   },
   "image-viewer": {
     "@type": "File",
-    "_mediaType": "image/jpeg"
+    "_mediaType": "image/*"
   }
 }
