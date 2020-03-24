@@ -16,5 +16,9 @@
   },
   "sim-writer-config": {
     "@type": ["SimWriterConfiguration"]
+  },
+  "image-viewer": {
+    "@type": "File",
+    "_mediaType": "image/jpeg"
   }
 }

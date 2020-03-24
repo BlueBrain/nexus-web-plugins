@@ -11,6 +11,7 @@ import { Simulation } from '../plugins/simulation';
 import { SimulationCampaign } from '../plugins/simulation-campaign';
 import { SimWriterConfig } from '../plugins/sim-writer-config';
 import { EphysContainer } from '../plugins/ephys-viewer';
+import { ImageViewerContainer } from '../plugins/image-viewer';
 import { MorphoViewerContainer } from '../plugins/neuron-morphology';
 
 import './app.css';
@@ -29,6 +30,7 @@ const plugins: { [pluginName: string]: React.FC<any> } = {
   simWriterConfig: SimWriterConfig,
   ephysViewer: EphysContainer,
   mophoViewer: MorphoViewerContainer,
+  imageViewer: ImageViewerContainer,
 };
 
 const pluginNames = Object.keys(plugins);
