@@ -1,0 +1,9 @@
+{
+  "name": "image-viewer",
+  "version": "1.0.0",
+  "description": "View image files in Nexus Web",
+  "main": "index.tsx",
+  "tags": [],
+  "author": "Kenneth Pirman <kenneth.pirman@epfl.ch>",
+  "license": "ISC"
+}
