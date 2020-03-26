@@ -1,0 +1,9 @@
+{
+  "name": "circuit",
+  "version": "0.0.2",
+  "description": "Displays circuit details",
+  "main": "index.tsx",
+  "tags": [],
+  "author": "NSE(Neuroscientific Software Engineering) <bbp-ou-nse@groupes.epfl.ch>",
+  "license": "BSD-3-Clause"
+}
