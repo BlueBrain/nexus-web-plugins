@@ -19,6 +19,9 @@
   },
   "image-viewer": {
     "@type": "File",
-    "_mediaType": "image/*"
+    "_mediaType": "image/jpeg"
+  },
+  "metadata": {
+    "@type": ["Entity"]
   }
 }

@@ -13,6 +13,7 @@ import { SimWriterConfig } from '../plugins/sim-writer-config';
 import { EphysContainer } from '../plugins/ephys-viewer';
 import { ImageViewerContainer } from '../plugins/image-viewer';
 import { MorphoViewerContainer } from '../plugins/neuron-morphology';
+import { MINDSMetadataContainer } from '../plugins/metadata';
 
 import './app.css';
 
@@ -31,6 +32,7 @@ const plugins: { [pluginName: string]: React.FC<any> } = {
   ephysViewer: EphysContainer,
   mophoViewer: MorphoViewerContainer,
   imageViewer: ImageViewerContainer,
+  metadata: MINDSMetadataContainer,
 };
 
 const pluginNames = Object.keys(plugins);
