@@ -1,11 +1,8 @@
+
 const fs = require('fs');
-const path = require('path');
 const _ = require('lodash');
 
 const modulePathRe = /^([a-zA-Z0-9-]*)\.\w*\.js$/;
-const pluginConfig = JSON.parse(
-  fs.readFileSync(path.resolve(__dirname, '../plugins.config.json'))
-);
 
 const pluginModulePaths = fs
   .readdirSync('./dist')
@@ -14,19 +11,8 @@ const pluginModulePaths = fs
 const manifest = pluginModulePaths.reduce((acc, modulePath) => {
   const pluginId = modulePath.match(modulePathRe)[1];
 
-  let pluginInfo = {};
-
   const infoPath = `./src/plugins/${pluginId}/package.json`;
-
-  try {
-    if (fs.existsSync(infoPath)) {
-      pluginInfo = JSON.parse(
-        fs.readFileSync(`./src/plugins/${pluginId}/package.json`, 'utf8')
-      );
-    }
-  } catch (err) {
-    console.error(err);
-  }
+  const pluginInfo = JSON.parse(fs.readFileSync(infoPath, 'utf8'));
 
   const {
     version = '',
@@ -34,7 +20,12 @@ const manifest = pluginModulePaths.reduce((acc, modulePath) => {
     author = '',
     license = '',
     tags = [],
+    mapping,
   } = pluginInfo;
+
+  if (!mapping) {
+    throw new Error(`No mapping found for ${pluginId} plugin`);
+  }
 
   const plugin = {
     modulePath,
@@ -44,7 +35,7 @@ const manifest = pluginModulePaths.reduce((acc, modulePath) => {
     tags,
     author,
     license,
-    mapping: pluginConfig[pluginId] || {},
+    mapping,
   };
 
   return {
