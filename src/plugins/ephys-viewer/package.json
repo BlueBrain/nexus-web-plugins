@@ -5,8 +5,5 @@
   "main": "index.tsx",
   "tags": [],
   "author": "Kenneth Pirman <kenneth.pirman@epfl.ch>",
-  "license": "ISC",
-  "mapping": {
-    "@type": ["Trace"]
-  }
+  "license": "ISC"
 }

@@ -5,8 +5,5 @@
   "main": "index.tsx",
   "tags": [],
   "author": "NSE(Neuroscientific Software Engineering) <bbp-ou-nse@groupes.epfl.ch>",
-  "license": "BSD-3-Clause",
-  "mapping": {
-    "@type": ["DetailedCircuit"]
-  }
+  "license": "BSD-3-Clause"
 }
