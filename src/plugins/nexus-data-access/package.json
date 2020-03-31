@@ -1,0 +1,12 @@
+{
+  "name": "Nexus Data Access",
+  "version": "1.0.0",
+  "description": "Download or copy urls of  distributions in Entity Resources",
+  "main": "index.tsx",
+  "tags": [],
+  "author": "Dhanesh Neela Mana <dhanesh.neelamana@epfl.ch>",
+  "license": "ISC",
+  "mapping": {
+    "@type": "Entity"
+  }
+}
