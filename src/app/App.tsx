@@ -14,6 +14,7 @@ import { EphysContainer } from '../plugins/ephys-viewer';
 import { ImageViewerContainer } from '../plugins/image-viewer';
 import { MorphoViewerContainer } from '../plugins/neuron-morphology';
 import { MINDSMetadataContainer } from '../plugins/metadata';
+import { DataAccessContainer } from '../plugins/nexus-data-access';
 
 import './app.css';
 
@@ -33,6 +34,7 @@ const plugins: { [pluginName: string]: React.FC<any> } = {
   mophoViewer: MorphoViewerContainer,
   imageViewer: ImageViewerContainer,
   metadata: MINDSMetadataContainer,
+  dataAccess: DataAccessContainer,
 };
 
 const pluginNames = Object.keys(plugins);
