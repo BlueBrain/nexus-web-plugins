@@ -9,8 +9,10 @@ import 'react-image-lightbox/style.css';
 import './nexus-image.css';
 
 interface NexusImageContainerProps {
-  imageUrl: string;
+  imageUrl: string; // nexus selfUrl, if org ond project will be treated as nexus id
   nexus: NexusClient;
+  org?: string;
+  project?: string;
 }
 
 interface NexusImageProps {
@@ -49,15 +51,19 @@ const NexusImageComponent = (props: NexusImageProps) => {
 };
 
 export const NexusImage = (props: NexusImageContainerProps) => {
-  const { imageUrl, nexus } = props;
-  const { org, project } = parseUrl(imageUrl);
+  const { imageUrl, nexus, org, project } = props;
 
   const [loading, setLoading] = React.useState(true);
   const [imageData, setImageData] = React.useState<string | null>(null);
 
+  const { org: imageOrg, project: imageProject } =
+    org && project ? { org, project } : parseUrl(imageUrl);
+
   React.useEffect(() => {
-    nexus.File.get(org, project, encodeURIComponent(imageUrl), { as: 'blob' })
-      .then(imageData => setImageData(imageData as string))
+    nexus.File.get(imageOrg, imageProject, encodeURIComponent(imageUrl), {
+      as: 'blob',
+    })
+      .then((imageData) => setImageData(imageData as string))
       .catch(() => {})
       .finally(() => setLoading(false));
   }, []);

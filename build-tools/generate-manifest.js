@@ -1,4 +1,3 @@
-
 const fs = require('fs');
 const _ = require('lodash');
 
@@ -21,6 +20,7 @@ const manifest = pluginModulePaths.reduce((acc, modulePath) => {
     license = '',
     tags = [],
     mapping,
+    name = _.upperFirst(pluginId).replace(/-/g, ' '),
   } = pluginInfo;
 
   if (!mapping) {
@@ -29,7 +29,7 @@ const manifest = pluginModulePaths.reduce((acc, modulePath) => {
 
   const plugin = {
     modulePath,
-    name: _.upperFirst(pluginId).replace(/-/g, ' '),
+    name,
     description,
     version,
     tags,

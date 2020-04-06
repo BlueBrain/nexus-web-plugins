@@ -9,12 +9,14 @@ import SimWriterConfigComponent from './sim-writer-config-component';
 
 interface SimWriterConfigContainerProps {
   resourceId: string;
+  org: string;
+  project: string;
 }
 
 export const SimWriterConfigContainer = (
   props: SimWriterConfigContainerProps
 ) => {
-  const { resourceId } = props;
+  const { org, project, resourceId } = props;
   const nexus = useContext(NexusClientContext);
 
   const [
@@ -79,8 +81,8 @@ export const SimWriterConfigContainer = (
         }));
     };
 
-    nexus
-      .httpGet({ path: resourceId })
+    nexus.Resource
+      .get<SimWriterConfigResource>(org, project, encodeURIComponent(resourceId))
       .then(getSimWriterConf)
       .then(simWriterConfig =>
         setSimWriterConfig(simWriterConfig as SimWriterConfigResource)

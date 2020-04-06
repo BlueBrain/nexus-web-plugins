@@ -13,6 +13,8 @@ interface SimAnalysisReport {
   analysisName: string;
   analysisDescription: string;
   imageUrl: string;
+  org: string;
+  project: string;
 }
 
 interface SimAnalysisBlockContainerProps {
@@ -38,9 +40,11 @@ const SimAnalysisBlockContainer = (props: SimAnalysisBlockContainerProps) => {
 
   return (
     <SimAnalysisBlock>
-      {sortedReports.map(report => (
+      {sortedReports.map((report) => (
         <NexusImage
           imageUrl={report.imageUrl}
+          org={report.org}
+          project={report.project}
           nexus={nexus}
           key={report.analysisId}
         />

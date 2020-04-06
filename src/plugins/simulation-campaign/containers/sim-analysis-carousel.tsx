@@ -19,6 +19,8 @@ interface SimAnalysisReport {
   analysisName: string;
   analysisDescription: string;
   imageUrl: string;
+  org: string;
+  project: string;
 }
 
 interface SimAnalysisCarouselContainerProps {
@@ -101,7 +103,10 @@ const SimAnalysisCarouselContainer = (
         const reports = mapSparqlResults(
           sparqlQueryData as any,
           sparqlMapperConfig
-        ) as SimAnalysisReport[];
+        ).map((report) => ({
+          ...report,
+          ...{ org, project },
+        })) as SimAnalysisReport[];
 
         const reportsGrouped = groupBy(reports, 'simulationId');
         setReportsGrouped(reportsGrouped);

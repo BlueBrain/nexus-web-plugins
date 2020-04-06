@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  Component,
+  ComponentProps,
+} from 'react';
 import { User } from 'oidc-client';
 import { NexusClient } from '@bbp/nexus-sdk';
 import get from 'lodash/get';
@@ -10,13 +16,31 @@ import { Circuit } from '../plugins/circuit';
 import { Simulation } from '../plugins/simulation';
 import { SimulationCampaign } from '../plugins/simulation-campaign';
 import { SimWriterConfig } from '../plugins/sim-writer-config';
-import { EphysContainer } from '../plugins/ephys-viewer';
+import { EphysDistributionContainer } from '../plugins/neuron-electrophysiology';
 import { ImageViewerContainer } from '../plugins/image-viewer';
 import { MorphoViewerContainer } from '../plugins/neuron-morphology';
 import { MINDSMetadataContainer } from '../plugins/metadata';
 import { DataAccessContainer } from '../plugins/nexus-data-access';
 
 import './app.css';
+
+class ErrorBoundary extends Component {
+  state = {
+    hasError: false,
+  };
+
+  componentDidCatch() {
+    this.setState({ hasError: true });
+  }
+
+  render() {
+    return this.state.hasError ? (
+      <h1>Snap! Something is broken</h1>
+    ) : (
+      this.props.children
+    );
+  }
+}
 
 const { Option } = Select;
 
@@ -30,7 +54,7 @@ const plugins: { [pluginName: string]: React.FC<any> } = {
   simulation: Simulation,
   simulationCampaign: SimulationCampaign,
   simWriterConfig: SimWriterConfig,
-  ephysViewer: EphysContainer,
+  ephysViewer: EphysDistributionContainer,
   mophoViewer: MorphoViewerContainer,
   imageViewer: ImageViewerContainer,
   metadata: MINDSMetadataContainer,
@@ -194,7 +218,13 @@ export const App = (props: AppProps) => {
       {!loading && Plugin && resource && (
         <div className="plugin-container">
           <NexusClientContext.Provider value={nexus}>
-            <Plugin resource={resource as any} nexus={nexus} key={pluginKey} />
+            <ErrorBoundary>
+              <Plugin
+                resource={resource as any}
+                nexus={nexus}
+                key={pluginKey}
+              />
+            </ErrorBoundary>
           </NexusClientContext.Provider>
         </div>
       )}

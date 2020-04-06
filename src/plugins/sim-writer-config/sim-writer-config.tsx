@@ -3,6 +3,7 @@ import React from 'react';
 import {
   SimWriterConfigResource,
   SimWriterConfigContainer,
+  parseUrl,
 } from '../../common';
 
 export interface SimWriterConfigProps {
@@ -12,7 +13,15 @@ export interface SimWriterConfigProps {
 export const SimWriterConfig = (props: SimWriterConfigProps) => {
   const { resource } = props;
 
-  return <SimWriterConfigContainer resourceId={resource['@id']} />;
+  const { org, project } = parseUrl(resource._project);
+
+  return (
+    <SimWriterConfigContainer
+      org={org}
+      project={project}
+      resourceId={resource['@id']}
+    />
+  );
 };
 
 export default SimWriterConfig;

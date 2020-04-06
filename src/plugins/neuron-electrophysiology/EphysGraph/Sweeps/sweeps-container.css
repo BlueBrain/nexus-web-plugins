@@ -1,0 +1,32 @@
+.sweeps-container {
+  display: flex;
+}
+.sweeps-container > .sweeps {
+  display: flex;
+}
+.sweeps-container ol {
+  padding: 0;
+}
+.sweeps-container .sweeps > .sweep {
+  opacity: 0.5;
+  height: 20px;
+  width: 20px;
+  display: inline-block;
+  cursor: pointer;
+  margin: 8px;
+  border-radius: 3px;
+  text-align: center;
+  padding: 6px;
+  font-weight: 700;
+}
+
+.sweeps-container .sweeps > .sweep:first-of-type {
+  margin-left: 0;
+}
+.sweeps-container .sweeps > .sweep.selected {
+  border: 1px solid #1890ff;
+  box-shadow: 0px 0px 2px 0px #1890ff;
+}
+.sweeps-container .keys {
+  line-height: 4em;
+}

@@ -94,66 +94,91 @@ export const MINDSMetadataComponent: React.FC<{
 }) => {
   return (
     <Spin spinning={loading}>
-      <Descriptions bordered>
-        <Descriptions.Item label="Type">
-          {!!types && Array.isArray(types) ? types.join(', ') : types}
+      <Descriptions
+        column={{ xxl: 2, xl: 2, lg: 2, md: 1, sm: 1, xs: 1 }}
+        bordered
+      >
+        <Descriptions.Item
+          label={<span className="metadata-label">Subject</span>}
+        >
+          {subject ? subject.species.label : <span className="none">-</span>}
         </Descriptions.Item>
-        <Descriptions.Item label="Subject">
-          {subject ? (
-            subject.species.label
-          ) : (
-            <span className="none">No Subject</span>
-          )}
+        <Descriptions.Item
+          span={5}
+          label={<span className="metadata-label">Type</span>}
+        >
+          {!!types && Array.isArray(types)
+            ? types.map(type => (
+                <span>
+                  {type}
+                  <br />
+                </span>
+              ))
+            : types}
         </Descriptions.Item>
-        <Descriptions.Item label="Brain Location">
+        <Descriptions.Item
+          label={<span className="metadata-label">Brain Location</span>}
+        >
           {!!brainLocation ? (
             `${brainLocation?.brainRegion?.label} ${brainLocation?.layer
               ?.label || ''}`
           ) : (
-            <span className="none">No Brain Location</span>
+            <span className="none">-</span>
           )}
         </Descriptions.Item>
-        <Descriptions.Item label="Classification">
+        <Descriptions.Item
+          label={<span className="metadata-label">Object of Study</span>}
+        >
+          {!!objectOfStudy ? (
+            objectOfStudy.label
+          ) : (
+            <span className="none">-</span>
+          )}
+        </Descriptions.Item>
+        <Descriptions.Item
+          label={<span className="metadata-label">Classification</span>}
+        >
           {classification ? (
             <Descriptions bordered>
               {!!classification.mType && (
-                <Descriptions.Item label="M-Type">
+                <Descriptions.Item
+                  label={<span className="metadata-label">M-Type</span>}
+                >
                   {classification.mType}
                 </Descriptions.Item>
               )}
               {!!classification.eType && (
-                <Descriptions.Item label="E-Type">
+                <Descriptions.Item
+                  label={<span className="metadata-label">E-Type</span>}
+                >
                   {classification.eType}
                 </Descriptions.Item>
               )}
             </Descriptions>
           ) : (
-            <span className="none">No Classification</span>
+            <span className="none">-</span>
           )}
         </Descriptions.Item>
-        <Descriptions.Item label="Object of Study">
-          {!!objectOfStudy ? (
-            objectOfStudy.label
-          ) : (
-            <span className="none">No Object of Study</span>
-          )}
-        </Descriptions.Item>
-        <Descriptions.Item label="Contribution">
+        <Descriptions.Item
+          label={<span className="metadata-label">Contribution</span>}
+        >
           {!!contribution ? (
             <span>
               {contribution.agent} {contribution.role}
             </span>
           ) : (
-            <span className="none">No Contribution</span>
+            <span className="none">-</span>
           )}
         </Descriptions.Item>
-        <Descriptions.Item label="License">
+        <Descriptions.Item
+          label={<span className="metadata-label">License</span>}
+        >
           {!!license ? (
             <a href={license['@id']} target="_blank">
               License
             </a>
           ) : (
-            <span className="none">No License</span>
+            <span className="none">-</span>
           )}
         </Descriptions.Item>
       </Descriptions>
