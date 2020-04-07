@@ -6,6 +6,7 @@ IMAGE_TAG?=latest
 DOCKER_REGISTRY?=docker-registry-default.ocp.bbp.epfl.ch
 
 NODE_MODULES:=node_modules
+ROOT_NPM:=.npm
 
 define HELPTEXT
 Makefile usage
@@ -32,6 +33,9 @@ help:
 $(NODE_MODULES):
 	npm install
 
+$(ROOT_NPM):
+	mkdir -p $(ROOT_NPM)
+
 run_dev: $(NODE_MODULES)
 	npm run start
 
@@ -46,10 +50,12 @@ style: | $(NODE_MODULES)
 
 run_qa: lint | $(NODE_MODULES)
 
-run_qa_in_docker:
+run_qa_in_docker: | $(ROOT_NPM)
 	docker run \
 		--rm \
+		-u $$(id -u ${USER}):$(id -g ${USER}) \
 		-v $$(pwd):/app:z \
+		-v $$(pwd)/.npm:/.npm:z \
 		-w /app \
 		--env HTTP_PROXY="http://bbpproxy.epfl.ch:80/" \
 		--env HTTPS_PROXY="http://bbpproxy.epfl.ch:80/" \
@@ -66,11 +72,15 @@ build_manifest: build_ts
 
 build_dist: build_manifest
 
-build_dist_in_docker:
+build_dist_in_docker: | $(ROOT_NPM)
 	docker run \
 		--rm \
+		-u $$(id -u ${USER}):$(id -g ${USER}) \
 		-v $$(pwd):/app:z \
+		-v $$(pwd)/.npm:/.npm:z \
 		-w /app \
+		--env HTTP_PROXY="http://bbpproxy.epfl.ch:80/" \
+		--env HTTPS_PROXY="http://bbpproxy.epfl.ch:80/" \
 		--entrypoint /bin/sh \
 		node \
 			-c "make build_dist"
