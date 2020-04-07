@@ -1,4 +1,4 @@
-.PHONY: help run_dev test build_ts build_manifest build_image push_image
+.PHONY: help run_dev test lint style run_qa run_qa_in_docker build_ts build_manifest build_dist build_dist_in_docker build_image push_image
 
 APP_NAME?=studio-plugins
 PROJECT?=bbp-ou-nse
@@ -12,8 +12,14 @@ Makefile usage
  Targets:
     run_dev               Run development web server.
     test                  Run tests.
+		lint                  Run lint check.
+		style                 Run style check.
+		run_qa                Perform lint and style check, run tests.
+		run_qa_in_docker      Execute run_qa target in a docker container.
     build_ts              Transpile and bundle plugin code.
     build_manifest        Create a plugin manifest based on packages built.
+		build_dist            Alias to build_manifest. Build manifest and JS files.
+		build_dist_in_docker  Execute build_dist in a docker container.
     build_image           Build a docker image containing plugins and a manifest file.
     push_image            Push current image into a docker registry. To customize
                             check environment variables in Makefile.
@@ -32,6 +38,25 @@ run_dev: $(NODE_MODULES)
 test: | $(NODE_MODULES)
 	npm run test
 
+lint: | $(NODE_MODULES)
+	npm run lint
+
+style: | $(NODE_MODULES)
+	npm run style
+
+run_qa: lint | $(NODE_MODULES)
+
+run_qa_in_docker:
+	docker run \
+		--rm \
+		-v $$(pwd):/app:z \
+		-w /app \
+		--env HTTP_PROXY="http://bbpproxy.epfl.ch:80/" \
+		--env HTTPS_PROXY="http://bbpproxy.epfl.ch:80/" \
+		--entrypoint /bin/sh \
+		node \
+			-c "make run_qa"
+
 build_ts: | $(NODE_MODULES)
 	rm -f dist/*
 	npx webpack
@@ -39,10 +64,19 @@ build_ts: | $(NODE_MODULES)
 build_manifest: build_ts
 	node build-tools/generate-manifest.js
 
-_build_image:
-	docker build -t $(APP_NAME) .
+build_dist: build_manifest
 
-build_image: build_manifest _build_image
+build_dist_in_docker:
+	docker run \
+		--rm \
+		-v $$(pwd):/app:z \
+		-w /app \
+		--entrypoint /bin/sh \
+		node \
+			-c "make build_dist"
+
+build_image:
+	docker build -t $(APP_NAME) .
 
 push_image:
 	docker tag \
