@@ -15,37 +15,63 @@ const DataAccessContainer: React.FC<{
   const [orgLabel, projectLabel] = parseProjectUrl(resource._project);
   const columns = [
     {
+      title: 'No.',
+      dataIndex: 'index',
+      key: 'index',
+    },
+    {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
+      render: (text: string) => (text ? text : '-'),
     },
     {
-      title: 'URI',
-      dataIndex: 'contentUrl',
-      key: 'contentUrl',
+      title: 'encoding type',
+      dataIndex: 'encodingFormat',
+      key: 'encodingFormat',
+      render: (text: string) => (text ? text : '-'),
+    },
+    {
+      title: 'Size',
+      dataIndex: 'contentSize',
+      key: 'contentSize',
+      render: (contentSize: { value: string }) =>
+        contentSize
+          ? `${(parseInt(contentSize['value'], 10) / 1000000).toFixed(2)} MB`
+          : '-',
     },
     {
       title: 'Action',
       dataIndex: 'contentUrl',
       key: 'contentUrl',
-      render: (text: string) => makeDownloadButton(text, nexus),
+      render: (text: string) => renderAction(text, nexus),
     },
   ];
 
-  const makeDownloadButton = (url: string, nexus: NexusClient) => {
+  const renderAction = (url: string, nexus: NexusClient) => {
+    const copyButton = makeCopyButton()(url);
     try {
-      const URI = new URL(url);
+      return <> {copyButton} </>;
+    } catch {
+      const downloadCallback = createDownLoader(nexus, orgLabel, projectLabel);
+      return (
+        <>
+          {' '}
+          {copyButton}{' '}
+          <Button onClick={() => downloadCallback(url)}>Download File</Button>{' '}
+        </>
+      );
+    }
+  };
 
-      if (URI.hostname.indexOf(window.location.hostname) >= 0) {
-        const [orgLabel, projectLabel] = parseProjectUrl(url);
-        const downloadCallback = downloader(nexus, orgLabel, projectLabel);
-        return <Button onClick={() => downloadCallback(url)}>Download</Button>;
-      }
+  const makeCopyButton = () => {
+    return (Id: string) => {
       return (
         <Button
           onClick={() => {
             try {
-              navigator.clipboard.writeText(url);
+              navigator.clipboard.writeText(Id);
+              notification.success({ message: 'URL Copied to Clip Board' });
             } catch {
               notification.error({
                 message: 'Failed to copy the url',
@@ -53,16 +79,13 @@ const DataAccessContainer: React.FC<{
             }
           }}
         >
-          Copy Url
+          Copy URI
         </Button>
       );
-    } catch {
-      const downloadCallback = downloader(nexus, orgLabel, projectLabel);
-      return <Button onClick={() => downloadCallback(url)}>Download</Button>;
-    }
+    };
   };
 
-  const downloader = (
+  const createDownLoader = (
     nexus: NexusClient,
     orgLabel: string,
     projectLabel: string
@@ -97,17 +120,23 @@ const DataAccessContainer: React.FC<{
     ) {
       if (resource['distribution']) {
         if (Array.isArray(resource['distribution'])) {
-          data = resource['distribution'].map((d: any) => {
+          data = resource['distribution'].map((d: any, index: any) => {
             return {
+              index: index + 1,
               name: d['name'],
               contentUrl: d['contentUrl'],
+              encodingFormat: d['encodingFormat'],
+              contentSize: d['contentSize'],
             };
           });
         } else {
           data = [
             {
+              index: 1,
               name: resource['distribution']['name'],
               contentUrl: resource['distribution']['contentUrl'],
+              encodingFormat: resource['distribution']['encodingFormat'],
+              contentSize: resource['distribution']['contentSize'],
             },
           ];
         }
@@ -117,7 +146,7 @@ const DataAccessContainer: React.FC<{
     return null;
   };
 
-  return <>{renderTable(resource)}</>;
+  return <div>{renderTable(resource)}</div>;
 };
 
 export default DataAccessContainer;

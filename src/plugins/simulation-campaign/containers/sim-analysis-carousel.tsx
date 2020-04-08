@@ -75,6 +75,7 @@ function getQuery(resourceId: string) {
       ?variableReportId prov:wasGeneratedBy ?simulationId .
       ?analysisId  prov:used ?variableReportId .
       ?analysisReportId prov:wasGeneratedBy ?analysisId .
+      ?analysisReportId nexus:deprecated false .
       ?analysisReportId schema:distribution / schema:contentUrl ?imageUrl .
       OPTIONAL {?analysisReportId schema:description ?analysisDescription} .
       OPTIONAL {?analysisReportId schema:name ?analysisName} .

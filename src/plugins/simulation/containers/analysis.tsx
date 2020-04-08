@@ -22,12 +22,14 @@ function getQuery(simId: string) {
   return `
     prefix schema: <http://schema.org/>
     prefix prov: <http://www.w3.org/ns/prov#>
+    prefix nexus: <https://bluebrain.github.io/nexus/vocabulary/>
 
     SELECT ?analysis ?imageUrl ?name ?description
     WHERE {
         ?variableReportId prov:wasGeneratedBy <${simId}> .
         ?analysisId prov:used ?variableReportId .
         ?analysisReportId prov:wasGeneratedBy ?analysisId .
+        ?analysisReportId nexus:deprecated false .
         ?analysisReportId schema:distribution / schema:contentUrl ?imageUrl .
         OPTIONAL {?analysisReportId schema:name ?name} .
         OPTIONAL {?analysisReportId schema:description ?description}
@@ -83,7 +85,12 @@ const AnalysisContainer = (props: AnalysisContainerProps) => {
           <Col span={8} className="analysis-image-column" key={report.imageUrl}>
             <h4>{report.name}</h4>
             <p>{report.description}</p>
-            <NexusImage nexus={nexus} imageUrl={report.imageUrl} />
+            <NexusImage
+              nexus={nexus}
+              org={org}
+              project={project}
+              imageUrl={report.imageUrl}
+            />
           </Col>
         ))}
       </Row>
