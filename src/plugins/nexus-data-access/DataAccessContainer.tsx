@@ -8,6 +8,18 @@ export const parseProjectUrl = (projectUrl: string) => {
   return [org, proj];
 };
 
+export const parseResourceId = (url: string) => {
+  const fileUrlPattern = /files\/([\w-]+)\/([\w-]+)\/(.*)/;
+  if (fileUrlPattern.test(url)) {
+    const [, , , resourceId] = url.match(fileUrlPattern) as string[];
+    return decodeURIComponent(resourceId);
+  }
+
+  if (/[w-]+/.test(url)) {
+    return url;
+  }
+};
+
 const DataAccessContainer: React.FC<{
   resource: Resource;
   nexus: NexusClient;
@@ -50,18 +62,20 @@ const DataAccessContainer: React.FC<{
 
   const renderAction = (url: string, nexus: NexusClient) => {
     const copyButton = makeCopyButton()(url);
-    try {
-      return <> {copyButton} </>;
-    } catch {
-      const downloadCallback = createDownLoader(nexus, orgLabel, projectLabel);
+    const downloadCallback = createDownLoader(nexus, orgLabel, projectLabel);
+    const resourceId = parseResourceId(url);
+    if (resourceId) {
       return (
         <>
           {' '}
           {copyButton}{' '}
-          <Button onClick={() => downloadCallback(url)}>Download File</Button>{' '}
+          <Button onClick={() => downloadCallback(resourceId)}>
+            Download File
+          </Button>{' '}
         </>
       );
     }
+    return copyButton;
   };
 
   const makeCopyButton = () => {
@@ -145,8 +159,10 @@ const DataAccessContainer: React.FC<{
     }
     return null;
   };
-
-  return <div>{renderTable(resource)}</div>;
+  const wrapperStyle = {
+    margin: '10px'
+  };
+  return <div style={wrapperStyle}>{renderTable(resource)}</div>;
 };
 
 export default DataAccessContainer;
