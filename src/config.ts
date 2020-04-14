@@ -1,5 +1,5 @@
 export default {
-  defaultRealm: { _issuer: 'https://bbpteam.epfl.ch/auth/realms/BBP' },
+  defaultRealm: { _issuer: 'https://bbpauth.epfl.ch/auth/realms/BBP' },
   preferredRealmKey: 'preferredRealm',
   bearerTokenKey: 'nexusToken',
   serviceAccountName: 'serviceaccounts',
