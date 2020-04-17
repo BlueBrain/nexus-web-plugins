@@ -60,8 +60,8 @@ export async function setUpSession(): Promise<[UserManager, User | null]> {
   );
 
   if (user) {
-    if (user.expired) {
-      userManager.signinRedirect();
+    if (user.expired || !user.access_token) {
+      await userManager.signinRedirect();
     }
 
     saveAccessToken(user.access_token);
