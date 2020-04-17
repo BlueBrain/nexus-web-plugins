@@ -11,6 +11,7 @@ export type MorphoViewerOptions = {
   focusOn?: boolean;
   onDone?: VoidFunction;
   somaMode?: string;
+  distance?: number;
 };
 
 export const MorphologyViewer: React.FC<{
@@ -43,6 +44,7 @@ export const MorphologyViewer: React.FC<{
       const parsedFile = swcParser.getRawMorphology();
 
       morphoViewer = new morphoviewer.MorphoViewer(ref.current);
+      morphoViewer._threeContext._camera.up.negate();
       setMorphoViewer(morphoViewer);
       morphoViewer.addMorphology(parsedFile, {
         name: 'morphology',

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Resource, NexusClient } from '@bbp/nexus-sdk';
 import { matches } from 'lodash';
-
+import { InputNumber, Button, Descriptions } from 'antd';
 import MorphoWrapper from './MorphoWrapper';
 import { MorphoViewerOptions } from './MorphologyViewer';
 
@@ -28,7 +28,13 @@ const MorphoViewerContainer: React.FC<{
     asPolyline: false,
     focusOn: true,
     somaMode: 'fromOrphanSections',
+    distance: 500,
   });
+
+  const defaultZoomSize = 500;
+  const [morphDistance, setMorphDistance] = React.useState<number>(
+    defaultZoomSize
+  );
 
   React.useEffect(() => {
     if (!resource.distribution) {
@@ -90,9 +96,38 @@ const MorphoViewerContainer: React.FC<{
   };
 
   return (
-    <MorphoWrapper
-      {...{ loading, error, data, options, onPolylineClick: handleAsPolyline }}
-    />
+    <>
+      <div className="zoom-control">
+        Distance :{' '}
+        <InputNumber
+          size="small"
+          min={0}
+          max={10000}
+          defaultValue={defaultZoomSize}
+          onChange={value => {
+            setMorphDistance(value as number);
+          }}
+        ></InputNumber>
+        <Button
+          size="small"
+          className="zoom-input"
+          onClick={() => {
+            setOptions({ ...options, distance: morphDistance });
+          }}
+        >
+          Apply Distance
+        </Button>
+      </div>
+      <MorphoWrapper
+        {...{
+          loading,
+          error,
+          data,
+          options,
+          onPolylineClick: handleAsPolyline,
+        }}
+      />
+    </>
   );
 };
 

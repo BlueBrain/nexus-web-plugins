@@ -10,6 +10,15 @@
   position: relative;
 }
 
+.zoom-control {
+  margin-bottom: 10px;
+  margin-right: 10px;
+}
+
+.zoom-input {
+  margin-left: 10px;
+}
+
 .morpho-wrapper > .legend {
   position: absolute;
   left: 0;
