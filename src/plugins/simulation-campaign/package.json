@@ -1,5 +1,5 @@
 {
-  "name": "simulation-campaign",
+  "name": "Simulation Campaign",
   "version": "0.0.2",
   "description": "Displays simulation campaign details",
   "main": "index.tsx",

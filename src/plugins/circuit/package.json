@@ -1,5 +1,5 @@
 {
-  "name": "circuit",
+  "name": "Circuit",
   "version": "0.0.2",
   "description": "Displays circuit details",
   "main": "index.tsx",

@@ -1,5 +1,5 @@
 {
-  "name": "sim-writer-config",
+  "name": "Sim Writer Config",
   "version": "0.0.2",
   "description": "Displays SimWriter configuration",
   "main": "index.tsx",

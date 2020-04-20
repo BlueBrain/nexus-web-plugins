@@ -1,5 +1,5 @@
 {
-  "name": "simulation",
+  "name": "Simulation",
   "version": "0.0.2",
   "description": "Displays simulation details",
   "main": "index.tsx",

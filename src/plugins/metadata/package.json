@@ -1,5 +1,5 @@
 {
-  "name": "metadata",
+  "name": "Metadata",
   "version": "1.0.0",
   "description": "View MINDS metadata in a table",
   "main": "index.tsx",

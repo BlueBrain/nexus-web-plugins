@@ -1,7 +1,7 @@
 {
   "name": "Electrophysiological Recording Viewer",
   "version": "1.0.0",
-  "description": "Displays neuron morphology data in a 3D view",
+  "description": "Displays neuron electrophysiological data",
   "main": "index.tsx",
   "tags": [],
   "author": "Kenneth Pirman <kenneth.pirman@epfl.ch>",
