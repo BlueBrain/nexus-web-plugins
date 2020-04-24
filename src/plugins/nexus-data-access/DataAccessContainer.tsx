@@ -38,7 +38,7 @@ const DataAccessContainer: React.FC<{
       render: (text: string) => (text ? text : '-'),
     },
     {
-      title: 'encoding type',
+      title: 'Encoding Format',
       dataIndex: 'encodingFormat',
       key: 'encodingFormat',
       render: (text: string) => (text ? text : '-'),
@@ -47,23 +47,40 @@ const DataAccessContainer: React.FC<{
       title: 'Size',
       dataIndex: 'contentSize',
       key: 'contentSize',
-      render: (contentSize: { value: string }) =>
-        contentSize
-          ? `${(parseInt(contentSize['value'], 10) / 1000000).toFixed(2)} MB`
-          : '-',
+      render: (contentSize: { value: string }) => renderFileSize(contentSize),
     },
     {
       title: 'Action',
       dataIndex: 'contentUrl',
       key: 'contentUrl',
-      render: (text: string) => renderAction(text, nexus),
+      render: (contentUrl: { url: string; name: string }) =>
+        renderAction(contentUrl, nexus),
     },
   ];
 
-  const renderAction = (url: string, nexus: NexusClient) => {
-    const copyButton = makeCopyButton()(url);
-    const downloadCallback = createDownLoader(nexus, orgLabel, projectLabel);
-    const resourceId = parseResourceId(url);
+  const renderFileSize = (contentSize: { value: string }) => {
+    if (!contentSize) {
+      return '-';
+    }
+    const sizeInMB = (parseInt(contentSize['value'], 10) / 1000000).toFixed(2);
+    if (sizeInMB !== '0.00') {
+      return `${sizeInMB} MB`;
+    }
+    return `${contentSize['value']} Bytes`;
+  };
+
+  const renderAction = (
+    contentUrl: { url: string; name: string },
+    nexus: NexusClient
+  ) => {
+    const copyButton = makeCopyButton()(contentUrl['url']);
+    const downloadCallback = createDownLoader(
+      nexus,
+      orgLabel,
+      projectLabel,
+      contentUrl['name']
+    );
+    const resourceId = parseResourceId(contentUrl['url']);
     if (resourceId) {
       return (
         <>
@@ -102,7 +119,8 @@ const DataAccessContainer: React.FC<{
   const createDownLoader = (
     nexus: NexusClient,
     orgLabel: string,
-    projectLabel: string
+    projectLabel: string,
+    name: string
   ) => {
     return (resourceId: string) => {
       nexus.File.get(orgLabel, projectLabel, encodeURIComponent(resourceId), {
@@ -113,6 +131,7 @@ const DataAccessContainer: React.FC<{
           const src = URL.createObjectURL(blob);
           const a = document.createElement('a');
           a.style.display = 'none';
+          a.download = name;
           document.body.appendChild(a);
           a.href = src;
           a.click();
@@ -138,7 +157,7 @@ const DataAccessContainer: React.FC<{
             return {
               index: index + 1,
               name: d['name'],
-              contentUrl: d['contentUrl'],
+              contentUrl: { url: d['contentUrl'], name: d['name'] },
               encodingFormat: d['encodingFormat'],
               contentSize: d['contentSize'],
             };
@@ -148,7 +167,10 @@ const DataAccessContainer: React.FC<{
             {
               index: 1,
               name: resource['distribution']['name'],
-              contentUrl: resource['distribution']['contentUrl'],
+              contentUrl: {
+                url: resource['distribution']['contentUrl'],
+                name: resource['distribution']['name'],
+              },
               encodingFormat: resource['distribution']['encodingFormat'],
               contentSize: resource['distribution']['contentSize'],
             },
@@ -160,7 +182,7 @@ const DataAccessContainer: React.FC<{
     return null;
   };
   const wrapperStyle = {
-    margin: '10px'
+    margin: '10px',
   };
   return <div style={wrapperStyle}>{renderTable(resource)}</div>;
 };
