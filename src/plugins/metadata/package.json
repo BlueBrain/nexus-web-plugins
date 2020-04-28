@@ -4,6 +4,7 @@
   "description": "View MINDS metadata in a table",
   "main": "index.tsx",
   "tags": [],
+  "displayPriority" : "1",
   "author": "Kenneth Pirman <kenneth.pirman@epfl.ch>",
   "license": "ISC",
   "mapping": {
