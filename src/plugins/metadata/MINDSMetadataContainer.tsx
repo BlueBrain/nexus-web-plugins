@@ -51,7 +51,9 @@ const resolveContribution = (
           contributedBy.agent =
             agent.name ||
             agent.fullName ||
-            `${agent.firstName}${agent.lastName ? ` ${agent.lastName}` : ''}`;
+            `${agent.givenName}${
+              agent.familyName ? ` ${agent.familyName}` : ''
+            }`;
           if (contribution.hadRole) {
             contributedBy.role =
               contribution.hadRole.prefLabel || contribution.hadRole.label;
@@ -96,63 +98,93 @@ export const MINDSMetadataContainer: React.FC<{
 
     // Resolve Subject
     if (resource.subject) {
-      promises.push(
-        labeledPromise(
-          'subject',
-          nexus.Resource.get(
-            orgLabel,
-            projectLabel,
-            encodeURIComponent(resource.subject['@id'])
+      if (resource.subject['@id']) {
+        promises.push(
+          labeledPromise(
+            'subject',
+            nexus.Resource.get(
+              orgLabel,
+              projectLabel,
+              encodeURIComponent(resource.subject['@id'])
+            )
           )
-        )
-      );
+        );
+      } else {
+        promises.push(
+          labeledPromise('subject', Promise.resolve(resource.subject))
+        );
+      }
     }
 
     // Resolve Agent
     if (resource.contribution) {
-      promises.push(
-        labeledPromise(
-          'contribution',
-          resolveContribution(
-            orgLabel,
-            projectLabel,
-            resource.contribution,
-            nexus
+      if (resource.contribution.agent['@id']) {
+        promises.push(
+          labeledPromise(
+            'contribution',
+            resolveContribution(
+              orgLabel,
+              projectLabel,
+              resource.contribution,
+              nexus
+            )
           )
-        )
-      );
+        );
+      } else {
+        const contributedBy: ContributedBy = {};
+        const agent = resource.contribution.agent;
+        contributedBy.agent =
+          agent.name ||
+          agent.fullName ||
+          `${agent.givenName}${agent.familyName ? ` ${agent.familyName}` : ''}`;
+        if (resource.contribution.hadRole) {
+          contributedBy.role =
+            resource.contribution.hadRole.prefLabel ||
+            resource.contribution.hadRole.label;
+        }
+        promises.push(
+          labeledPromise('contribution', Promise.resolve(contributedBy))
+        );
+      }
     }
 
     // Resolve Annotations
     if (!!resource.annotation) {
-      const classification: Classification = {};
+      let classification: Classification = {};
+
+      const addClassification = (
+        annotation: Annotation,
+        classification: Classification
+      ) => {
+        if (!annotation.hasBody) {
+          return classification;
+        }
+        if (
+          annotation.hasBody['@type'].some(
+            x => x === 'MType' || x === 'nsg:MType'
+          )
+        ) {
+          classification.mType =
+            annotation.hasBody.prefLabel || annotation.hasBody.label;
+        }
+        if (
+          annotation.hasBody['@type'].some(
+            x => x === 'EType' || x === 'nsg:EType'
+          )
+        ) {
+          classification.eType =
+            annotation.hasBody.prefLabel || annotation.hasBody.label;
+        }
+        return classification;
+      };
+
       if (Array.isArray(resource.annotation)) {
         resource.annotation.forEach((annotation: Annotation) => {
-          if (!annotation.hasBody) {
-            return;
-          }
-          if (annotation.hasBody['@type'].includes('nsg:MType')) {
-            classification.mType =
-              annotation.hasBody.prefLabel || annotation.hasBody.label;
-          }
-          if (annotation.hasBody['@type'].includes('nsg:EType')) {
-            classification.mType =
-              annotation.hasBody.prefLabel || annotation.hasBody.label;
-          }
+          classification = addClassification(annotation, classification);
         });
       } else {
         const annotation = resource.annotation as Annotation;
-        if (!annotation.hasBody) {
-          return;
-        }
-        if (annotation.hasBody['@type'].includes('nsg:MType')) {
-          classification.mType =
-            annotation.hasBody.prefLabel || annotation.hasBody.label;
-        }
-        if (annotation.hasBody['@type'].includes('nsg:EType')) {
-          classification.mType =
-            annotation.hasBody.prefLabel || annotation.hasBody.label;
-        }
+        classification = addClassification(annotation, classification);
       }
       promises.push(
         labeledPromise('classification', Promise.resolve(classification))
