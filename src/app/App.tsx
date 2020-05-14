@@ -21,6 +21,7 @@ import { ImageViewerContainer } from '../plugins/image-viewer';
 import { MorphoViewerContainer } from '../plugins/neuron-morphology';
 import { MINDSMetadataContainer } from '../plugins/metadata';
 import { DataAccessContainer } from '../plugins/nexus-data-access';
+import { ImageCollectionViewerContainer } from '../plugins/image-collection-viewer/index';
 
 import './app.css';
 
@@ -57,6 +58,7 @@ const plugins: { [pluginName: string]: React.FC<any> } = {
   ephysViewer: EphysDistributionContainer,
   mophoViewer: MorphoViewerContainer,
   imageViewer: ImageViewerContainer,
+  imageCollectionViewer: ImageCollectionViewerContainer,
   metadata: MINDSMetadataContainer,
   dataAccess: DataAccessContainer,
 };

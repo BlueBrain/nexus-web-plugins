@@ -36,6 +36,7 @@ const ImageViewerContainer: React.FC<{
       !(resource as NexusFile)._mediaType.includes('image') &&
       (resource as NexusFile)._bytes <= MAX_BYTES_TO_PREVIEW
     ) {
+      // TODO: Show a warning if the image is too large!
       return;
     }
 
