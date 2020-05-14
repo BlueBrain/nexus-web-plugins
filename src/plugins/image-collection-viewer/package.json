@@ -7,9 +7,11 @@
   "author": "Kenneth Pirman <kenneth.pirman@epfl.ch>",
   "license": "ISC",
   "mapping": {
-    "@type": "File",
-    "_mediaType": [
-      "image/*"
+    "@type": [
+      "Entity"
+    ],
+    "image": [
+      {}
     ]
   }
 }
