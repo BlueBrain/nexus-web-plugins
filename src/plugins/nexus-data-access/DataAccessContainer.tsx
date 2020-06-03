@@ -53,8 +53,10 @@ const DataAccessContainer: React.FC<{
       title: 'Action',
       dataIndex: 'contentUrl',
       key: 'contentUrl',
-      render: (contentUrl: { url: string; name: string }) =>
-        renderAction(contentUrl, nexus),
+      render: (
+        contentUrl: { url: string; name: string; hasDigest: boolean },
+        externalUrl: string
+      ) => renderAction(contentUrl, externalUrl, nexus),
     },
   ];
 
@@ -62,26 +64,30 @@ const DataAccessContainer: React.FC<{
     if (!contentSize) {
       return '-';
     }
-    const sizeInMB = (parseInt(contentSize['value'], 10) / 1000000).toFixed(2);
+    const sizeInMB = (parseInt(contentSize.value, 10) / 1000000).toFixed(2);
     if (sizeInMB !== '0.00') {
       return `${sizeInMB} MB`;
     }
-    return `${contentSize['value']} Bytes`;
+    return `${contentSize.value} Bytes`;
   };
 
   const renderAction = (
-    contentUrl: { url: string; name: string },
+    contentUrl: { url: string; name: string; hasDigest: boolean },
+    externalUrl: string,
     nexus: NexusClient
   ) => {
-    const copyButton = makeCopyButton()(contentUrl['url']);
+    const copyButton = makeCopyButton()(contentUrl.url || externalUrl);
+
     const downloadCallback = createDownLoader(
       nexus,
       orgLabel,
       projectLabel,
-      contentUrl['name']
+      contentUrl.name
     );
-    const resourceId = parseResourceId(contentUrl['url']);
-    if (resourceId) {
+
+    const resourceId = parseResourceId(contentUrl.url);
+
+    if (resourceId && contentUrl.hasDigest) {
       return (
         <>
           {' '}
@@ -140,50 +146,59 @@ const DataAccessContainer: React.FC<{
         .catch(error => {
           notification.error({
             message: 'Failed to download the file',
+            description: error.reason || error.message,
           });
         });
     };
   };
 
+  const distributionItem = (distribution: any, index: number = 0) => {
+    const {
+      name,
+      repository,
+      contentUrl,
+      url,
+      encodingFormat,
+      contentSize,
+      digest,
+    } = distribution;
+
+    return {
+      index: index + 1,
+      name: name || repository.name || repository['@id'],
+      contentUrl: {
+        url: contentUrl,
+        name: name,
+        hasDigest: !!digest,
+      },
+      externalUrl: url,
+      encodingFormat: encodingFormat || '-',
+      contentSize,
+    };
+  };
+
   const renderTable = (resource: Resource) => {
     let data: any = [];
-    if (
-      resource['@type'] === 'Entity' ||
-      resource['@type']?.includes('Entity')
-    ) {
-      if (resource['distribution']) {
-        if (Array.isArray(resource['distribution'])) {
-          data = resource['distribution'].map((d: any, index: any) => {
-            return {
-              index: index + 1,
-              name: d['name'],
-              contentUrl: { url: d['contentUrl'], name: d['name'] },
-              encodingFormat: d['encodingFormat'],
-              contentSize: d['contentSize'],
-            };
-          });
-        } else {
-          data = [
-            {
-              index: 1,
-              name: resource['distribution']['name'],
-              contentUrl: {
-                url: resource['distribution']['contentUrl'],
-                name: resource['distribution']['name'],
-              },
-              encodingFormat: resource['distribution']['encodingFormat'],
-              contentSize: resource['distribution']['contentSize'],
-            },
-          ];
-        }
+
+    if (resource.distribution) {
+      const { distribution } = resource;
+
+      if (Array.isArray(distribution)) {
+        data = distribution.map((d: any, index: any) => {
+          return distributionItem(d, index);
+        });
+      } else {
+        data = [distributionItem(distribution)];
       }
-      return <Table columns={columns} dataSource={data} />;
     }
-    return null;
+
+    return <Table columns={columns} dataSource={data} />;
   };
+
   const wrapperStyle = {
     margin: '10px',
   };
+
   return <div style={wrapperStyle}>{renderTable(resource)}</div>;
 };
 

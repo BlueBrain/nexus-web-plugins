@@ -7,6 +7,6 @@
   "author": "Dhanesh Neela Mana <dhanesh.neelamana@epfl.ch>",
   "license": "ISC",
   "mapping": {
-    "@type": ["Entity"]
+    "distribution": {}
   }
 }
