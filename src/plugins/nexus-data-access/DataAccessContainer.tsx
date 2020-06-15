@@ -53,10 +53,8 @@ const DataAccessContainer: React.FC<{
       title: 'Action',
       dataIndex: 'contentUrl',
       key: 'contentUrl',
-      render: (
-        contentUrl: { url: string; name: string; hasDigest: boolean },
-        externalUrl: string
-      ) => renderAction(contentUrl, externalUrl, nexus),
+      render: (contentUrl: { url: string; name: string; hasDigest: boolean }) =>
+        renderAction(contentUrl, nexus),
     },
   ];
 
@@ -73,10 +71,9 @@ const DataAccessContainer: React.FC<{
 
   const renderAction = (
     contentUrl: { url: string; name: string; hasDigest: boolean },
-    externalUrl: string,
     nexus: NexusClient
   ) => {
-    const copyButton = makeCopyButton()(contentUrl.url || externalUrl);
+    const copyButton = makeCopyButton()(contentUrl.url);
 
     const downloadCallback = createDownLoader(
       nexus,
@@ -167,11 +164,10 @@ const DataAccessContainer: React.FC<{
       index: index + 1,
       name: name || repository.name || repository['@id'],
       contentUrl: {
-        url: contentUrl,
+        url: contentUrl || url,
         name: name,
         hasDigest: !!digest,
       },
-      externalUrl: url,
       encodingFormat: encodingFormat || '-',
       contentSize,
     };
