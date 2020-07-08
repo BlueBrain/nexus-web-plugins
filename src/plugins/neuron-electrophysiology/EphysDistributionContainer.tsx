@@ -49,8 +49,11 @@ const EphysDistributionContainer: React.FC<{
     const NWBDistro = distribution.find((distribution: Distribution) =>
       /^.*\.(nwb)$/.test(distribution.name)
     );
+    const RABDistro = distribution.find((distribution: Distribution) =>
+      /^.*\.(rab)$/.test(distribution.name)
+    );
 
-    if (!tracePreviewDistro && !NWBDistro) {
+    if (!tracePreviewDistro && !NWBDistro && !RABDistro) {
       throw new Error(
         `No distribution found for resource ${resource['@id']} that is a trace json preview or .nwb file`
       );
@@ -75,10 +78,14 @@ const EphysDistributionContainer: React.FC<{
       .split('/')
       .reverse();
 
+    const linkResourceId = RABDistro
+      ? resource.isPartOf['@id']
+      : resource['@id'];
+
     nexus.Resource.links(
       orgLabel,
       projectLabel,
-      encodeURIComponent(resource['@id']),
+      encodeURIComponent(linkResourceId),
       'incoming'
     )
       .then(({ _results }) => {

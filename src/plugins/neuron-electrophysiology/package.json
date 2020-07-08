@@ -1,12 +1,14 @@
 {
   "name": "Electrophysiological Recording Viewer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Displays neuron electrophysiological data",
   "main": "index.tsx",
   "tags": [],
   "author": "Kenneth Pirman <kenneth.pirman@epfl.ch>",
   "license": "ISC",
   "mapping": {
-    "@type": ["Trace"]
+    "@type": [
+      "Trace"
+    ]
   }
 }
