@@ -118,34 +118,35 @@ export const MINDSMetadataContainer: React.FC<{
 
     // Resolve Agent
     if (resource.contribution) {
-      if (resource.contribution.agent['@id']) {
-        promises.push(
-          labeledPromise(
-            'contribution',
-            resolveContribution(
-              orgLabel,
-              projectLabel,
-              resource.contribution,
-              nexus
+      const contributors = Array.isArray(resource.contribution)
+        ? resource.contribution
+        : [resource.contribution];
+      contributors.forEach(contribution => {
+        if (contribution.agent['@id']) {
+          promises.push(
+            labeledPromise(
+              'contribution',
+              resolveContribution(orgLabel, projectLabel, contribution, nexus)
             )
-          )
-        );
-      } else {
-        const contributedBy: ContributedBy = {};
-        const agent = resource.contribution.agent;
-        contributedBy.agent =
-          agent.name ||
-          agent.fullName ||
-          `${agent.givenName}${agent.familyName ? ` ${agent.familyName}` : ''}`;
-        if (resource.contribution.hadRole) {
-          contributedBy.role =
-            resource.contribution.hadRole.prefLabel ||
-            resource.contribution.hadRole.label;
+          );
+        } else {
+          const contributedBy: ContributedBy = {};
+          const agent = contribution.agent;
+          contributedBy.agent =
+            agent.name ||
+            agent.fullName ||
+            `${agent.givenName}${
+              agent.familyName ? ` ${agent.familyName}` : ''
+            }`;
+          if (contribution.hadRole) {
+            contributedBy.role =
+              contribution.hadRole.prefLabel || contribution.hadRole.label;
+          }
+          promises.push(
+            labeledPromise('contribution', Promise.resolve(contributedBy))
+          );
         }
-        promises.push(
-          labeledPromise('contribution', Promise.resolve(contributedBy))
-        );
-      }
+      });
     }
 
     // Resolve Annotations
@@ -195,12 +196,30 @@ export const MINDSMetadataContainer: React.FC<{
       .then(results => {
         const values = results.filter(result => !result.error);
 
+        // We need to make sure that the results of the promise
+        // that are each tagged with a label
+        // will not overwrite eachother when combined
+        // this will make the value an array instead
         const data = (values as { [label: string]: any }[]).reduce(
           (memo, value) => {
-            Object.keys(value).forEach(key => {
-              memo[key] = value[key];
-            });
-            return memo;
+            return {
+              ...memo,
+              ...Object.keys(value).reduce((valueObj, key) => {
+                if (memo[key]) {
+                  return {
+                    ...valueObj,
+                    [key]: [
+                      ...(Array.isArray(memo[key]) ? memo[key] : [memo[key]]),
+                      value[key],
+                    ],
+                  };
+                }
+                return {
+                  ...valueObj,
+                  [key]: value[key],
+                };
+              }, {}),
+            };
           },
           {}
         );

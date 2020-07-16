@@ -80,7 +80,7 @@ export const MINDSMetadataComponent: React.FC<{
   subject?: Subject;
   objectOfStudy?: ObjectOfStudy;
   license?: License;
-  contribution?: ContributedBy;
+  contribution?: ContributedBy | ContributedBy[];
   classification?: Classification;
 }> = ({
   types,
@@ -162,13 +162,22 @@ export const MINDSMetadataComponent: React.FC<{
         <Descriptions.Item
           label={<span className="metadata-label">Contribution</span>}
         >
-          {!!contribution ? (
-            <span>
-              {contribution.agent} {contribution.role}
-            </span>
-          ) : (
-            <span className="none">-</span>
-          )}
+          {!!contribution && Array.isArray(contribution)
+            ? contribution.map((contributor, index) => (
+                <>
+                  <span>
+                    {contributor.agent}
+                    {!!contributor.role ? `: ${contributor.role}` : ''}
+                  </span>
+                  {index < contribution.length - 1 && <br />}
+                </>
+              ))
+            : !!contribution && (
+                <span>
+                  {contribution?.agent || '-'}
+                  {!!contribution.role ? `: ${contribution.role}` : ''}
+                </span>
+              )}
         </Descriptions.Item>
         <Descriptions.Item
           label={<span className="metadata-label">License</span>}

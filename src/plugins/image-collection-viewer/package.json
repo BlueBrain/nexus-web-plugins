@@ -1,6 +1,6 @@
 {
   "name": "Image Viewer",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "View image files in Nexus Web",
   "main": "index.tsx",
   "tags": [],
