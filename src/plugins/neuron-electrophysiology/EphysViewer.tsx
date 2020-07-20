@@ -53,6 +53,7 @@ const EphysViewer: React.FC<{ data: EphysResponse[]; nexus: NexusClient }> = ({
     }
   }, [data]);
 
+
   return (
     <div>
       <div

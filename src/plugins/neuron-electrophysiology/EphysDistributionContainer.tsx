@@ -2,6 +2,8 @@ import * as React from 'react';
 import { matches } from 'lodash';
 import { Resource, NexusClient } from '@bbp/nexus-sdk';
 import EphysViewer, { Distribution, EphysResponse } from './EphysViewer';
+import EphysPlot, { DataSets, RABIndex, TraceData } from './EphysPlot';
+import RandomAccessBuffer from './utils/RandomAccessBuffer';
 
 const JSON_PREVIEW_SHAPE = {
   '@type': 'DataDownload',
@@ -28,6 +30,9 @@ const EphysDistributionContainer: React.FC<{
     error: null,
     data: null,
   });
+
+  const [traceDataSets, setTraceDataSets] = React.useState<DataSets>();
+  const [index, setIndex] = React.useState<RABIndex>();
 
   React.useEffect(() => {
     if (!resource.distribution) {
@@ -78,6 +83,18 @@ const EphysDistributionContainer: React.FC<{
       .split('/')
       .reverse();
 
+    if (RABDistro) {
+      processRABDistro(
+        setTraceDataSets,
+        setIndex,
+        RABDistro,
+        nexus,
+        orgLabel,
+        projectLabel
+      );
+      return;
+    }
+
     const linkResourceId = RABDistro
       ? resource.isPartOf['@id']
       : resource['@id'];
@@ -124,8 +141,76 @@ const EphysDistributionContainer: React.FC<{
         });
       });
   }, [resource['@id']]);
-
-  return <EphysViewer data={data || []} nexus={nexus} />;
+  return (
+    <>
+      {traceDataSets && index ? (
+        <EphysPlot options={traceDataSets} index={index} />
+      ) : (
+        <EphysViewer data={data || []} nexus={nexus} />
+      )}
+    </>
+  );
 };
 
 export default EphysDistributionContainer;
+
+/**
+ *
+ * @param setTraceDataSets
+ * @param setIndex
+ * @param RABDistro
+ * @param nexus
+ * @param orgLabel
+ * @param projectLabel
+ *
+ * Process RAB blob Data. Parse and set Index and Data Sets.
+ */
+function processRABDistro(
+  setTraceDataSets: React.Dispatch<React.SetStateAction<DataSets | undefined>>,
+  setIndex: React.Dispatch<React.SetStateAction<RABIndex | undefined>>,
+  RABDistro: any,
+  nexus: NexusClient,
+  orgLabel: any,
+  projectLabel: any
+) {
+  const fileReader = new FileReader();
+
+  fileReader.onload = () => {
+    const {
+      nameToDataSetMap,
+      index,
+    }: { nameToDataSetMap: DataSets; index: RABIndex } = parseRABData();
+    setTraceDataSets(nameToDataSetMap);
+    setIndex(index);
+  };
+  const resourceIds = RABDistro.contentUrl.split('/');
+  nexus.File.get(
+    orgLabel,
+    projectLabel,
+    encodeURIComponent(resourceIds[resourceIds.length - 1]),
+    { as: 'blob' }
+  ).then(value => {
+    fileReader.readAsArrayBuffer(value as Blob);
+  });
+
+  function parseRABData() {
+    const randomAccessBuffer = new RandomAccessBuffer();
+    randomAccessBuffer.parse(fileReader.result as ArrayBuffer);
+    const dataSets = randomAccessBuffer.listDatasets();
+    const index = randomAccessBuffer.getDataset('index') as RABIndex;
+    const nameToDataSetMap: DataSets = {};
+    let i = 0;
+    while (i < dataSets.length - 2) {
+      const dataSet = randomAccessBuffer.getDataset(dataSets[i]) as RABIndex;
+      const y = dataSet.data['numericalData'];
+      const label: string = dataSets[i].trim();
+      const data: TraceData = {
+        y,
+        name: label.slice(0, label.length - 2).trim(),
+      };
+      nameToDataSetMap[label] = data;
+      i += 1;
+    }
+    return { nameToDataSetMap, index };
+  }
+}
