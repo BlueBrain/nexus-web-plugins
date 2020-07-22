@@ -1,8 +1,10 @@
 import * as React from 'react';
 import { last } from 'lodash';
+import withFixedFocusOnMorphology from './withFixedFocusOnMorphology';
 
 import './morpho-viewer.css';
 
+// TODO update morphoviewer library with typings
 const morphoviewer = require('morphoviewer').default;
 const swcmorphologyparser = require('swcmorphologyparser').default;
 
@@ -11,7 +13,6 @@ export type MorphoViewerOptions = {
   focusOn?: boolean;
   onDone?: VoidFunction;
   somaMode?: string;
-  distance?: number;
 };
 
 export const MorphologyViewer: React.FC<{
@@ -43,13 +44,17 @@ export const MorphologyViewer: React.FC<{
       swcParser.parse(data);
       const parsedFile = swcParser.getRawMorphology();
 
-      morphoViewer = new morphoviewer.MorphoViewer(ref.current);
+      morphoViewer = withFixedFocusOnMorphology(
+        new morphoviewer.MorphoViewer(ref.current)
+      );
+
       morphoViewer._threeContext._camera.up.negate();
       setMorphoViewer(morphoViewer);
-      morphoViewer.addMorphology(parsedFile, {
+      const morphoViewerOptions = {
         name: 'morphology',
         ...options,
-      });
+      };
+      morphoViewer.addMorphology(parsedFile, morphoViewerOptions);
     } catch (error) {
       throw new Error(`Morphology parsing error: ${error.message}`);
     }
