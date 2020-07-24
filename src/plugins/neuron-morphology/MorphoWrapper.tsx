@@ -12,19 +12,6 @@ const MorphoWrapper: React.FC<{
   options: MorphoViewerOptions;
   onPolylineClick: VoidFunction;
 }> = ({ loading, error, data, options, onPolylineClick }) => {
-  const [somaColor, setSomaColor] = React.useState<string>();
-  const somaRef = React.useRef<HTMLLIElement>(null);
-  const handleSomaColor = (color: string) => {
-    setSomaColor(color);
-  };
-
-  React.useEffect(() => {
-    if (somaRef.current && somaColor) {
-      const style = somaRef?.current?.style;
-      style.setProperty('--soma', somaColor);
-    }
-  }, [somaColor, somaRef]);
-
   return (
     <div className={loading ? 'morpho-wrapper loading' : 'morpho-wrapper'}>
       <div className="actions">
@@ -34,7 +21,7 @@ const MorphoWrapper: React.FC<{
       </div>
       <div className="legend">
         <ul>
-          <li className={options.asPolyline ? '' : 'soma'} ref={somaRef}>
+          <li className={options.asPolyline ? '' : 'soma'}>
             {options.asPolyline ? 'Soma (not supported in line mode)' : 'Soma'}
           </li>
           <li className="axon">Axon</li>
@@ -43,13 +30,7 @@ const MorphoWrapper: React.FC<{
         </ul>
       </div>
       {error && <p>{error.message}</p>}
-      {data && !error && (
-        <MorphologyViewer
-          data={data}
-          options={options}
-          somaColorCallback={handleSomaColor}
-        />
-      )}
+      {data && !error && <MorphologyViewer data={data} options={options} />}
     </div>
   );
 };

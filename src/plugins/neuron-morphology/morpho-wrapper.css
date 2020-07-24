@@ -1,5 +1,8 @@
 :root {
-  --soma: #555555;
+  --soma: #000;
+  --axon: #1111ff;
+  --basal-dendrites: #ff1111;
+  --apical-dendrites: #f442ad;
 }
 
 .morpho-wrapper {
@@ -39,13 +42,13 @@
 }
 
 .morpho-wrapper > .legend > ul li.axon::before {
-  color: #1111ff;
+  color: var(--axon);
 }
 .morpho-wrapper > .legend > ul li.basal-dendrites::before {
-  color: #ff1111;
+  color: var(--basal-dendrites);
 }
 .morpho-wrapper > .legend > ul li.apical-dendrites::before {
-  color: #f442ad;
+  color: var(--apical-dendrites);
 }
 .morpho-wrapper > .legend > ul li.soma::before {
   color: var(--soma);

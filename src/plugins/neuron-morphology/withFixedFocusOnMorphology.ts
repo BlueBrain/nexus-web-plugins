@@ -1,6 +1,8 @@
 // @ts-nocheck
 import * as THREE from 'three';
 
+const CAMERA_DISTANCE_OFFSET = 1;
+
 // This is a temporary fix
 // THIS CODE IS MEANT TO BE REMOVED
 // that addresses focus problems in the morphoviewer library
@@ -20,7 +22,7 @@ const withFixedFocusOnMorphology = morphoViewer => {
       }
     }
 
-    const fitOffset = 1.2;
+    const fitOffset = CAMERA_DISTANCE_OFFSET;
 
     const morphoMesh = this._morphologyMeshCollection[morphoName];
 

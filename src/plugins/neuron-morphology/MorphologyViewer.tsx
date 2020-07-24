@@ -18,8 +18,7 @@ export type MorphoViewerOptions = {
 export const MorphologyViewer: React.FC<{
   data: any;
   options: MorphoViewerOptions;
-  somaColorCallback?: (color: any) => void;
-}> = ({ data, options, somaColorCallback }) => {
+}> = ({ data, options }) => {
   const ref = React.useRef<HTMLDivElement>(null);
   const [mv, setMorphoViewer] = React.useState();
 
@@ -27,10 +26,12 @@ export const MorphologyViewer: React.FC<{
     if (mv) {
       // TODO flip camera orientation
       // mv._threeContext._camera.up.negate();
+
+      // Change soma color to black
       const morphoMesh: any = last(mv._threeContext._scene.children);
       const somaMesh = last(morphoMesh.children);
-      const hexColor = (somaMesh as any)?.material.color.getHexString();
-      somaColorCallback && somaColorCallback(`#${hexColor}`);
+      (somaMesh as any)?.material.color.setHex(0x000000);
+      mv._threeContext._render();
     }
   }, [mv && mv._threeContext]);
 
