@@ -51,31 +51,31 @@ const EphysPlot: React.FC<{ options: DataSets; index: RABIndex }> = ({
   options,
   index,
 }) => {
-  const [selectedDataSet, setSelectedDataSet] = React.useState<string>('');
-  const [selectedSweeps, setSelectedSweeps] = React.useState<string[]>([]);
-  const [selectedRepitition, setSelectedRepitition] = React.useState<string>(
-    ''
+  const [selectedDataSet, setSelectedDataSet] = React.useState<string>(
+    Object.keys(index.data)[0]
+  );
+  const [selectedRepetition, setSelectedRepetition] = React.useState<string>(
+    Object.keys(index.data[selectedDataSet].repetitions)[0]
+  );
+  const [selectedSweeps, setSelectedSweeps] = React.useState<string[]>(
+    index.data[selectedDataSet].repetitions[selectedRepetition].sweeps
   );
 
-  const sweeps: Sweep | undefined = React.useMemo(() => {
+  const sweeps: string[] = React.useMemo(() => {
     return index.data[selectedDataSet]
-      ? index.data[selectedDataSet].sweeps
-      : undefined;
-  }, [selectedDataSet, index]);
+      ? index.data[selectedDataSet].repetitions[selectedRepetition].sweeps
+      : [];
+  }, [selectedDataSet, selectedRepetition, index]);
 
-  const repetitions: Repetition | undefined = React.useMemo(() => {
+  const repetitions: Repetition = React.useMemo(() => {
     return index.data[selectedDataSet]
       ? index.data[selectedDataSet].repetitions
-      : undefined;
+      : {};
   }, [selectedDataSet, index]);
 
   const selectedMetadata: IndexDataValue | undefined = React.useMemo(() => {
     return index.data[selectedDataSet];
   }, [selectedDataSet, index]);
-
-  const dataSetOptions = Object.keys(index.data).map(O => {
-    return <Select.Option key={O}>{O}</Select.Option>;
-  });
 
   const dataResponse: TraceData[] = React.useMemo(() => {
     const deltaTime = selectedMetadata ? selectedMetadata?.dt : 1;
@@ -109,94 +109,102 @@ const EphysPlot: React.FC<{ options: DataSets; index: RABIndex }> = ({
     });
   }, [options, selectedMetadata, selectedDataSet, selectedSweeps]);
 
+  const dataSetOptions = Object.keys(index.data).map(O => {
+    return <Select.Option key={O}>{O}</Select.Option>;
+  });
+
+  const repetitionOptions = repetitions
+    ? Object.keys(repetitions).map(v => {
+        return <Select.Option key={v}>{v}</Select.Option>;
+      })
+    : null;
+
+  const sweepsOptions = sweeps
+    ? sweeps.map(v => {
+        return <Select.Option key={v}>{v}</Select.Option>;
+      })
+    : null;
+
+  const handleStimulusChange = (value: string) => {
+    setSelectedDataSet(value);
+    setSelectedRepetition(Object.keys(repetitions)[0]);
+    setSelectedSweeps(index.data[value].repetitions[selectedRepetition].sweeps);
+  };
+
+  const handleRepetitionChange = (value: string) => {
+    setSelectedRepetition(value);
+    setSelectedSweeps(repetitions[value].sweeps);
+  };
+
+  const handleSelectAllSweeps = () => {
+    if (selectedSweeps.length === sweeps.length) {
+      setSelectedSweeps([]);
+    } else {
+      setSelectedSweeps(sweeps);
+    }
+  };
+
   return (
     <>
       <div style={{ margin: '10px' }}>
-        <label>Trace</label>
+        <label>
+          <b>Stimulus </b>({Object.keys(index.data).length} available)
+        </label>
         <Select
+          value={selectedDataSet}
           size={'default'}
           placeholder="Please select"
-          onChange={(value: string) => {
-            setSelectedSweeps([]);
-            setSelectedRepitition('');
-            setSelectedDataSet(value);
-          }}
+          onChange={handleStimulusChange}
           style={{ width: '100%' }}
         >
           {dataSetOptions}
         </Select>
       </div>
       <div style={{ margin: '10px' }}>
-        <label>Repitition</label>
+        <label>
+          <b>Repetition </b>
+          {repetitions && `(${Object.keys(repetitions).length} available)`}
+        </label>
         <Select
           size={'default'}
           placeholder="Please select"
-          value={selectedRepitition}
-          onChange={(value: string) => {
-            setSelectedRepitition(value);
-            if (repetitions) {
-              setSelectedSweeps(repetitions[value].sweeps);
-            }
-          }}
+          value={selectedRepetition}
+          onChange={handleRepetitionChange}
           style={{ width: '100%' }}
         >
-          {repetitions
-            ? Object.keys(repetitions).map(v => {
-                return <Select.Option key={v}>{v}</Select.Option>;
-              })
-            : null}
+          {repetitionOptions}
         </Select>
       </div>
       <div style={{ margin: '10px' }}>
         <span>
-          Sweeps
+          <b>Sweeps</b>
           <Checkbox
             style={{ margin: '0px 10px 0px 10px' }}
             indeterminate={
               sweeps
                 ? selectedSweeps.length > 0 &&
-                  selectedSweeps.length < Object.keys(sweeps).length
+                  selectedSweeps.length < sweeps.length
                 : false
             }
-            onChange={e => {
-              if (
-                sweeps &&
-                selectedSweeps.length === Object.keys(sweeps).length
-              ) {
-                setSelectedSweeps([]);
-              } else {
-                if (repetitions && repetitions[selectedRepitition]) {
-                  setSelectedSweeps(repetitions[selectedRepitition].sweeps);
-                }
-              }
-            }}
-            checked={
-              sweeps
-                ? selectedSweeps.length === Object.keys(sweeps).length
-                : false
-            }
+            onChange={handleSelectAllSweeps}
+            checked={selectedSweeps.length === sweeps.length}
           >
-            All
+            All (<span>{sweeps && sweeps.length}</span> available)
           </Checkbox>
         </span>
         <br />
         <span>
           <Select
+            value={selectedSweeps}
             mode="tags"
             size="default"
             placeholder="Please select"
-            defaultValue={selectedSweeps}
-            value={selectedSweeps}
             onChange={(value: string[]) => {
               setSelectedSweeps(value);
             }}
             style={{ width: '100%' }}
           >
-            {sweeps
-              ? Object.keys(sweeps).map(v => {
-                  return <Select.Option key={v}>{v}</Select.Option>;
-                })
-              : null}
+            {sweepsOptions}
           </Select>
         </span>
       </div>
