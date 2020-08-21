@@ -1,6 +1,15 @@
 import * as React from 'react';
 import { Resource, NexusClient, NexusFile } from '@bbp/nexus-sdk';
-import { List, Popover, Card, Spin, Menu, Dropdown } from 'antd';
+import {
+  List,
+  Popover,
+  Card,
+  Spin,
+  Menu,
+  Dropdown,
+  Button,
+  Icon,
+} from 'antd';
 import 'antd/dist/antd.css';
 import { ClickParam } from 'antd/lib/menu';
 
@@ -23,21 +32,24 @@ const ImageCollectionViewerContainer: React.FC<{
     data: null,
   });
 
-  const memoizedSTypes = React.useMemo(() => {
-    const t = Array.isArray(resource.image)
-      ? resource.image.map(({ stimulusType: sType }) => {
-          if (sType) {
-            const typeString = sType['@id'].split('/');
-            return typeString[typeString.length - 1];
-          }
-          return '';
+  const imageTypesMap = React.useMemo(() => {
+    const imageTypes = Array.isArray(resource.image)
+      ? resource.image.map(i => {
+          const typeString = i.stimulusType['@id'].split('/');
+          return typeString[typeString.length - 1];
         })
       : [];
-    // remove duplicates.
-    const returnArray = [...new Set(t)];
-    // remove empty strings, if any.
-    returnArray.splice(returnArray.indexOf(''), 1);
-    return returnArray;
+
+    const typeToNumbers = new Map<string, number>();
+    for (let i = 0; i < imageTypes.length; i++) {
+      const num = typeToNumbers.get(imageTypes[i]);
+      if (num) {
+        typeToNumbers.set(imageTypes[i], num + 1);
+      } else {
+        typeToNumbers.set(imageTypes[i], 1);
+      }
+    }
+    return typeToNumbers;
   }, [resource]);
 
   const [selectedType, setSelectedType] = React.useState<String>('All');
@@ -62,9 +74,9 @@ const ImageCollectionViewerContainer: React.FC<{
       }}
     >
       <Menu.Item key={'All'}>All</Menu.Item>
-      {memoizedSTypes.map(v => (
-        <Menu.Item key={v}>{v}</Menu.Item>
-      ))}
+      {Array.from(imageTypesMap.keys()).sort().map(k => {
+        return <Menu.Item key={k}>{`${k} (${imageTypesMap.get(k)})`}</Menu.Item>;
+      })}
     </Menu>
   );
 
@@ -165,9 +177,10 @@ const ImageCollectionViewerContainer: React.FC<{
     return (
       <div className="image-collection-viewer">
         <Dropdown overlay={menu}>
-          <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+          <Button>
             {selectedType}
-          </a>
+            <Icon type="down" style={{ fontSize: '16px' }} />
+          </Button>
         </Dropdown>
         <List
           grid={{
@@ -178,8 +191,12 @@ const ImageCollectionViewerContainer: React.FC<{
           renderItem={item => {
             const content = (
               <Card
-                hoverable
-                style={{ width: '700px' }}
+                style={{
+                  position: 'fixed',
+                  left: '20%',
+                  top: '10%',
+                  width: '700px',
+                }}
                 cover={<img alt={item.name} src={item.imageSrc} />}
               >
                 <a download href={item.imageSrc} title={item.name}>
@@ -189,7 +206,7 @@ const ImageCollectionViewerContainer: React.FC<{
             );
             return (
               <List.Item>
-                <Popover content={content} trigger="click">
+                <Popover destroyTooltipOnHide content={content} trigger="click">
                   <img
                     alt={item.name}
                     src={item.imageSrc}
