@@ -1,6 +1,8 @@
-import Plot from 'react-plotly.js';
 import { Select, Checkbox } from 'antd';
 import * as React from 'react';
+
+import StimulusPlot from './StimulusPlot';
+import ResponsePlot from './ResponsePlot';
 
 export type TraceData = {
   y: any;
@@ -54,9 +56,11 @@ const EphysPlot: React.FC<{ options: DataSets; index: RABIndex }> = ({
   const [selectedDataSet, setSelectedDataSet] = React.useState<string>(
     Object.keys(index.data)[0]
   );
+
   const [selectedRepetition, setSelectedRepetition] = React.useState<string>(
     Object.keys(index.data[selectedDataSet].repetitions)[0]
   );
+
   const [selectedSweeps, setSelectedSweeps] = React.useState<string[]>(
     index.data[selectedDataSet].repetitions[selectedRepetition].sweeps
   );
@@ -76,38 +80,6 @@ const EphysPlot: React.FC<{ options: DataSets; index: RABIndex }> = ({
   const selectedMetadata: IndexDataValue | undefined = React.useMemo(() => {
     return index.data[selectedDataSet];
   }, [selectedDataSet, index]);
-
-  const dataResponse: TraceData[] = React.useMemo(() => {
-    const deltaTime = selectedMetadata ? selectedMetadata?.dt : 1;
-    return selectedSweeps.map(s => {
-      const name = options[`${selectedDataSet} ${s} v`]?.name;
-      const y = options[`${selectedDataSet} ${s} v`]
-        ? options[`${selectedDataSet} ${s} v`].y
-        : [];
-      const x = y.map((m: any, i: number) => i * deltaTime);
-      return {
-        y,
-        x,
-        name,
-      };
-    });
-  }, [options, selectedDataSet, selectedSweeps, selectedMetadata]);
-
-  const dataStimulus: TraceData[] = React.useMemo(() => {
-    const deltaTime = selectedMetadata ? selectedMetadata?.dt : 1;
-    return selectedSweeps.map(s => {
-      const y = options[`${selectedDataSet} ${s} i`]
-        ? options[`${selectedDataSet} ${s} i`].y
-        : [];
-      const name = options[`${selectedDataSet} ${s} i`]?.name;
-      const x = y.map((m: any, i: number) => i * deltaTime);
-      return {
-        y,
-        x,
-        name,
-      };
-    });
-  }, [options, selectedMetadata, selectedDataSet, selectedSweeps]);
 
   const dataSetOptions = Object.keys(index.data).map(O => {
     return <Select.Option key={O}>{O}</Select.Option>;
@@ -208,43 +180,17 @@ const EphysPlot: React.FC<{ options: DataSets; index: RABIndex }> = ({
           </Select>
         </span>
       </div>
-      <Plot
-        data={dataStimulus}
-        layout={{
-          title: 'Stimulus',
-          xaxis: {
-            title: {
-              text: selectedMetadata ? selectedMetadata.t_unit : '',
-            },
-          },
-          yaxis: {
-            title: {
-              text: selectedMetadata ? selectedMetadata.i_unit : '',
-            },
-          },
-          autosize: true,
-        }}
-        style={{ width: '100%', height: '100%' }}
-        config={{ displaylogo: false }}
+      <StimulusPlot
+        metadata={selectedMetadata}
+        sweeps={selectedSweeps}
+        dataset={selectedDataSet}
+        options={options}
       />
-      <Plot
-        data={dataResponse}
-        layout={{
-          title: 'Response',
-          xaxis: {
-            title: {
-              text: selectedMetadata ? selectedMetadata.t_unit : '',
-            },
-          },
-          yaxis: {
-            title: {
-              text: selectedMetadata ? selectedMetadata.v_unit : '',
-            },
-          },
-          autosize: true,
-        }}
-        style={{ width: '100%', height: '100%' }}
-        config={{ displaylogo: false }}
+      <ResponsePlot
+        metadata={selectedMetadata}
+        sweeps={selectedSweeps}
+        dataset={selectedDataSet}
+        options={options}
       />
     </>
   );
