@@ -1,15 +1,6 @@
 import * as React from 'react';
 import { Resource, NexusClient, NexusFile } from '@bbp/nexus-sdk';
-import {
-  List,
-  Popover,
-  Card,
-  Spin,
-  Menu,
-  Dropdown,
-  Button,
-  Icon,
-} from 'antd';
+import { List, Popover, Card, Spin, Menu, Dropdown, Button, Icon } from 'antd';
 import 'antd/dist/antd.css';
 import { ClickParam } from 'antd/lib/menu';
 
@@ -74,24 +65,31 @@ const ImageCollectionViewerContainer: React.FC<{
       }}
     >
       <Menu.Item key={'All'}>All</Menu.Item>
-      {Array.from(imageTypesMap.keys()).sort().map(k => {
-        return <Menu.Item key={k}>{`${k} (${imageTypesMap.get(k)})`}</Menu.Item>;
-      })}
+      {Array.from(imageTypesMap.keys())
+        .sort()
+        .map(k => {
+          return (
+            <Menu.Item key={k}>{`${k} (${imageTypesMap.get(k)})`}</Menu.Item>
+          );
+        })}
     </Menu>
   );
 
   React.useEffect(() => {
-    if (!resource.image) {
+    if (!resource.image && !resource.distribution) {
       throw new Error('No Image Collection Property Found');
     }
 
-    const [projectLabel, orgLabel, ...rest] = resource._project
-      .split('/')
-      .reverse();
-    const promises = (Array.isArray(resource.image)
-      ? resource.image
-      : [resource.image]
-    ).map(({ '@id': id }) => {
+    const processImageDistribution = (id: string) => {
+      const fileUrlPattern = /files\/([\w-]+)\/([\w-]+)\/(.*)/;
+      if (!fileUrlPattern.test(id)) {
+        console.warn('not a nexus file.');
+        return null;
+      }
+      const [, , , resourceId] = id.match(fileUrlPattern) as string[];
+      return processImageCollection(decodeURIComponent(resourceId));
+    };
+    const processImageCollection = (id: string) => {
       return nexus.Resource.get(
         orgLabel,
         projectLabel,
@@ -118,7 +116,6 @@ const ImageCollectionViewerContainer: React.FC<{
           console.warn('not showing because image is too large');
           return null;
         }
-
         return nexus.File.get(orgLabel, projectLabel, encodeURIComponent(id), {
           as: 'blob',
         }).then(rawData => {
@@ -129,14 +126,27 @@ const ImageCollectionViewerContainer: React.FC<{
           return { imageSrc, name: resource['@id'] };
         });
       });
-    });
+    };
+
+    const [projectLabel, orgLabel, ...rest] = resource._project
+      .split('/')
+      .reverse();
+
+    const promises = resource.image
+      ? (Array.isArray(resource.image)
+          ? resource.image
+          : [resource.image]
+        ).map(({ '@id': id }) => processImageCollection(id))
+      : resource.distribution.map((x: any) => {
+          return processImageDistribution(x.contentUrl);
+        });
 
     Promise.all(promises)
       .then(imageSrcList => {
         setData({
-          data: imageSrcList.filter(
-            image => !!image?.imageSrc
-          ) as ImageCollection,
+          data: imageSrcList.filter((image: any) => {
+            return !!image?.imageSrc;
+          }) as ImageCollection,
           error: null,
           loading: false,
         });
@@ -206,7 +216,15 @@ const ImageCollectionViewerContainer: React.FC<{
             );
             return (
               <List.Item>
-                <Popover destroyTooltipOnHide content={content} trigger="click">
+                <Popover
+                  style={{
+                    position: 'fixed',
+                  }}
+                  placement={'top'}
+                  destroyTooltipOnHide
+                  content={content}
+                  trigger="click"
+                >
                   <img
                     alt={item.name}
                     src={item.imageSrc}
