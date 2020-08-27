@@ -73,12 +73,12 @@ const EphysDistributionContainer: React.FC<{
           processRABDistro(
             setTraceDataSets,
             setIndex,
+            setLoading,
             rabTrace.distribution,
             nexus,
             orgLabel,
             projectLabel
           );
-          setLoading(false);
         }
       })
       .catch(error => {
@@ -102,6 +102,7 @@ export default EphysDistributionContainer;
  *
  * @param setTraceDataSets
  * @param setIndex
+ * @param setLoading
  * @param RABDistro
  * @param nexus
  * @param orgLabel
@@ -112,6 +113,7 @@ export default EphysDistributionContainer;
 function processRABDistro(
   setTraceDataSets: React.Dispatch<React.SetStateAction<DataSets | undefined>>,
   setIndex: React.Dispatch<React.SetStateAction<RABIndex | undefined>>,
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>,
   RABDistro: any,
   nexus: NexusClient,
   orgLabel: any,
@@ -126,6 +128,7 @@ function processRABDistro(
     }: { nameToDataSetMap: DataSets; index: RABIndex } = parseRABData();
     setTraceDataSets(nameToDataSetMap);
     setIndex(index);
+    setLoading(false);
   };
   const resourceIds = RABDistro.contentUrl.split('/');
   nexus.File.get(
