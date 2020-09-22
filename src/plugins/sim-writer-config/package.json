@@ -7,6 +7,6 @@
   "author": "NSE(Neuroscientific Software Engineering) <bbp-ou-nse@groupes.epfl.ch>",
   "license": "BSD-3-Clause",
   "mapping": {
-    "@type": ["SimWriterConfiguration"]
+    "@type": ["SimulationCampaignConfiguration"]
   }
 }
