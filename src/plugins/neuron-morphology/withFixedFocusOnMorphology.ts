@@ -53,6 +53,7 @@ const withFixedFocusOnMorphology = morphoViewer => {
     this._camera.updateProjectionMatrix();
 
     this._camera.position.copy(this._controls.target).sub(direction);
+    this._camera.rotation.set(new THREE.Vector3());
 
     this._controls.update();
 

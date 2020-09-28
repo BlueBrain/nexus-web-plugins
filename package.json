@@ -56,7 +56,7 @@
     "file-saver": "^2.0.2",
     "js-yaml": "^3.14.0",
     "json-stringify-pretty-compact": "^2.0.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.20",
     "moment": "^2.24.0",
     "morphoviewer": "^0.1.15",
     "oidc-client": "^1.10.1",
@@ -70,7 +70,7 @@
     "react-plotly.js": "^2.4.0",
     "react-responsive-carousel": "^3.2.7",
     "swcmorphologyparser": "git+https://github.com/jonathanlurie/swcmorphologyparser.git",
-    "three": "^0.118.3"
+    "three": "^0.120.1"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^4.2.4",
@@ -91,7 +91,7 @@
     "lint-staged": "^10.0.8",
     "mini-css-extract-plugin": "^0.9.0",
     "prettier": "^1.19.1",
-    "react-scripts": "3.4.0",
+    "react-scripts": "^3.4.3",
     "ts-lint": "^4.5.1",
     "ts-loader": "^6.2.1",
     "tslint": "^6.0.0",
