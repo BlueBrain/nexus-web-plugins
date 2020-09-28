@@ -65,18 +65,6 @@ const ResponsePlot: React.FC<{
         style={{ width: '100%', height: '100%' }}
         config={{ displaylogo: false }}
       />
-      {isVolts && (
-        <Radio.Group
-          onChange={onChangeResponseUnits}
-          value={responseUnit}
-          size="small"
-        >
-          <Radio.Button value={DEFAULT_RESPONSE_UNIT}>
-            {DEFAULT_RESPONSE_UNIT}
-          </Radio.Button>
-          <Radio.Button value="V">V</Radio.Button>
-        </Radio.Group>
-      )}
     </>
   );
 };

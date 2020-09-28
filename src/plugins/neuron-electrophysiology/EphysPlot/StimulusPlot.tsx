@@ -75,7 +75,6 @@ const StimulusPlot: React.FC<{
             {DEFAULT_STIMULUS_UNIT}
           </Radio.Button>
           <Radio.Button value="nA">nA</Radio.Button>
-          <Radio.Button value="A">A</Radio.Button>
         </Radio.Group>
       )}
     </>
