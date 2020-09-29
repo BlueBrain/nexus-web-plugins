@@ -3,6 +3,7 @@ import { last } from 'lodash';
 import withFixedFocusOnMorphology from './withFixedFocusOnMorphology';
 
 import './morpho-viewer.css';
+import { OrientationViewer } from './libs/OrientationViewer';
 
 // TODO update morphoviewer library with typings
 const morphoviewer = require('morphoviewer').default;
@@ -20,7 +21,12 @@ export const MorphologyViewer: React.FC<{
   options: MorphoViewerOptions;
 }> = ({ data, options }) => {
   const ref = React.useRef<HTMLDivElement>(null);
+  const orientationRef = React.useRef<HTMLDivElement>(null);
   const [mv, setMorphoViewer] = React.useState();
+  const [
+    orientationViewer,
+    setOrientationViewer,
+  ] = React.useState<OrientationViewer | null>(null);
 
   React.useEffect(() => {
     if (mv) {
@@ -64,7 +70,37 @@ export const MorphologyViewer: React.FC<{
     };
   }, [ref, data, options]);
 
-  return <div className="morpho-viewer" ref={ref}></div>;
+  React.useEffect(() => {
+    if (!orientationRef.current) {
+      return;
+    }
+    if (!orientationViewer) {
+      setOrientationViewer(new OrientationViewer(orientationRef.current));
+    }
+    if (mv && orientationViewer) {
+      orientationViewer.setFollowCamera(mv._threeContext._camera);
+    }
+    return () => {
+      orientationViewer?.destroy();
+    };
+  }, [orientationRef, mv]);
+
+  const handleOrientationClick = () => {
+    mv?._threeContext._controls.reset();
+    mv?._threeContext._camera.up.negate();
+    mv?._threeContext.focusOnMorphology();
+  };
+
+  return (
+    <div>
+      <div className="morpho-viewer" ref={ref}></div>
+      <div
+        className="orientation"
+        ref={orientationRef}
+        onClick={handleOrientationClick}
+      ></div>
+    </div>
+  );
 };
 
 export default MorphologyViewer;
