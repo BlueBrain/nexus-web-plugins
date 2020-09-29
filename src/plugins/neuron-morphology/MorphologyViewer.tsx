@@ -82,8 +82,9 @@ export const MorphologyViewer: React.FC<{
     }
     return () => {
       orientationViewer?.destroy();
+      setOrientationViewer(null);
     };
-  }, [orientationRef, mv]);
+  }, [orientationRef, mv, options]);
 
   const handleOrientationClick = () => {
     mv?._threeContext._controls.reset();
