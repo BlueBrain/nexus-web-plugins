@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { last } from 'lodash';
 import withFixedFocusOnMorphology from './withFixedFocusOnMorphology';
+import OrientationViewer from './libs/OrientationViewer';
+import ScaleViewer from './libs/ScaleViewer';
 
 import './morpho-viewer.css';
-import { OrientationViewer } from './libs/OrientationViewer';
 
 // TODO update morphoviewer library with typings
 const morphoviewer = require('morphoviewer').default;
@@ -22,17 +23,18 @@ export const MorphologyViewer: React.FC<{
 }> = ({ data, options }) => {
   const ref = React.useRef<HTMLDivElement>(null);
   const orientationRef = React.useRef<HTMLDivElement>(null);
+  const scaleRef = React.useRef<HTMLDivElement>(null);
   const [mv, setMorphoViewer] = React.useState();
   const [
     orientationViewer,
     setOrientationViewer,
   ] = React.useState<OrientationViewer | null>(null);
+  const [scaleViewer, setScaleViewer] = React.useState<ScaleViewer | null>(
+    null
+  );
 
   React.useEffect(() => {
     if (mv) {
-      // TODO flip camera orientation
-      // mv._threeContext._camera.up.negate();
-
       // Change soma color to black
       const morphoMesh: any = last(mv._threeContext._scene.children);
       const somaMesh = last(morphoMesh.children);
@@ -70,6 +72,7 @@ export const MorphologyViewer: React.FC<{
     };
   }, [ref, data, options]);
 
+  // Orientation Viewer Operations
   React.useEffect(() => {
     if (!orientationRef.current) {
       return;
@@ -86,6 +89,35 @@ export const MorphologyViewer: React.FC<{
     };
   }, [orientationRef, mv, options]);
 
+  // Scale Axis Operations
+  React.useEffect(() => {
+    let controlEventListenerChangedEvent: VoidFunction | null = null;
+    if (!scaleRef.current) {
+      return;
+    }
+    if (!scaleViewer) {
+      setScaleViewer(new ScaleViewer(scaleRef.current, 0));
+    }
+    if (mv && scaleViewer) {
+      scaleViewer.onScaleChange(mv._threeContext.getCameraHeightAtMorpho());
+      controlEventListenerChangedEvent = () => {
+        scaleViewer.onScaleChange(mv._threeContext.getCameraHeightAtMorpho());
+      };
+      mv._threeContext._controls.addEventListener(
+        'change',
+        controlEventListenerChangedEvent
+      );
+    }
+    return () => {
+      scaleViewer?.destroy();
+      setScaleViewer(null);
+      mv?._threeContext?._controls?.removeEventListener(
+        'change',
+        controlEventListenerChangedEvent
+      );
+    };
+  }, [scaleRef, mv, options]);
+
   const handleOrientationClick = () => {
     mv?._threeContext._controls.reset();
     mv?._threeContext._camera.up.negate();
@@ -95,6 +127,11 @@ export const MorphologyViewer: React.FC<{
   return (
     <div>
       <div className="morpho-viewer" ref={ref}></div>
+      <div
+        className="scale"
+        ref={scaleRef}
+        onClick={handleOrientationClick}
+      ></div>
       <div
         className="orientation"
         ref={orientationRef}

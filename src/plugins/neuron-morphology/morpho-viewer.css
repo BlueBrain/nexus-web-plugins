@@ -12,5 +12,15 @@
   cursor: pointer;
   position: absolute;
   bottom: 0;
+  right: 100px;
+}
+
+.scale {
+  position: absolute;
+  height: 100%;
+  width: 50px;
+  cursor: pointer;
+  bottom: 0;
   right: 0;
+  backdrop-filter: blur(2px);
 }

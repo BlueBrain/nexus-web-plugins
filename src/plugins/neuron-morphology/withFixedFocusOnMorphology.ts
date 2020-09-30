@@ -10,7 +10,7 @@ const CAMERA_DISTANCE_OFFSET = 1;
 // with a working focus funciton.
 // https://discourse.threejs.org/t/camera-zoom-to-fit-object/936/24
 const withFixedFocusOnMorphology = morphoViewer => {
-  morphoViewer._threeContext.focusOnMorphology = function(name = null) {
+  morphoViewer._threeContext.getMorphoFromCollection = function(name = null) {
     let morphoName = name;
     // if no name of morphology is provided, we take the first one
     if (!morphoName) {
@@ -21,31 +21,12 @@ const withFixedFocusOnMorphology = morphoViewer => {
         return;
       }
     }
-
-    const fitOffset = CAMERA_DISTANCE_OFFSET;
-
     const morphoMesh = this._morphologyMeshCollection[morphoName];
+    return morphoMesh;
+  };
 
-    const box = new THREE.Box3();
-
-    box.expandByObject(morphoMesh);
-
-    const size = box.getSize(new THREE.Vector3());
-
-    const maxSize = Math.max(size.x, size.y, size.z);
-    const fitHeightDistance =
-      maxSize / (2 * Math.atan((Math.PI * this._camera.fov) / 360));
-    const fitWidthDistance = fitHeightDistance / this._camera.aspect;
-    const distance = fitOffset * Math.max(fitHeightDistance, fitWidthDistance);
-
-    const direction = this._controls.target
-      .clone()
-      .sub(this._camera.position)
-      .normalize()
-      .multiplyScalar(distance);
-
-    this._controls.maxDistance = distance * 10;
-
+  morphoViewer._threeContext.getTargetPointFromSoma = function(): THREE.Vecor3 {
+    const morphoMesh = this.getMorphoFromCollection();
     // Get the coordinates for the center of the soma
     // This will be the point we want the camera to focus on!
 
@@ -71,6 +52,53 @@ const withFixedFocusOnMorphology = morphoViewer => {
       // instead of the entire neuron bounding box
       targetPoint = somaBoundingBox.getCenter(new THREE.Vector3());
     }
+    return targetPoint;
+  };
+
+  morphoViewer._threeContext.getCameraHeightAtMorpho = function(): number {
+    const targetPoint = this.getTargetPointFromSoma();
+
+    this._camera.updateMatrixWorld();
+
+    const cameraPosVector = (this
+      ._camera as THREE.PerspectiveCamera).position.clone();
+
+    const distance = cameraPosVector.distanceTo(targetPoint);
+
+    // Calculate the visible height (the height of camera frustrum)
+    // at the point it intersects with the morphology soma
+    const vFOV = (this._camera.fov * Math.PI) / 180; // convert vertical fov to radians
+    const height = 2 * Math.tan(vFOV / 2) * distance; // visible height
+
+    return height;
+  };
+
+  morphoViewer._threeContext.focusOnMorphology = function(name = null) {
+    const morphoMesh = this.getMorphoFromCollection(name);
+
+    const fitOffset = CAMERA_DISTANCE_OFFSET;
+
+    const box = new THREE.Box3();
+
+    box.expandByObject(morphoMesh);
+
+    const size = box.getSize(new THREE.Vector3());
+
+    const maxSize = Math.max(size.x, size.y, size.z);
+    const fitHeightDistance =
+      maxSize / (2 * Math.atan((Math.PI * this._camera.fov) / 360));
+    const fitWidthDistance = fitHeightDistance / this._camera.aspect;
+    const distance = fitOffset * Math.max(fitHeightDistance, fitWidthDistance);
+
+    const direction = this._controls.target
+      .clone()
+      .sub(this._camera.position)
+      .normalize()
+      .multiplyScalar(distance);
+
+    this._controls.maxDistance = distance * 10;
+
+    const targetPoint = this.getTargetPointFromSoma();
 
     // Look at our new center point
     this._camera.lookAt(targetPoint);

@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { removeChildren } from './dom';
 import { makeText } from './text';
 
 const AXES_HELPER_SCALE = 20;
@@ -23,7 +24,7 @@ const createOrientationHelper = (): THREE.Object3D => {
   return orientationHelper;
 };
 
-export class OrientationViewer {
+export default class OrientationViewer {
   private renderer: THREE.WebGLRenderer | null;
   private scene: THREE.Scene | null;
   private camera: THREE.Camera | null;
@@ -100,9 +101,7 @@ export class OrientationViewer {
   }
 
   destroy() {
-    while (this.div.lastChild) {
-      this.div.removeChild(this.div.lastChild);
-    }
+    removeChildren(this.div);
     cancelAnimationFrame(this.requestedAnimationFrameID);
     this.scene = null;
     this.renderer = null;
