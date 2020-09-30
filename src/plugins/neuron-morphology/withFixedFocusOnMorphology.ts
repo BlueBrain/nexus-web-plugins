@@ -31,7 +31,6 @@ const withFixedFocusOnMorphology = morphoViewer => {
     box.expandByObject(morphoMesh);
 
     const size = box.getSize(new THREE.Vector3());
-    const center = box.getCenter(new THREE.Vector3());
 
     const maxSize = Math.max(size.x, size.y, size.z);
     const fitHeightDistance =
@@ -46,7 +45,38 @@ const withFixedFocusOnMorphology = morphoViewer => {
       .multiplyScalar(distance);
 
     this._controls.maxDistance = distance * 10;
-    this._controls.target.copy(center);
+
+    // Get the coordinates for the center of the soma
+    // This will be the point we want the camera to focus on!
+
+    // NOTE: this function falls back to bounding box center even if soma is generated
+    // via orphaned sections
+    let targetPoint = morphoMesh.getTargetPoint();
+
+    // Does the soma exist or was it automatically generated?
+    const somaCenterTargetExists = !!morphoMesh._pointToTarget;
+
+    // If soma was generated using orphaned sections
+    // then we need to get the soma mesh and use the coordintates from that
+    if (!somaCenterTargetExists) {
+      // in the case where the soma was automatically generated
+      // by guessing the shape from the orphaned sections
+      // the soma will be added to the Morphology Object3D last
+      const soma = morphoMesh.children[morphoMesh.children.length - 1];
+
+      const somaBoundingBox = new THREE.Box3();
+      somaBoundingBox.expandByObject(soma);
+
+      // set the new target point from the soma's bounding box
+      // instead of the entire neuron bounding box
+      targetPoint = somaBoundingBox.getCenter(new THREE.Vector3());
+    }
+
+    // Look at our new center point
+    this._camera.lookAt(targetPoint);
+    // apply soma center coordinates as OrbitControls target
+    // this will center the controls around it for rotation
+    this._controls.target.copy(targetPoint);
 
     this._camera.near = distance / 100;
     this._camera.far = distance * 100;
