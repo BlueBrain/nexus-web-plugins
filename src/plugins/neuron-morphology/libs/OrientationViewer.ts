@@ -2,25 +2,48 @@ import * as THREE from 'three';
 import { removeChildren } from './dom';
 import { makeText } from './text';
 
-const AXES_HELPER_SCALE = 20;
+const AXES_HELPER_SCALE = 15;
 
 const createOrientationHelper = (): THREE.Object3D => {
   const orientationHelper = new THREE.Object3D();
-  const axesHelper = new THREE.AxesHelper(AXES_HELPER_SCALE);
 
-  const xAxisLAbel = makeText('X', { color: 'red' });
-  const yAxisLAbel = makeText('Y', { color: 'green' });
-  const zAxisLAbel = makeText('Z', { color: 'blue' });
+  const colors = ['red', 'green', 'blue'];
+  const axes = ['X', 'Y', 'Z'];
 
-  xAxisLAbel?.position.set(AXES_HELPER_SCALE, 0, 0);
-  yAxisLAbel?.position.set(0, AXES_HELPER_SCALE, 0);
-  zAxisLAbel?.position.set(0, 0, AXES_HELPER_SCALE);
+  // We need to swap Y for Z
+  // because three.js uses an uncommon orientation format
+  // therefore we will generate the Axes Helper ourselves
+  const positions = [
+    [AXES_HELPER_SCALE, 0, 0],
+    [0, 0, AXES_HELPER_SCALE],
+    [0, AXES_HELPER_SCALE, 0],
+  ];
 
-  xAxisLAbel && orientationHelper.add(xAxisLAbel);
-  yAxisLAbel && orientationHelper.add(yAxisLAbel);
-  zAxisLAbel && orientationHelper.add(zAxisLAbel);
+  for (let i = 0; i <= 2; i++) {
+    const color = colors[i];
+    const position = new THREE.Vector3(
+      positions[i][0],
+      positions[i][1],
+      positions[i][2]
+    );
 
-  orientationHelper.add(axesHelper);
+    const geometry = new THREE.Geometry();
+    geometry.vertices.push(position, new THREE.Vector3(0, 0, 0));
+    const material = new THREE.LineBasicMaterial({
+      color,
+      linewidth: 1,
+    });
+    const line = new THREE.LineSegments(geometry, material);
+
+    const label = axes[i];
+    const axisLabel = makeText(label, { color });
+    // Make sure the label has a little margin
+    const labelPosition = position.clone().multiplyScalar(1.2);
+    axisLabel?.position.set(labelPosition.x, labelPosition.y, labelPosition.z);
+
+    axisLabel && orientationHelper.add(axisLabel, line);
+  }
+
   return orientationHelper;
 };
 
@@ -58,6 +81,7 @@ export default class OrientationViewer {
       50000
     );
     const camPos = { x: 0, y: 0, z: 100 };
+    this.camera.lookAt(new THREE.Vector3(0, 0, 0));
     this.camera.position.x = camPos.x;
     this.camera.position.y = camPos.y;
     this.camera.position.z = camPos.z;
