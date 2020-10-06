@@ -22,6 +22,11 @@
   margin-left: 10px;
 }
 
+.morpho-wrapper > .actions {
+  position: relative;
+  z-index: 2;
+}
+
 .morpho-wrapper > .legend {
   position: absolute;
   left: 0;

@@ -4,6 +4,10 @@
   min-width: 200px;
   height: 100%;
   min-height: 400px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1;
 }
 
 .orientation {
@@ -13,6 +17,7 @@
   position: absolute;
   bottom: 0;
   right: 50px;
+  z-index: 2;
 }
 
 .scale {
@@ -23,4 +28,5 @@
   bottom: 0;
   right: 0;
   backdrop-filter: blur(2px);
+  z-index: 2;
 }
