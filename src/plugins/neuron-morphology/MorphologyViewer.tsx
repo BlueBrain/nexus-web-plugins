@@ -5,6 +5,7 @@ import OrientationViewer from './libs/OrientationViewer';
 import ScaleViewer from './libs/ScaleViewer';
 
 import './morpho-viewer.css';
+import MorphoLegend from './MorphoLegend';
 
 // TODO update morphoviewer library with typings
 const morphoviewer = require('morphoviewer').default;
@@ -125,19 +126,25 @@ export const MorphologyViewer: React.FC<{
   };
 
   return (
-    <div>
-      <div className="morpho-viewer" ref={ref}></div>
-      <div
-        className="scale"
-        ref={scaleRef}
-        onClick={handleOrientationClick}
-      ></div>
-      <div
-        className="orientation"
-        ref={orientationRef}
-        onClick={handleOrientationClick}
-      ></div>
-    </div>
+    <>
+      <MorphoLegend
+        isInterneuron={!!mv?.isInterneuron()}
+        isPolyline={!!options.asPolyline}
+      />
+      <div>
+        <div className="morpho-viewer" ref={ref}></div>
+        <div
+          className="scale"
+          ref={scaleRef}
+          onClick={handleOrientationClick}
+        ></div>
+        <div
+          className="orientation"
+          ref={orientationRef}
+          onClick={handleOrientationClick}
+        ></div>
+      </div>
+    </>
   );
 };
 

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Resource, NexusClient } from '@bbp/nexus-sdk';
 import { matches } from 'lodash';
-import { InputNumber, Button, Descriptions } from 'antd';
 import MorphoWrapper from './MorphoWrapper';
 import { MorphoViewerOptions } from './MorphologyViewer';
 

@@ -19,16 +19,6 @@ const MorphoWrapper: React.FC<{
           {options.asPolyline ? 'Show as Geometry' : 'Show as Lines'}
         </Button>
       </div>
-      <div className="legend">
-        <ul>
-          <li className={options.asPolyline ? '' : 'soma'}>
-            {options.asPolyline ? 'Soma (not supported in line mode)' : 'Soma'}
-          </li>
-          <li className="axon">Axon</li>
-          <li className="basal-dendrites">Basal Dendrites</li>
-          <li className="apical-dendrites">Apical Dendrites</li>
-        </ul>
-      </div>
       {error && <p>{error.message}</p>}
       {data && !error && <MorphologyViewer data={data} options={options} />}
     </div>

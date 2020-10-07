@@ -25,6 +25,14 @@ const withFixedFocusOnMorphology = morphoViewer => {
     return morphoMesh;
   };
 
+  morphoViewer.isInterneuron = function(): boolean {
+    // Interneurons do not have an apical dendrite, the pinkish colored dendrites
+    const morphoMesh = this._threeContext.getMorphoFromCollection();
+    return !morphoMesh.children.find(
+      child => child?.userData?.typename === 'apical_dendrite'
+    );
+  };
+
   morphoViewer._threeContext.getTargetPointFromSoma = function(): THREE.Vecor3 {
     const morphoMesh = this.getMorphoFromCollection();
     // Get the coordinates for the center of the soma
