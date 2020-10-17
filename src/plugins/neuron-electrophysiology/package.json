@@ -1,6 +1,6 @@
 {
   "name": "Electrophysiological Recording Viewer",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Displays neuron electrophysiological data",
   "main": "index.tsx",
   "tags": [],

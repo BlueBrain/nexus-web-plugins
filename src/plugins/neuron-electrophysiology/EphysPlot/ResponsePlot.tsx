@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Plot from 'react-plotly.js';
-import { Radio } from 'antd';
 
 import { convertVolts, Volts } from '../utils/plotHelpers';
 import { TraceData, IndexDataValue } from '../EphysPlot';
@@ -59,6 +58,7 @@ const ResponsePlot: React.FC<{
             title: {
               text: yTitle,
             },
+            zeroline: false
           },
           autosize: true,
         }}

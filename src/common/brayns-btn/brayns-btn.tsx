@@ -90,7 +90,9 @@ export const BraynsBtn = (props: BraynsBtnProps) => {
                 size="small"
                 min={1}
                 max={144}
-                onChange={cpus => cpus && setCpus(cpus)}
+                onChange={cpus => {
+                  cpus && setCpus(cpus as number);
+                }}
                 onPressEnter={() => openBrayns()}
               />
             </Form.Item>
@@ -102,7 +104,9 @@ export const BraynsBtn = (props: BraynsBtnProps) => {
                 size="small"
                 min={8}
                 max={768}
-                onChange={memory => memory && setMemory(memory)}
+                onChange={memory => {
+                  memory && setMemory(memory as number);
+                }}
                 onPressEnter={() => openBrayns()}
               />
             </Form.Item>

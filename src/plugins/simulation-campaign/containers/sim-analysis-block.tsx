@@ -1,7 +1,8 @@
 import React, { useContext } from 'react';
 import get from 'lodash/get';
 import sortBy from 'lodash/sortBy';
-import { Button, Icon } from 'antd';
+import { Button } from 'antd';
+import Icon from '@ant-design/icons';
 
 import { NexusImage, NexusClientContext } from '../../../common';
 import SimAnalysisBlock from '../components/sim-analysis-block';
@@ -40,7 +41,7 @@ const SimAnalysisBlockContainer = (props: SimAnalysisBlockContainerProps) => {
 
   return (
     <SimAnalysisBlock>
-      {sortedReports.map((report) => (
+      {sortedReports.map(report => (
         <NexusImage
           imageUrl={report.imageUrl}
           org={report.org}

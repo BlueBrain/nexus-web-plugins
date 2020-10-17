@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Icon } from 'antd';
+import Icon from '@ant-design/icons';
 
 import CampAnalysisActivityContainer from './camp-analysis-activity';
 import { NexusClientContext } from '../../../../common';

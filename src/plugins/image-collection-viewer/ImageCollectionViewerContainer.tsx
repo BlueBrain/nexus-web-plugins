@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Resource, NexusClient, NexusFile } from '@bbp/nexus-sdk';
-import { List, Popover, Card, Spin, Menu, Dropdown, Button, Icon } from 'antd';
+import { List, Popover, Card, Spin, Menu, Dropdown, Button } from 'antd';
+import Icon from '@ant-design/icons';
 import 'antd/dist/antd.css';
-import { ClickParam } from 'antd/lib/menu';
 
 type ImageCollection = {
   imageSrc: string;
@@ -43,7 +43,7 @@ const ImageCollectionViewerContainer: React.FC<{
     return typeToNumbers;
   }, [resource]);
 
-  const [selectedType, setSelectedType] = React.useState<String>('All');
+  const [selectedType, setSelectedType] = React.useState<string>('All');
   const filteredData = React.useMemo(() => {
     if (selectedType === 'All') {
       return data;
@@ -60,8 +60,8 @@ const ImageCollectionViewerContainer: React.FC<{
 
   const menu = (
     <Menu
-      onClick={(param: ClickParam) => {
-        setSelectedType(param.key);
+      onClick={param => {
+        setSelectedType(param.key as string);
       }}
     >
       <Menu.Item key={'All'}>All</Menu.Item>

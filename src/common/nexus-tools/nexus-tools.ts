@@ -1,3 +1,4 @@
+import { Resource } from '@bbp/nexus-sdk';
 import get from 'lodash/get';
 
 import { Distribution, EncodingFormatEnum } from '../types';
@@ -143,3 +144,6 @@ export const distributionFormatLabel = (distribution: Distribution): string => {
     distribution.encodingFormat.split('/').slice(-1)[0]
   );
 };
+
+export const propAsArray = <T>(resource: Resource, key: string): [T] =>
+  Array.isArray(resource[key]) ? resource[key] : [resource[key]];

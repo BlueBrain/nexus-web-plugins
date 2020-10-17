@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Spin } from 'antd';
+import { Skeleton, Spin } from 'antd';
 import Lightbox from 'react-image-lightbox';
 import { NexusClient } from '@bbp/nexus-sdk';
 
@@ -8,7 +8,7 @@ import { parseUrl } from '../nexus-tools/nexus-tools';
 import 'react-image-lightbox/style.css';
 import './nexus-image.css';
 
-interface NexusImageContainerProps {
+export interface NexusImageContainerProps {
   imageUrl: string; // nexus selfUrl, if org ond project will be treated as nexus id
   nexus: NexusClient;
   org?: string;
@@ -19,35 +19,31 @@ interface NexusImageProps {
   imageData: any;
 }
 
-const NexusImageComponent = (props: NexusImageProps) => {
+export const NexusImageComponent = (props: NexusImageProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [imageObjectUrl] = useState<string>(
-    URL.createObjectURL(props.imageData)
-  );
+  const [data, setData] = useState<string>();
 
   useEffect(() => {
-    return () => URL.revokeObjectURL(imageObjectUrl);
-  }, []);
+    const data = URL.createObjectURL(props.imageData);
+    setData(data);
+    return () => URL.revokeObjectURL(data);
+  }, [props.imageData]);
 
-  return (
+  const handleClick = (e: React.MouseEvent) => {
+    setIsOpen(true);
+    e.stopPropagation();
+  };
+
+  return data ? (
     <>
       {isOpen && (
-        <Lightbox
-          mainSrc={imageObjectUrl}
-          onCloseRequest={() => setIsOpen(false)}
-        />
+        <Lightbox mainSrc={data} onCloseRequest={() => setIsOpen(false)} />
       )}
-      <div
-        className="nexus-image-container"
-        onClick={(e: React.MouseEvent) => {
-          setIsOpen(true);
-          e.stopPropagation();
-        }}
-      >
-        <img src={imageObjectUrl} alt="" />
+      <div className="nexus-image-container" onClick={handleClick}>
+        <img src={data} alt="" />
       </div>
     </>
-  );
+  ) : null;
 };
 
 export const NexusImage = (props: NexusImageContainerProps) => {
@@ -60,10 +56,11 @@ export const NexusImage = (props: NexusImageContainerProps) => {
     org && project ? { org, project } : parseUrl(imageUrl);
 
   React.useEffect(() => {
+    // TODO: We can implement a caching layer here based on file revision
     nexus.File.get(imageOrg, imageProject, encodeURIComponent(imageUrl), {
       as: 'blob',
     })
-      .then((imageData) => setImageData(imageData as string))
+      .then(imageData => setImageData(imageData as string))
       .catch(() => {})
       .finally(() => setLoading(false));
   }, []);
@@ -72,7 +69,9 @@ export const NexusImage = (props: NexusImageContainerProps) => {
     <div>
       {loading && (
         <Spin spinning={loading}>
-          <div className="nexus-image-container"></div>
+          <div className="nexus-image-container">
+            <Skeleton.Image />
+          </div>
         </Spin>
       )}
       {imageData && <NexusImageComponent imageData={imageData} />}

@@ -17,6 +17,10 @@ function getConfig(realm?: Realm) {
   };
 }
 
+function getAccessToken(): string | null {
+  return localStorage.getItem(config.bearerTokenKey);
+}
+
 function saveAccessToken(token: string) {
   localStorage.setItem(config.bearerTokenKey, token);
 }
@@ -59,7 +63,12 @@ export async function setUpSession(): Promise<[UserManager, User | null]> {
     window.location.pathname + window.location.search
   );
 
-  if (user) {
+  // Let's ignore things
+  // if we already have a token in L.S.
+  // just temporarily for debug purposes
+  // because we don't have proper access rights
+  // with this client for the moment :(
+  if (user && !getAccessToken()) {
     if (user.expired || !user.access_token) {
       await userManager.signinRedirect();
     }

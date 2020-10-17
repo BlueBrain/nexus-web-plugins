@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import moment from 'moment';
-import { Table, Badge, Button, Icon } from 'antd';
-
+import { Table, Badge, Button } from 'antd';
+import Icon from '@ant-design/icons';
 import { Simulation } from '../types';
 
 import './sim-list.css';
@@ -124,7 +124,7 @@ const SimulationList = (props: SimulationListProps) => {
         columns={simulationTableColumns as any}
         rowKey={row => row.self}
         pagination={false}
-        scroll={{ y: expanded && expandable ? false : 340 }}
+        scroll={{ y: expanded && expandable ? undefined : 340 }}
         size="middle"
         bordered
         onRow={data => ({

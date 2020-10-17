@@ -17,3 +17,11 @@
 .nexus-image {
   display: inline-block;
 }
+
+.nexus-image-container .ant-skeleton.ant-skeleton-element {
+  width: 100%;
+}
+
+.nexus-image-container .ant-skeleton.ant-skeleton-element .ant-skeleton-image {
+  width: 100%;
+}

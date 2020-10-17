@@ -1,5 +1,6 @@
-import { Select, Checkbox } from 'antd';
 import * as React from 'react';
+import { Select, Checkbox, Button } from 'antd';
+import { FileImageOutlined } from '@ant-design/icons';
 
 import StimulusPlot from './StimulusPlot';
 import ResponsePlot from './ResponsePlot';
@@ -49,16 +50,25 @@ export type RABIndex = {
   };
 };
 
-const EphysPlot: React.FC<{ options: DataSets; index: RABIndex }> = ({
+const EphysPlot: React.FC<{
+  options: DataSets;
+  index: RABIndex;
+  defaultStimulusType?: string;
+  defaultRepetition?: string;
+  goToImage: (stimulusType: string, repetition: string) => void;
+}> = ({
   options,
   index,
+  defaultStimulusType,
+  defaultRepetition,
+  goToImage,
 }) => {
   const [selectedDataSet, setSelectedDataSet] = React.useState<string>(
-    Object.keys(index.data)[0]
+    defaultStimulusType || Object.keys(index.data)[0]
   );
 
   const [selectedRepetition, setSelectedRepetition] = React.useState<string>(
-    Object.keys(index.data[selectedDataSet].repetitions)[0]
+    defaultRepetition || Object.keys(index.data[selectedDataSet].repetitions)[0]
   );
 
   const [selectedSweeps, setSelectedSweeps] = React.useState<string[]>(
@@ -81,26 +91,40 @@ const EphysPlot: React.FC<{ options: DataSets; index: RABIndex }> = ({
     return index.data[selectedDataSet];
   }, [selectedDataSet, index]);
 
-  const dataSetOptions = Object.keys(index.data).map(O => {
-    return <Select.Option key={O}>{O}</Select.Option>;
+  const dataSetOptions = Object.keys(index.data).map(stimulusTypeKey => {
+    return (
+      <Select.Option key={stimulusTypeKey} value={stimulusTypeKey}>
+        {stimulusTypeKey}
+      </Select.Option>
+    );
   });
 
   const repetitionOptions = repetitions
     ? Object.keys(repetitions).map(v => {
-        return <Select.Option key={v}>{v}</Select.Option>;
+        return (
+          <Select.Option key={v} value={v}>
+            {v}
+          </Select.Option>
+        );
       })
     : null;
 
   const sweepsOptions = sweeps
     ? sweeps.map(v => {
-        return <Select.Option key={v}>{v}</Select.Option>;
+        return (
+          <Select.Option key={v} value={v}>
+            {v}
+          </Select.Option>
+        );
       })
     : null;
 
   const handleStimulusChange = (value: string) => {
     setSelectedDataSet(value);
     setSelectedRepetition(Object.keys(repetitions)[0]);
-    setSelectedSweeps(index.data[value].repetitions[selectedRepetition].sweeps);
+    setSelectedSweeps(
+      index.data[value]?.repetitions[selectedRepetition].sweeps
+    );
   };
 
   const handleRepetitionChange = (value: string) => {
@@ -116,6 +140,10 @@ const EphysPlot: React.FC<{ options: DataSets; index: RABIndex }> = ({
     }
   };
 
+  const handleGoToImage = () => {
+    goToImage(selectedDataSet, selectedRepetition);
+  };
+
   return (
     <>
       <div style={{ margin: '10px' }}>
@@ -124,7 +152,6 @@ const EphysPlot: React.FC<{ options: DataSets; index: RABIndex }> = ({
         </label>
         <Select
           value={selectedDataSet}
-          size={'default'}
           placeholder="Please select"
           onChange={handleStimulusChange}
           style={{ width: '100%' }}
@@ -138,7 +165,6 @@ const EphysPlot: React.FC<{ options: DataSets; index: RABIndex }> = ({
           {repetitions && `(${Object.keys(repetitions).length} available)`}
         </label>
         <Select
-          size={'default'}
           placeholder="Please select"
           value={selectedRepetition}
           onChange={handleRepetitionChange}
@@ -146,6 +172,9 @@ const EphysPlot: React.FC<{ options: DataSets; index: RABIndex }> = ({
         >
           {repetitionOptions}
         </Select>
+      </div>
+      <div>
+        <Button onClick={handleGoToImage}>View Images</Button>
       </div>
       <div style={{ margin: '10px' }}>
         <span>
@@ -169,7 +198,6 @@ const EphysPlot: React.FC<{ options: DataSets; index: RABIndex }> = ({
           <Select
             value={selectedSweeps}
             mode="tags"
-            size="default"
             placeholder="Please select"
             onChange={(value: string[]) => {
               setSelectedSweeps(value);
@@ -180,13 +208,13 @@ const EphysPlot: React.FC<{ options: DataSets; index: RABIndex }> = ({
           </Select>
         </span>
       </div>
-      <StimulusPlot
+      <ResponsePlot
         metadata={selectedMetadata}
         sweeps={selectedSweeps}
         dataset={selectedDataSet}
         options={options}
       />
-      <ResponsePlot
+      <StimulusPlot
         metadata={selectedMetadata}
         sweeps={selectedSweeps}
         dataset={selectedDataSet}

@@ -106,3 +106,9 @@ export type NexusPluginProps<R> = {
 export type NexusPlugin<R = any> = (
   pluginProps: NexusPluginProps<R>
 ) => CallbackFn | void;
+
+export type RemoteData<T> = {
+  loading: boolean;
+  error: Error | null;
+  data: T | null;
+};

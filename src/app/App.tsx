@@ -16,7 +16,7 @@ import { Circuit } from '../plugins/circuit';
 import { Simulation } from '../plugins/simulation';
 import { SimulationCampaign } from '../plugins/simulation-campaign';
 import { SimWriterConfig } from '../plugins/sim-writer-config';
-import { EphysDistributionContainer } from '../plugins/neuron-electrophysiology';
+import { EphysViewerContainer } from '../plugins/neuron-electrophysiology';
 import { ImageViewerContainer } from '../plugins/image-viewer';
 import { MorphoViewerContainer } from '../plugins/neuron-morphology';
 import { MINDSMetadataContainer } from '../plugins/metadata';
@@ -55,12 +55,12 @@ const plugins: { [pluginName: string]: React.FC<any> } = {
   simulation: Simulation,
   simulationCampaign: SimulationCampaign,
   simWriterConfig: SimWriterConfig,
-  ephysViewer: EphysDistributionContainer,
+  ephysViewer: EphysViewerContainer,
   mophoViewer: MorphoViewerContainer,
   imageViewer: ImageViewerContainer,
   imageCollectionViewer: ImageCollectionViewerContainer,
   metadata: MINDSMetadataContainer,
-  dataAccess: DataAccessContainer,
+  dataAccess: DataAccessContainer,  
 };
 
 const pluginNames = Object.keys(plugins);

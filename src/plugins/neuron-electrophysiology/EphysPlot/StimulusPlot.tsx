@@ -59,6 +59,7 @@ const StimulusPlot: React.FC<{
             title: {
               text: yTitle,
             },
+            zeroline: false
           },
           autosize: true,
         }}

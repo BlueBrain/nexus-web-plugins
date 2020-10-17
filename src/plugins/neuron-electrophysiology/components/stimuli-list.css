@@ -1,0 +1,20 @@
+.stimuli-list {
+  margin: 0.5em 0;
+  padding: 1em;
+  border-radius: 0.5em;
+}
+
+.stimuli-list:nth-child(even) {
+  background-color: #fafafa;
+}
+
+.repetition-list {
+  width: 250px;
+  padding: 1em;
+  /* margin: 0 1em 1em 0; */
+  border-radius: 0.5em;
+}
+
+.repetition-list:nth-child(even) {
+  background-color: #fafafa;
+}

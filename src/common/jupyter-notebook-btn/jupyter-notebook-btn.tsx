@@ -203,7 +203,7 @@ export const JupyterNotebookBtn = (props: JupyterNotebookBtnProps) => {
                 min={1}
                 max={144}
                 disabled={configFormDisabled}
-                onChange={cpus => cpus && setCpus(cpus)}
+                onChange={cpus => cpus && setCpus(cpus as number)}
                 onPressEnter={() => runAllocation()}
               />
             </Form.Item>
@@ -215,7 +215,7 @@ export const JupyterNotebookBtn = (props: JupyterNotebookBtnProps) => {
                 min={1}
                 max={768}
                 disabled={configFormDisabled}
-                onChange={memory => memory && setMemory(memory)}
+                onChange={memory => memory && setMemory(memory as number)}
                 onPressEnter={() => runAllocation()}
               />
             </Form.Item>
@@ -227,7 +227,7 @@ export const JupyterNotebookBtn = (props: JupyterNotebookBtnProps) => {
                 format={TIME_FORMAT}
                 minuteStep={15}
                 disabled={configFormDisabled}
-                onChange={time => setAllocationTime(time)}
+                onChange={time => time && setAllocationTime(time)}
               />
             </Form.Item>
             {/* <Form.Item label="Server name">
