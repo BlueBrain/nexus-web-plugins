@@ -6,17 +6,9 @@
   "tags": [],
   "author": "Kenneth Pirman <kenneth.pirman@epfl.ch>",
   "license": "ISC",
-    "mapping": [{
-      "@type": [
-        "Entity"
-      ],
-      "image": [
-        {}
-      ]
-    },
+  "mapping": [
     {
       "distribution": {}
     }
   ]
 }
-
