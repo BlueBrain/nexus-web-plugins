@@ -26,7 +26,7 @@ const ImageViewComponent: React.FC<{
   imageCollectionData: RemoteData<ImageCollection>;
   imagePreview: React.FC<{ imageUrl: string }>;
   onStimulusChange: (value: string) => void;
-  onRepetitionClicked: (rep: string) => () => void;
+  onRepetitionClicked: (stimulusType: string, rep: string) => () => void;
 }> = ({
   stimulusTypeMap,
   stimulusType,
@@ -60,7 +60,10 @@ const ImageViewComponent: React.FC<{
           {[...(imageCollectionData.data?.entries() || [])].map(
             ([stimulusType, { repetitions }]) => {
               return (
-                <div className="stimuli-list">
+                <div
+                  className="stimuli-list"
+                  key={`image-preview-${stimulusType}`}
+                >
                   <h3>
                     {stimulusType} ({Object.keys(repetitions).length}{' '}
                     repetitions)
@@ -77,7 +80,10 @@ const ImageViewComponent: React.FC<{
                         }
                       );
                       return (
-                        <div className="repetition-list">
+                        <div
+                          className="repetition-list"
+                          key={`image-preview-${stimulusType}-${repKey}`}
+                        >
                           <div
                             style={{
                               margin: '0 0 1em 0',
@@ -87,17 +93,21 @@ const ImageViewComponent: React.FC<{
                             <Button
                               size="small"
                               icon={<LineChartOutlined />}
-                              onClick={onRepetitionClicked(repKey)}
+                              onClick={onRepetitionClicked(
+                                stimulusType,
+                                repKey
+                              )}
                             >
                               Interactive View
                             </Button>
                           </div>
-                          {sweeps.map(({ imageSrc }) => {
+                          {sweeps.map(({ imageSrc }, index) => {
                             return (
                               <div
                                 style={{
                                   margin: '0 0 1em 0',
                                 }}
+                                key={`image-preview-${stimulusType}-${repKey}-${index}`}
                               >
                                 {imagePreview({ imageUrl: imageSrc })}
                               </div>

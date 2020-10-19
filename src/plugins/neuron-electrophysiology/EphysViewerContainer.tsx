@@ -56,8 +56,12 @@ const EphysViewerContainer: React.FC<{
     setStimulusType(value);
   };
 
-  const handleRepetitionClicked = (rep: string) => () => {
-    setSelectedRepetition(rep);
+  const handleRepetitionClicked = (
+    stimulusType: string,
+    repetition: string
+  ) => () => {
+    setStimulusType(stimulusType);
+    setSelectedRepetition(repetition);
     setView(VIEWS.CHART);
   };
 

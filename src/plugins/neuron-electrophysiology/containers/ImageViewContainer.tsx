@@ -20,7 +20,7 @@ const ImageViewContainer: React.FC<{
   stimulusTypeMap: Map<string, number>;
   stimulusType: string;
   onStimulusChange: (value: string) => void;
-  onRepetitionClicked: (rep: string) => () => void;
+  onRepetitionClicked: (stimulusType: string, rep: string) => () => void;
 }> = ({
   stimulusType,
   resource,
