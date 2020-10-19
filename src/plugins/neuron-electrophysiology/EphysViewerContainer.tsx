@@ -45,9 +45,7 @@ const EphysViewerContainer: React.FC<{
     return typeToNumbers;
   }, [resource]);
 
-  const [stimulusType, setStimulusType] = React.useState<string>(
-    stimulusTypes[0] || 'None'
-  );
+  const [stimulusType, setStimulusType] = React.useState<string>('All');
 
   const handleViewChange = (e: RadioChangeEvent) => {
     const view = e.target.value;
