@@ -57,16 +57,23 @@ const ImageViewComponent: React.FC<{
       <hr style={{ color: '#00000008' }} />
       <div>
         <Spin spinning={imageCollectionData.loading}>
-          {[...(imageCollectionData.data?.entries() || [])].map(
-            ([stimulusType, { repetitions }]) => {
+          {[...(imageCollectionData.data?.entries() || [])]
+            .sort(([stimulusTypeA], [stimulusTypeB]) => {
+              const textA = stimulusTypeA.toUpperCase();
+              const textB = stimulusTypeB.toUpperCase();
+              return textA < textB ? -1 : textA > textB ? 1 : 0;
+            })
+            .map(([stimulusType, { repetitions }]) => {
+              const repLength = Object.keys(repetitions).length;
+
               return (
                 <div
                   className="stimuli-list"
                   key={`image-preview-${stimulusType}`}
                 >
                   <h3>
-                    {stimulusType} ({Object.keys(repetitions).length}{' '}
-                    repetitions)
+                    {stimulusType} ({repLength}{' '}
+                    {repLength > 1 ? 'repetitions' : 'repetition'})
                   </h3>
                   <div className="reps" style={{ display: 'flex' }}>
                     {Object.keys(repetitions).map(repKey => {
@@ -119,8 +126,7 @@ const ImageViewComponent: React.FC<{
                   </div>
                 </div>
               );
-            }
-          )}
+            })}
           {imageCollectionData.data?.size === 0 && (
             <Empty
               style={{ padding: '2em' }}
