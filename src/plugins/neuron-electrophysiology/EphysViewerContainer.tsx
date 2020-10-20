@@ -101,7 +101,9 @@ const EphysViewerContainer: React.FC<{
             nexus={nexus}
             resource={resource}
             defaultStimulusType={
-              stimulusType === 'None' ? undefined : stimulusType
+              stimulusType === 'None' || stimulusType === 'All'
+                ? undefined
+                : stimulusType
             }
             defaultRepetition={selectedRepetition}
             goToImage={handleGoToImage}
