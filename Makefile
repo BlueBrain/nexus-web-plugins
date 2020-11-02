@@ -60,7 +60,7 @@ run_qa_in_docker: | $(ROOT_NPM)
 		--env HTTP_PROXY="http://bbpproxy.epfl.ch:80/" \
 		--env HTTPS_PROXY="http://bbpproxy.epfl.ch:80/" \
 		--entrypoint /bin/sh \
-		node \
+		node:lts  \
 			-c "make run_qa"
 
 build_ts: | $(NODE_MODULES)
@@ -82,7 +82,7 @@ build_dist_in_docker: | $(ROOT_NPM)
 		--env HTTP_PROXY="http://bbpproxy.epfl.ch:80/" \
 		--env HTTPS_PROXY="http://bbpproxy.epfl.ch:80/" \
 		--entrypoint /bin/sh \
-		node \
+		node:lts  \
 			-c "make build_dist"
 
 build_image:

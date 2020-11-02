@@ -55,6 +55,7 @@
     "d3": "^5.16.0",
     "dygraphs": "^2.1.0",
     "file-saver": "^2.0.2",
+    "handlebars": "^4.7.6",
     "js-yaml": "^3.14.0",
     "json-stringify-pretty-compact": "^2.0.0",
     "lodash": "^4.17.20",
@@ -71,8 +72,11 @@
     "react-image-lightbox": "^5.1.1",
     "react-plotly.js": "^2.5.0",
     "react-responsive-carousel": "^3.2.7",
+    "showdown": "^1.9.1",
     "swcmorphologyparser": "git+https://github.com/jonathanlurie/swcmorphologyparser.git",
-    "three": "^0.120.1"
+    "three": "^0.120.1",
+    "ts-pattern": "^1.1.0",
+    "xss": "^1.0.8"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^4.2.4",
@@ -88,6 +92,7 @@
     "@types/randomcolor": "^0.5.3",
     "@types/react": "^16.9.0",
     "@types/react-dom": "^16.9.0",
+    "@types/showdown": "^1.9.3",
     "less": "^3.11.1",
     "less-loader": "^5.0.0",
     "lint-staged": "^10.0.8",

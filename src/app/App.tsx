@@ -21,6 +21,7 @@ import { ImageViewerContainer } from '../plugins/image-viewer';
 import { MorphoViewerContainer } from '../plugins/neuron-morphology';
 import { MINDSMetadataContainer } from '../plugins/metadata';
 import { DataAccessContainer } from '../plugins/nexus-data-access';
+import { MarkdownContainer } from '../plugins/markdown';
 
 import './app.css';
 
@@ -59,6 +60,7 @@ const plugins: { [pluginName: string]: React.FC<any> } = {
   imageViewer: ImageViewerContainer,
   metadata: MINDSMetadataContainer,
   dataAccess: DataAccessContainer,
+  markdown: MarkdownContainer,
 };
 
 const pluginNames = Object.keys(plugins);
