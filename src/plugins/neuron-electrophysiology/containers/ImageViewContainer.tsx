@@ -2,10 +2,11 @@ import * as React from 'react';
 import { NexusClient, Resource } from '@bbp/nexus-sdk';
 
 import { NexusImage } from '../../../common';
-import ImageViewComponent from '../components/ImageViewComponent';
+import ImageViewComponent, {
+  ImageItem,
+} from '../components/ImageViewComponent';
 import {
   EPhysImageItem,
-  ImageItem,
   useImageCollectionDistribution,
 } from '../hooks/useImageCollectionDistribution';
 

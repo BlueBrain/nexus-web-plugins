@@ -16,6 +16,7 @@ export type ImageItem = {
     [rep: number]: {
       imageSrc: string;
       fileName: string;
+      about?: string;
     }[];
   };
 };
@@ -79,9 +80,12 @@ const ImageViewComponent: React.FC<{
                     {Object.keys(repetitions).map(repKey => {
                       const sweeps = repetitions[Number(repKey)]?.sort(
                         (a, b) => {
-                          return a.fileName.includes('response')
+                          const aType = (a.about || a.fileName).toLowerCase();
+                          const bType = (b.about || b.fileName).toLowerCase();
+
+                          return aType.includes('response')
                             ? 0
-                            : b.fileName.includes('response')
+                            : bType.includes('response')
                             ? 1
                             : 0;
                         }
