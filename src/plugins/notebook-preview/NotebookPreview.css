@@ -1,0 +1,19 @@
+.notebook-preview {
+  max-width: 1200px;
+  margin: 20px;
+  border: 1px solid #d3d3d3;
+  padding: 25px;
+}
+
+.code-cell {
+  border: 1px solid #d3d3d3;
+  margin-bottom: 5px;
+}
+
+.markdown-cell {
+  margin-top: 20px;
+}
+
+.code-cell > .react-codemirror2 > .cm-s-elegant {
+  background-color: #f5f5f5;
+}

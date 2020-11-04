@@ -1,0 +1,15 @@
+{
+  "name": "Jupyter Notebook Preview",
+  "version": "1.0.0",
+  "description": "Preview Jupyter Notebooks in Fusion",
+  "main": "index.tsx",
+  "tags": [],
+  "author": "Natalia Stafeeva <natalia.stafeva@epfl.ch>",
+  "license": "ISC",
+  "mapping": {
+    "@type": [
+      "SoftwareSourceCode",
+      "Entity"
+    ]
+  }
+}
