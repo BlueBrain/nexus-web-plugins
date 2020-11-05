@@ -11,6 +11,11 @@ export type TraceData = {
   x?: any;
 };
 
+export type ZoomRanges = {
+  x: [number | undefined, number | undefined];
+  y: [number | undefined, number | undefined];
+};
+
 export type DataSets = {
   [key: string]: TraceData;
 };
@@ -63,6 +68,8 @@ const EphysPlot: React.FC<{
   defaultRepetition,
   goToImage,
 }) => {
+  const [zoomRanges, setZoomRanges] = React.useState<ZoomRanges | null>(null);
+
   const [selectedDataSet, setSelectedDataSet] = React.useState<string>(
     defaultStimulusType || Object.keys(index.data)[0]
   );
@@ -213,12 +220,16 @@ const EphysPlot: React.FC<{
         sweeps={selectedSweeps}
         dataset={selectedDataSet}
         options={options}
+        zoomRanges={zoomRanges}
+        onZoom={setZoomRanges}
       />
       <StimulusPlot
         metadata={selectedMetadata}
         sweeps={selectedSweeps}
         dataset={selectedDataSet}
         options={options}
+        zoomRanges={zoomRanges}
+        onZoom={setZoomRanges}
       />
     </>
   );

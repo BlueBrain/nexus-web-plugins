@@ -3,7 +3,7 @@ import Plot from 'react-plotly.js';
 import { Radio } from 'antd';
 
 import { convertAmperes, Amperes } from '../utils/plotHelpers';
-import { TraceData, IndexDataValue } from '../EphysPlot';
+import { TraceData, IndexDataValue, ZoomRanges } from '../EphysPlot';
 
 const DEFAULT_STIMULUS_UNIT = 'pA';
 
@@ -12,7 +12,9 @@ const StimulusPlot: React.FC<{
   sweeps: string[];
   dataset: string;
   options: any;
-}> = ({ metadata, sweeps, dataset, options }) => {
+  zoomRanges: ZoomRanges | null;
+  onZoom: (zoomRanges: ZoomRanges) => void;
+}> = ({ metadata, sweeps, dataset, options, zoomRanges, onZoom }) => {
   const [stimulusUnit, setStimulusUnit] = React.useState<Amperes>(
     DEFAULT_STIMULUS_UNIT
   );
@@ -48,18 +50,29 @@ const StimulusPlot: React.FC<{
     <>
       <Plot
         data={dataStimulus}
+        onRelayout={e => {
+          const {
+            'xaxis.range[0]': x1,
+            'xaxis.range[1]': x2,
+            'yaxis.range[0]': y1,
+            'yaxis.range[1]': y2,
+          } = e;
+          onZoom({ x: [x1, x2], y: [y1, y2] });
+        }}
         layout={{
           title: 'Stimulus',
           xaxis: {
             title: {
-              text: xTitle,
+              text: `Time (${xTitle})`,
             },
+            range: zoomRanges?.x,
           },
           yaxis: {
             title: {
-              text: yTitle,
+              text: `Current (${yTitle})`,
             },
-            zeroline: false
+            range: zoomRanges?.y,
+            zeroline: false,
           },
           autosize: true,
         }}

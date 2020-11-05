@@ -2,16 +2,18 @@ import * as React from 'react';
 import Plot from 'react-plotly.js';
 
 import { convertVolts, Volts } from '../utils/plotHelpers';
-import { TraceData, IndexDataValue } from '../EphysPlot';
+import { TraceData, IndexDataValue, ZoomRanges } from '../EphysPlot';
 
 const DEFAULT_RESPONSE_UNIT = 'mV';
 
 const ResponsePlot: React.FC<{
-  metadata: IndexDataValue | undefined;
+  metadata?: IndexDataValue;
   sweeps: string[];
   dataset: string;
   options: any;
-}> = ({ metadata, sweeps, dataset, options }) => {
+  zoomRanges: ZoomRanges | null;
+  onZoom: (zoomRanges: ZoomRanges) => void;
+}> = ({ metadata, sweeps, dataset, options, zoomRanges, onZoom }) => {
   const [responseUnit, setResponseUnit] = React.useState<Volts>(
     DEFAULT_RESPONSE_UNIT
   );
@@ -47,18 +49,29 @@ const ResponsePlot: React.FC<{
     <>
       <Plot
         data={dataResponse}
+        onRelayout={e => {
+          const {
+            'xaxis.range[0]': x1,
+            'xaxis.range[1]': x2,
+            'yaxis.range[0]': y1,
+            'yaxis.range[1]': y2,
+          } = e;
+          onZoom({ x: [x1, x2], y: [y1, y2] });
+        }}
         layout={{
           title: 'Response',
           xaxis: {
             title: {
-              text: xTitle,
+              text: `Time (${xTitle})`,
             },
+            range: zoomRanges?.x,
           },
           yaxis: {
             title: {
-              text: yTitle,
+              text: `Membrane Potential (${yTitle})`,
             },
-            zeroline: false
+            range: zoomRanges?.y,
+            zeroline: false,
           },
           autosize: true,
         }}
