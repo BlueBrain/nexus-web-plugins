@@ -21,18 +21,20 @@ const NotebookPreviewContainer: React.FC<{
     if (resource.url && isNotebookFile(resource.url)) {
       setLoading(true);
 
-      window
-        .fetch(resource.url)
+      fetch(resource.url)
         .then(response => {
           return response.json();
         })
         .then(response => {
           setCode(response);
+          setLoading(false);
         })
         .catch(error => {
-          notification.error({ message: 'Failed to load the file' });
-        })
-        .finally(() => setLoading(false));
+          notification.error({
+            message: 'Failed to load the file',
+          });
+          setLoading(false);
+        });
     }
   }, []);
 

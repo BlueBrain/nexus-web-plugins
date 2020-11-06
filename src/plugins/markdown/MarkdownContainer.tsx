@@ -31,7 +31,7 @@ const MarkdownContainer: React.FC<{
     .with({ data: when(data => !!data) }, ({ data: markdown }) =>
       markdown ? <MarkdownComponent markdown={markdown} /> : <></>
     )
-    .otherwise(() => <Empty description="An unkown error occured" />);
+    .otherwise(() => <Empty description="An unknown error occured" />);
 };
 
 export default MarkdownContainer;
