@@ -4,12 +4,11 @@
   "description": "Preview Jupyter Notebooks in Fusion",
   "main": "index.tsx",
   "tags": [],
-  "author": "Natalia Stafeeva <natalia.stafeva@epfl.ch>",
+  "author": "Natalia Stafeeva <natalia.stafeeva@epfl.ch>",
   "license": "ISC",
   "mapping": {
     "@type": [
-      "SoftwareSourceCode",
-      "Entity"
+      "SoftwareSourceCode"
     ]
   }
 }
