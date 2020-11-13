@@ -60,7 +60,7 @@
     "json-stringify-pretty-compact": "^2.0.0",
     "lodash": "^4.17.20",
     "moment": "^2.29.1",
-    "morphoviewer": "^0.1.15",
+    "morphoviewer": "^0.1.17",
     "node-cache-engine": "^1.1.0",
     "oidc-client": "^1.10.1",
     "pako": "^1.0.11",
@@ -74,7 +74,7 @@
     "react-plotly.js": "^2.5.0",
     "react-responsive-carousel": "^3.2.7",
     "showdown": "^1.9.1",
-    "swcmorphologyparser": "git+https://github.com/jonathanlurie/swcmorphologyparser.git",
+    "swcmorphologyparser": "^0.1.10",
     "three": "^0.120.1",
     "ts-pattern": "^1.1.0",
     "xss": "^1.0.8"
