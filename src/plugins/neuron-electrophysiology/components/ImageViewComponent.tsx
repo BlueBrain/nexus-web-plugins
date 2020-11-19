@@ -80,14 +80,19 @@ const ImageViewComponent: React.FC<{
                     {Object.keys(repetitions).map(repKey => {
                       const sweeps = repetitions[Number(repKey)]?.sort(
                         (a, b) => {
-                          const aType = (a.about || a.fileName).toLowerCase();
-                          const bType = (b.about || b.fileName).toLowerCase();
-
-                          return aType.includes('response')
-                            ? 0
-                            : bType.includes('response')
-                            ? 1
-                            : 0;
+                          const aType = (a.about || a.fileName)
+                            .toLowerCase()
+                            .includes('response');
+                          const bType = (b.about || b.fileName)
+                            .toLowerCase()
+                            .includes('response');
+                          if (aType && !bType) {
+                            return -1;
+                          }
+                          if (bType && !aType) {
+                            return 1;
+                          }
+                          return 0;
                         }
                       );
                       return (
