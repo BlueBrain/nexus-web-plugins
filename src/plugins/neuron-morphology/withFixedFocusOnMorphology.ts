@@ -1,5 +1,6 @@
 // @ts-nocheck
 import * as THREE from 'three';
+import { Object3D } from 'three';
 
 const CAMERA_DISTANCE_OFFSET = 1;
 
@@ -31,6 +32,30 @@ const withFixedFocusOnMorphology = morphoViewer => {
     return !morphoMesh.children.find(
       child => child?.userData?.typename === 'apical_dendrite'
     );
+  };
+
+  morphoViewer._threeContext.getSomaChildren = function(): Object3D[] {
+    const morphoMesh = this.getMorphoFromCollection();
+    return (morphoMesh.children as Object3D[]).filter(
+      object => object.userData.typename === 'soma'
+    );
+  };
+
+  morphoViewer._threeContext.getOrphanedSomaChildren = function(): Object3D {
+    // it looks like the orphaned soma construction doesn't have a name
+    // we can use that to reliably get the orphaned soma
+    const morphoMesh = this.getMorphoFromCollection();
+    return (morphoMesh.children as Object3D[]).filter(
+      object => object.name === ''
+    )[0];
+  };
+
+  morphoViewer._threeContext.removeOrphanedSomaChildren = function(): Object3D {
+    // it looks like the orphaned soma construction doesn't have a name
+    // we can use that to reliably get the orphaned soma
+    const morphoMesh = this.getMorphoFromCollection();
+    const orphanedSoma = this.getOrphanedSomaChildren();
+    morphoMesh.remove(orphanedSoma);
   };
 
   morphoViewer._threeContext.getTargetPointFromSoma = function(): THREE.Vecor3 {

@@ -35,11 +35,26 @@ export const MorphologyViewer: React.FC<{
   );
 
   React.useEffect(() => {
-    if (mv) {
+    if (!mv) {
+      return;
+    }
+
+    if (!mv.hasSomaData) {
       // Change soma color to black
-      const morphoMesh: any = last(mv._threeContext._scene.children);
-      const somaMesh = last(morphoMesh.children);
+      const somaMesh = mv._threeContext.getOrphanedSomaChildren();
       (somaMesh as any)?.material.color.setHex(0x000000);
+    }
+
+    if (mv.hasSomaData && !options.asPolyline) {
+      // remove orphaned soma because real one exists, but two are shown
+      // this is a bug with morphoviewer and will be fixed
+      // TODO update morphoviewer and remove this code.
+      mv._threeContext.removeOrphanedSomaChildren();
+
+      // Change soma color to black
+      mv._threeContext.getSomaChildren().forEach((somaMesh: any) => {
+        somaMesh?.material.color.setHex(0x000000);
+      });
       mv._threeContext._render();
     }
   }, [mv && mv._threeContext]);
@@ -54,9 +69,12 @@ export const MorphologyViewer: React.FC<{
       swcParser.parse(data);
       const parsedFile = swcParser.getRawMorphology();
 
+      const hasSomaData = !!parsedFile.soma.points.length;
+
       morphoViewer = withFixedFocusOnMorphology(
         new morphoviewer.MorphoViewer(ref.current)
       );
+      morphoViewer.hasSomaData = hasSomaData;
 
       morphoViewer._threeContext._camera.up.negate();
       setMorphoViewer(morphoViewer);
@@ -127,10 +145,7 @@ export const MorphologyViewer: React.FC<{
 
   return (
     <>
-      <MorphoLegend
-        isInterneuron={!!mv?.isInterneuron()}
-        isPolyline={!!options.asPolyline}
-      />
+      <MorphoLegend isInterneuron={!!mv?.isInterneuron()} />
       <div>
         <div className="morpho-viewer" ref={ref}></div>
         <div
