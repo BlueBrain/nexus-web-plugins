@@ -1,11 +1,10 @@
 import * as React from 'react';
-import { last } from 'lodash';
 import withFixedFocusOnMorphology from './withFixedFocusOnMorphology';
 import OrientationViewer from './libs/OrientationViewer';
 import ScaleViewer from './libs/ScaleViewer';
+import MorphoLegend from './MorphoLegend';
 
 import './morpho-viewer.css';
-import MorphoLegend from './MorphoLegend';
 
 // TODO update morphoviewer library with typings
 const morphoviewer = require('morphoviewer').default;
@@ -69,7 +68,7 @@ export const MorphologyViewer: React.FC<{
       swcParser.parse(data);
       const parsedFile = swcParser.getRawMorphology();
 
-      const hasSomaData = !!parsedFile.soma.points.length;
+      const hasSomaData = parsedFile.soma.points.length > 1;
 
       morphoViewer = withFixedFocusOnMorphology(
         new morphoviewer.MorphoViewer(ref.current)
@@ -145,7 +144,10 @@ export const MorphologyViewer: React.FC<{
 
   return (
     <>
-      <MorphoLegend isInterneuron={!!mv?.isInterneuron()} />
+      <MorphoLegend
+        isInterneuron={!!mv?.isInterneuron()}
+        hasApproximatedSoma={!mv?.hasSomaData}
+      />
       <div>
         <div className="morpho-viewer" ref={ref}></div>
         <div

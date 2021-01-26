@@ -4,11 +4,12 @@ import './morpho-legend.css';
 
 const MorphoLegend: React.FC<{
   isInterneuron: boolean;
-}> = ({ isInterneuron }) => {
+  hasApproximatedSoma: boolean;
+}> = ({ isInterneuron, hasApproximatedSoma }) => {
   return (
     <div className="morpho-legend">
       <ul>
-        <li className="soma">Soma</li>
+        <li className="soma">Soma {hasApproximatedSoma && '(Approximated)'}</li>
         <li className="axon">Axon</li>
 
         {// Interneurons don't have a distinction between Basal / Apical Dendrites
