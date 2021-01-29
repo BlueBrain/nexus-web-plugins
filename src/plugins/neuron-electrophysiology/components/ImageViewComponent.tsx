@@ -21,6 +21,81 @@ export type ImageItem = {
   };
 };
 
+const ImageSetComponent: React.FC<{
+  stimulusType: string;
+  repetitions: {
+    [rep: number]: {
+      imageSrc: string;
+      fileName: string;
+      about?: string | undefined;
+    }[];
+  };
+  onRepetitionClicked: (stimulusType: string, rep: string) => () => void;
+  imagePreview: React.FC<{ imageUrl: string }>;
+}> = ({ stimulusType, repetitions, onRepetitionClicked, imagePreview }) => {
+  const repLength = Object.keys(repetitions).length;
+  return (
+    <div className="stimuli-list" key={`image-preview-${stimulusType}`}>
+      <h3>
+        {stimulusType} ({repLength}{' '}
+        {repLength > 1 ? 'repetitions' : 'repetition'})
+      </h3>
+      <div className="reps" style={{ display: 'flex' }}>
+        {Object.keys(repetitions).map(repKey => {
+          const sweeps = repetitions[Number(repKey)]?.sort((a: any, b: any) => {
+            const aType = (a.about || a.fileName)
+              .toLowerCase()
+              .includes('response');
+            const bType = (b.about || b.fileName)
+              .toLowerCase()
+              .includes('response');
+            if (aType && !bType) {
+              return -1;
+            }
+            if (bType && !aType) {
+              return 1;
+            }
+            return 0;
+          });
+          return (
+            <div
+              className="repetition-list"
+              key={`image-preview-${stimulusType}-${repKey}`}
+            >
+              <div
+                style={{
+                  margin: '0 0 1em 0',
+                }}
+              >
+                Repetition {repKey}{' '}
+                <Button
+                  size="small"
+                  icon={<LineChartOutlined />}
+                  onClick={onRepetitionClicked(stimulusType, repKey)}
+                >
+                  Interactive View
+                </Button>
+              </div>
+              {sweeps.map((imgData: any, index: any) => {
+                return (
+                  <div
+                    style={{
+                      margin: '0 0 1em 0',
+                    }}
+                    key={`image-preview-${stimulusType}-${repKey}-${index}`}
+                  >
+                    {imagePreview({ imageUrl: imgData.imageSrc })}
+                  </div>
+                );
+              })}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
 const ImageViewComponent: React.FC<{
   stimulusTypeMap: Map<string, number>;
   stimulusType: string;
@@ -36,6 +111,15 @@ const ImageViewComponent: React.FC<{
   onStimulusChange,
   onRepetitionClicked,
 }) => {
+  const sortedImageCollectionData = React.useMemo(() => {
+    return [...(imageCollectionData.data?.entries() || [])].sort(
+      ([stimulusTypeA], [stimulusTypeB]) => {
+        const textA = stimulusTypeA.toUpperCase();
+        const textB = stimulusTypeB.toUpperCase();
+        return textA < textB ? -1 : textA > textB ? 1 : 0;
+      }
+    );
+  }, [imageCollectionData]);
   return (
     <div>
       <div style={{ margin: '0 0 1em 0' }}>
@@ -57,85 +141,18 @@ const ImageViewComponent: React.FC<{
       </div>
       <hr style={{ color: '#00000008' }} />
       <div>
-        <Spin spinning={imageCollectionData.loading}>
-          {[...(imageCollectionData.data?.entries() || [])]
-            .sort(([stimulusTypeA], [stimulusTypeB]) => {
-              const textA = stimulusTypeA.toUpperCase();
-              const textB = stimulusTypeB.toUpperCase();
-              return textA < textB ? -1 : textA > textB ? 1 : 0;
-            })
-            .map(([stimulusType, { repetitions }]) => {
-              const repLength = Object.keys(repetitions).length;
-
-              return (
-                <div
-                  className="stimuli-list"
-                  key={`image-preview-${stimulusType}`}
-                >
-                  <h3>
-                    {stimulusType} ({repLength}{' '}
-                    {repLength > 1 ? 'repetitions' : 'repetition'})
-                  </h3>
-                  <div className="reps" style={{ display: 'flex' }}>
-                    {Object.keys(repetitions).map(repKey => {
-                      const sweeps = repetitions[Number(repKey)]?.sort(
-                        (a, b) => {
-                          const aType = (a.about || a.fileName)
-                            .toLowerCase()
-                            .includes('response');
-                          const bType = (b.about || b.fileName)
-                            .toLowerCase()
-                            .includes('response');
-                          if (aType && !bType) {
-                            return -1;
-                          }
-                          if (bType && !aType) {
-                            return 1;
-                          }
-                          return 0;
-                        }
-                      );
-                      return (
-                        <div
-                          className="repetition-list"
-                          key={`image-preview-${stimulusType}-${repKey}`}
-                        >
-                          <div
-                            style={{
-                              margin: '0 0 1em 0',
-                            }}
-                          >
-                            Repetition {repKey}{' '}
-                            <Button
-                              size="small"
-                              icon={<LineChartOutlined />}
-                              onClick={onRepetitionClicked(
-                                stimulusType,
-                                repKey
-                              )}
-                            >
-                              Interactive View
-                            </Button>
-                          </div>
-                          {sweeps.map(({ imageSrc }, index) => {
-                            return (
-                              <div
-                                style={{
-                                  margin: '0 0 1em 0',
-                                }}
-                                key={`image-preview-${stimulusType}-${repKey}-${index}`}
-                              >
-                                {imagePreview({ imageUrl: imageSrc })}
-                              </div>
-                            );
-                          })}
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              );
-            })}
+        <div>
+          {sortedImageCollectionData.map(([stimulusType, { repetitions }]) => {
+            return (
+              <ImageSetComponent
+                key={stimulusType}
+                stimulusType={stimulusType}
+                repetitions={repetitions}
+                onRepetitionClicked={onRepetitionClicked}
+                imagePreview={imagePreview}
+              ></ImageSetComponent>
+            );
+          })}
           {imageCollectionData.data?.size === 0 && (
             <Empty
               style={{ padding: '2em' }}
@@ -155,7 +172,7 @@ const ImageViewComponent: React.FC<{
               description={`There was a problem loading the required resources: ${imageCollectionData.error.message}`}
             />
           )}
-        </Spin>
+        </div>
       </div>
     </div>
   );

@@ -22,6 +22,15 @@ export type EPhysImageItem = {
   };
 };
 
+/**
+ * Fetch and process image resources linked in the given resource.
+ * image resources are fetched and the ordered/mapped based on their stimulus type and repetition they belong to.
+ *
+ * @param resource
+ * @param nexus
+ * @param opt
+ */
+
 export function useImageCollectionDistribution(
   resource: Resource,
   nexus: NexusClient,
@@ -91,6 +100,7 @@ export function useImageCollectionDistribution(
         const stimulusCollection = imageCollection.get(stimulusTypeKey);
         if (stimulusCollection) {
           // Make sure rep list is unique
+
           stimulusCollection.repetitions[
             repetition
           ] = uniqueArrayOfObjectsByKey<
@@ -114,7 +124,7 @@ export function useImageCollectionDistribution(
       };
 
       setData({
-        data: null,
+        data: data,
         error: null,
         loading: true,
       });
@@ -131,7 +141,6 @@ export function useImageCollectionDistribution(
               resultsFilterPredicate(value)
             )
           );
-
           setData({
             data,
             error: null,
