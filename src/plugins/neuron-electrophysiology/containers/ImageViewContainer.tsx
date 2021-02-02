@@ -67,22 +67,15 @@ const ImageViewContainer: React.FC<{
     };
   }, [stimulusType]);
 
-  React.useLayoutEffect(() => {
-    // Scroll behaviour when user clicks on "load more".
-    // Will scroll to the bottom after new images are rendered.
-    if (scrollRef.current) {
-      scrollRef.current.scrollIntoView({
-        behavior: 'smooth',
-      });
-    }
-  });
-
   const imageCollectionData = useImageCollectionDistribution(resource, nexus, {
     imageFilterPredicate,
     resultsFilterPredicate,
   });
 
   const isLastPage = React.useMemo(() => {
+    if (stimulusType !== 'All') {
+      return true;
+    }
     if (imageCollectionData.data) {
       const totalStimulus = Array.from(stimulusTypeMap.keys()).length;
       const remaining =
@@ -90,7 +83,7 @@ const ImageViewContainer: React.FC<{
       return remaining;
     }
     return false;
-  }, [page, stimulusTypeMap]);
+  }, [page, stimulusType, stimulusTypeMap]);
 
   const [projectLabel, orgLabel] = resource._project.split('/').reverse();
 
@@ -117,16 +110,17 @@ const ImageViewContainer: React.FC<{
         }}
       />
       {isLastPage ? null : (
-        <Spin spinning={imageCollectionData.loading}>
-          <Button
-            onClick={() => {
-              setPage(page + 1);
-            }}
-          >
-            Load More
-          </Button>
-          <div style={{ marginTop: '150px' }} ref={scrollRef}></div>
-        </Spin>
+        <div style={{ marginBottom: '30px' }}>
+          <Spin spinning={imageCollectionData.loading}>
+            <Button
+              onClick={() => {
+                setPage(page + 1);
+              }}
+            >
+              Load More
+            </Button>
+          </Spin>
+        </div>
       )}
     </>
   );
