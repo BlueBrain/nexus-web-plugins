@@ -176,7 +176,9 @@ function processRABDistro(
       const index = randomAccessBuffer.getDataset('index') as RABIndex;
       const nameToDataSetMap: DataSets = {};
       let i = 0;
-      while (i < dataSets.length - 2) {
+      // Last item is the 'index' Object.
+      // In order to ignore it, use < length -1
+      while (i < dataSets.length - 1) {
         const dataSet = randomAccessBuffer.getDataset(dataSets[i]) as RABIndex;
         const y = dataSet.data['numericalData'];
         const label: string = dataSets[i].trim();
