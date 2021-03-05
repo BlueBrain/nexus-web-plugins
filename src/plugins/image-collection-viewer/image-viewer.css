@@ -1,0 +1,14 @@
+.image-collection-viewer {
+  padding: 10rem;
+  display: flex;
+  flex-direction: row;
+}
+
+.image {
+  padding: 10rem;
+}
+
+.yo {
+  display: flex;
+  flex-direction: row;
+}

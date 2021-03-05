@@ -37,25 +37,30 @@ export const MorphologyViewer: React.FC<{
     if (!mv) {
       return;
     }
-
+    // @ts-ignore
     if (!mv.hasSomaData) {
       // Change soma color to black
+      // @ts-ignore
       const somaMesh = mv._threeContext.getOrphanedSomaChildren();
       (somaMesh as any)?.material.color.setHex(0x000000);
     }
-
+    // @ts-ignore
     if (mv.hasSomaData && !options.asPolyline) {
       // remove orphaned soma because real one exists, but two are shown
       // this is a bug with morphoviewer and will be fixed
       // TODO update morphoviewer and remove this code.
+      // @ts-ignore
       mv._threeContext.removeOrphanedSomaChildren();
 
       // Change soma color to black
+      // @ts-ignore
       mv._threeContext.getSomaChildren().forEach((somaMesh: any) => {
         somaMesh?.material.color.setHex(0x000000);
       });
+      // @ts-ignore
       mv._threeContext._render();
     }
+    // @ts-ignore
   }, [mv && mv._threeContext]);
 
   React.useEffect(() => {
@@ -99,6 +104,7 @@ export const MorphologyViewer: React.FC<{
       setOrientationViewer(new OrientationViewer(orientationRef.current));
     }
     if (mv && orientationViewer) {
+      // @ts-ignore
       orientationViewer.setFollowCamera(mv._threeContext._camera);
     }
     return () => {
@@ -117,10 +123,13 @@ export const MorphologyViewer: React.FC<{
       setScaleViewer(new ScaleViewer(scaleRef.current, 0));
     }
     if (mv && scaleViewer) {
+      // @ts-ignore
       scaleViewer.onScaleChange(mv._threeContext.getCameraHeightAtMorpho());
       controlEventListenerChangedEvent = () => {
+        // @ts-ignore
         scaleViewer.onScaleChange(mv._threeContext.getCameraHeightAtMorpho());
       };
+      // @ts-ignore
       mv._threeContext._controls.addEventListener(
         'change',
         controlEventListenerChangedEvent
@@ -129,6 +138,7 @@ export const MorphologyViewer: React.FC<{
     return () => {
       scaleViewer?.destroy();
       setScaleViewer(null);
+      // @ts-ignore
       mv?._threeContext?._controls?.removeEventListener(
         'change',
         controlEventListenerChangedEvent
@@ -137,16 +147,25 @@ export const MorphologyViewer: React.FC<{
   }, [scaleRef, mv, options]);
 
   const handleOrientationClick = () => {
+    // @ts-ignore
     mv?._threeContext._controls.reset();
+    // @ts-ignore
     mv?._threeContext._camera.up.negate();
+    // @ts-ignore
     mv?._threeContext.focusOnMorphology();
   };
 
   return (
     <>
       <MorphoLegend
-        isInterneuron={!!mv?.isInterneuron()}
-        hasApproximatedSoma={!mv?.hasSomaData}
+        isInterneuron={
+          // @ts-ignore
+          !!mv?.isInterneuron()
+        }
+        hasApproximatedSoma={
+          // @ts-ignore
+          !mv?.hasSomaData
+        }
       />
       <div>
         <div className="morpho-viewer" ref={ref}></div>
