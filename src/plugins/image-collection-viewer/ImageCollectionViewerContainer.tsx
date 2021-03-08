@@ -237,9 +237,10 @@ const ImageCollectionViewerContainer: React.FC<{
             />
           </Col>
           <Col span={4}>
-            <div>{item.name}</div>
-            <div> Size : {item.size}</div>
-            <div> Storage : GPFS</div>
+            <div style={{ marginTop: '20px', alignItems: 'center' }}>
+              <div>{item.name}</div>
+              <div> Size : {item.size} MB</div>
+            </div>
           </Col>
         </Row>
       );
@@ -346,7 +347,7 @@ function makeImageItem(
     return {
       imageSrc,
       name: fileResource._filename,
-      size: fileResource._bytes,
+      size: fileResource._bytes / 1000,
     };
   });
   return ImageItem;
