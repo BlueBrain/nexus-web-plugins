@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Resource, NexusClient, NexusFile } from '@bbp/nexus-sdk';
-import { Spin, Input, Button, Image, Row, Col } from 'antd';
+import { Spin, Input, Button, Image, Row, Col, Empty } from 'antd';
 import { chunk } from 'lodash';
 import {
   SortAscendingOutlined,
@@ -135,20 +135,25 @@ const ImageCollectionViewerContainer: React.FC<{
     const [projectLabel, orgLabel, ...rest] = resource._project
       .split('/')
       .reverse();
-    let promises;
+    let promises: (Promise<{
+      imageSrc: string;
+      name: string;
+      size: number;
+    } | null> | null)[] = [];
     if (!isFile(resource as NexusFile) || !isImage(resource as NexusFile)) {
-      if (!resource.distribution) {
-        throw new Error('No Image Collection Property Found');
+      if (!resource.distribution || !Array.isArray(resource.distribution)) {
+        promises = [];
+      } else {
+        promises = resource.distribution
+          .slice(0, page * OFFSET)
+          .map((distribution: any) => {
+            return processImageDistribution(
+              distribution.contentUrl,
+              orgLabel,
+              projectLabel
+            );
+          });
       }
-      promises = resource.distribution
-        .slice(0, page * OFFSET)
-        .map((distribution: any) => {
-          return processImageDistribution(
-            distribution.contentUrl,
-            orgLabel,
-            projectLabel
-          );
-        });
     } else {
       // Do image stuff
       const imageItem = makeImageItem(
@@ -164,9 +169,9 @@ const ImageCollectionViewerContainer: React.FC<{
     Promise.all(promises)
       .then(imageSrcList => {
         setData({
-          data: imageSrcList.filter((image: any) => {
+          data: (imageSrcList.filter((image: any) => {
             return !!image?.imageSrc;
-          }) as ImageCollection,
+          }) as unknown) as ImageCollection,
           error: null,
           loading: false,
         });
@@ -315,12 +320,14 @@ const ImageCollectionViewerContainer: React.FC<{
           >
             Load More
           </Button>
-        ) : null}
+        ) : (
+          <Empty />
+        )}
       </div>
     );
   }
 
-  return null;
+  return <Empty />;
 };
 
 export default ImageCollectionViewerContainer;
