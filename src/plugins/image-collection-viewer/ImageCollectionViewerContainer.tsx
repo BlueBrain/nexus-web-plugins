@@ -140,9 +140,21 @@ const ImageCollectionViewerContainer: React.FC<{
       name: string;
       size: number;
     } | null> | null)[] = [];
+
     if (!isFile(resource as NexusFile) || !isImage(resource as NexusFile)) {
-      if (!resource.distribution || !Array.isArray(resource.distribution)) {
+      if (!resource.distribution) {
         promises = [];
+      } else if (
+        resource.distribution &&
+        !Array.isArray(resource.distribution)
+      ) {
+        promises = [
+          processImageDistribution(
+            resource.distribution.contentUrl,
+            orgLabel,
+            projectLabel
+          ),
+        ];
       } else {
         promises = resource.distribution
           .slice(0, page * OFFSET)
@@ -312,7 +324,7 @@ const ImageCollectionViewerContainer: React.FC<{
             {isGrid ? renderGrid() : renderImageRows()}
           </Image.PreviewGroup>
         </div>
-        {resource && resource['distribution']?.length >= page * OFFSET ? (
+        {resource && resource.distribution?.length >= page * OFFSET && (
           <Button
             onClick={() => {
               setPage(page + 1);
@@ -320,9 +332,12 @@ const ImageCollectionViewerContainer: React.FC<{
           >
             Load More
           </Button>
-        ) : (
-          <Empty />
         )}
+        {(!resource ||
+          !resource.distribution ||
+          (resource.distribution &&
+            Array.isArray(resource.distribution) &&
+            resource.distribution.length === 0)) && <Empty />}
       </div>
     );
   }
