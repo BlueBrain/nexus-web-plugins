@@ -1,11 +1,11 @@
 import { NexusClient, Resource } from '@bbp/nexus-sdk';
 import * as React from 'react';
-import { Radio } from 'antd';
+import { Radio, Alert, Empty } from 'antd';
 import { RadioChangeEvent } from 'antd/lib/radio';
 import { FileImageOutlined, LineChartOutlined } from '@ant-design/icons';
 
 import { EPhysImageItem } from './hooks/useImageCollectionDistribution';
-import { propAsArray } from '../../common';
+import { propAsArray, Distribution } from '../../common';
 import ImageViewContainer from './containers/ImageViewContainer';
 import GraphViewContainer from './containers/GraphViewContainer';
 
@@ -26,9 +26,11 @@ const EphysViewerContainer: React.FC<{
   const [view, setView] = React.useState<VIEWS>(VIEWS.IMAGE);
   const [selectedRepetition, setSelectedRepetition] = React.useState<string>();
 
-  const stimulusTypes = propAsArray<EPhysImageItem>(resource, 'image')
-    .map(getStimulusTypeString)
-    .sort();
+  const stimulusTypes = resource.image
+    ? propAsArray<EPhysImageItem>(resource, 'image')
+        .map(getStimulusTypeString)
+        .sort()
+    : [];
 
   const stimulusTypeMap = React.useMemo(() => {
     const typeToNumbers = new Map<string, number>();

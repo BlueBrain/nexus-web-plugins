@@ -23,22 +23,7 @@ export function useEphysDistribution(resource: Resource, nexus: NexusClient) {
 
   React.useEffect(() => {
     if (!resource.distribution) {
-      console.warn(
-        `no distribution found but expected for resource ${resourceID}`
-      );
       return;
-    }
-
-    const distribution = propAsArray<Distribution>(resource, 'distribution');
-
-    const NWBDistro = distribution.find((distribution: Distribution) =>
-      /^.*\.(nwb)$/.test(distribution.name)
-    );
-
-    if (!NWBDistro) {
-      throw new Error(
-        `No distribution found for resource ${resourceID} that is a .nwb file`
-      );
     }
 
     setData({

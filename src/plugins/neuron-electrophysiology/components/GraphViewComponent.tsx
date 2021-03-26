@@ -39,6 +39,9 @@ const GraphViewComponent: React.FC<{
             description="Fetching new data"
           ></Empty>
         )}
+        {!traceCollectionData.data && (
+          <Empty style={{ padding: '2em' }} description="No data"></Empty>
+        )}
         {traceCollectionData.error && (
           <Empty
             style={{ padding: '2em' }}
