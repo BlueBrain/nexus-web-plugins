@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Table, Button, notification } from 'antd';
-import { Resource, NexusClient } from '@bbp/nexus-sdk';
+import { Resource, NexusClient, GetFileOptions } from '@bbp/nexus-sdk';
 
 export const parseProjectUrl = (projectUrl: string) => {
   const projectUrlR = /projects\/([\w-]+)\/([\w-]+)\/?$/;
@@ -126,11 +126,27 @@ const DataAccessContainer: React.FC<{
     name: string
   ) => {
     return (resourceId: string) => {
-      nexus.File.get(orgLabel, projectLabel, encodeURIComponent(resourceId), {
+      let contentUrl = resourceId;
+      let options: GetFileOptions = {
         as: 'blob',
-      })
+      };
+
+      if (resourceId.includes('?rev=')) {
+        const [url, rev] = resourceId.split('?rev=');
+        contentUrl = url;
+        options.rev = parseInt(rev, 10);
+      }
+
+      nexus.File.get(
+        orgLabel,
+        projectLabel,
+        encodeURIComponent(contentUrl),
+        options
+      )
         .then(rawData => {
-          const blob = new Blob([rawData as string], { type: 'octet/stream' });
+          const blob = new Blob([rawData as string], {
+            type: 'octet/stream',
+          });
           const src = URL.createObjectURL(blob);
           const a = document.createElement('a');
           a.style.display = 'none';
