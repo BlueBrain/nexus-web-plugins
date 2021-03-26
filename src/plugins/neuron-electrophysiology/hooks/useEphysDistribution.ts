@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { NexusClient, Resource } from '@bbp/nexus-sdk';
-import { Distribution, propAsArray, RemoteData } from '../../../common';
+import { Distribution, RemoteData } from '../../../common';
 import RandomAccessBuffer from '../utils/RandomAccessBuffer';
 import { DataSets, RABIndex, TraceData } from '../EphysPlot';
 import useLazyCache from './useLazyCache';
@@ -77,6 +77,12 @@ export function useEphysDistribution(resource: Resource, nexus: NexusClient) {
               RABIndex,
               datasets,
             },
+          });
+        } else {
+          setData({
+            error,
+            loading: false,
+            data: null, // No RAB available.
           });
         }
       })

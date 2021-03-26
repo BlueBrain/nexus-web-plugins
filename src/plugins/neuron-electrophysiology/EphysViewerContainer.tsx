@@ -1,11 +1,11 @@
 import { NexusClient, Resource } from '@bbp/nexus-sdk';
 import * as React from 'react';
-import { Radio, Alert, Empty } from 'antd';
+import { Radio } from 'antd';
 import { RadioChangeEvent } from 'antd/lib/radio';
 import { FileImageOutlined, LineChartOutlined } from '@ant-design/icons';
 
 import { EPhysImageItem } from './hooks/useImageCollectionDistribution';
-import { propAsArray, Distribution } from '../../common';
+import { propAsArray } from '../../common';
 import ImageViewContainer from './containers/ImageViewContainer';
 import GraphViewContainer from './containers/GraphViewContainer';
 
