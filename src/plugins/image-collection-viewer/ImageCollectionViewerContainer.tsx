@@ -333,11 +333,6 @@ const ImageCollectionViewerContainer: React.FC<{
             Load More
           </Button>
         )}
-        {(!resource ||
-          !resource.distribution ||
-          (resource.distribution &&
-            Array.isArray(resource.distribution) &&
-            resource.distribution.length === 0)) && <Empty />}
       </div>
     );
   }
