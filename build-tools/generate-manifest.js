@@ -20,6 +20,7 @@ const manifest = pluginModulePaths.reduce((acc, modulePath) => {
     license = '',
     tags = [],
     mapping,
+    exclude,
     displayPriority = '2',
     name = _.upperFirst(pluginId).replace(/-/g, ' '),
   } = pluginInfo;
@@ -37,7 +38,8 @@ const manifest = pluginModulePaths.reduce((acc, modulePath) => {
     author,
     license,
     mapping,
-    displayPriority
+    exclude,
+    displayPriority,
   };
 
   return {
