@@ -24,7 +24,7 @@ const MorphoViewerContainer: React.FC<{
   });
 
   const [options, setOptions] = React.useState<MorphoViewerOptions>({
-    asPolyline: false,
+    asPolyline: true,
     focusOn: true,
     somaMode: 'fromOrphanSections',
   });
