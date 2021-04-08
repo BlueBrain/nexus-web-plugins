@@ -8,5 +8,10 @@
   "license": "ISC",
   "mapping": {
     "distribution": {}
+  },
+  "exclude": {
+    "@type": [
+      "Entity"
+    ]
   }
 }
