@@ -1,5 +1,5 @@
 {
-  "name": "Nexus Data Access",
+  "name": "Data Download",
   "version": "1.1.0",
   "description": "Download or copy urls of distributions in Entity Resources",
   "main": "index.tsx",

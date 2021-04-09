@@ -1,6 +1,6 @@
 {
-  "name": "ImageCollectionViewer",
-  "version": "1.1.0",
+  "name": "Image Gallery",
+  "version": "1.2.0",
   "description": "View image files in Nexus Web",
   "main": "index.tsx",
   "tags": [],
@@ -8,13 +8,15 @@
   "license": "ISC",
   "mapping": [
     {
-      "distribution": {}
+      "image": {}
     },
     {
-      "@type": "File",
-      "_mediaType": [
-        "image/*"
-      ]
+      "distribution": {
+        "@type": "File",
+        "_mediaType": [
+          "image/*"
+        ]
+      }
     }
   ]
 }

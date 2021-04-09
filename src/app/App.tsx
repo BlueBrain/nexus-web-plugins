@@ -17,7 +17,6 @@ import { Simulation } from '../plugins/simulation';
 import { SimulationCampaign } from '../plugins/simulation-campaign';
 import { SimWriterConfig } from '../plugins/sim-writer-config';
 import { EphysViewerContainer } from '../plugins/neuron-electrophysiology';
-import { ImageViewerContainer } from '../plugins/image-viewer';
 import { ImageCollectionViewerContainer } from '../plugins/image-collection-viewer';
 import { MorphoViewerContainer } from '../plugins/neuron-morphology';
 import { MINDSMetadataContainer } from '../plugins/metadata';
@@ -59,7 +58,6 @@ const plugins: { [pluginName: string]: React.FC<any> } = {
   simWriterConfig: SimWriterConfig,
   ephysViewer: EphysViewerContainer,
   mophoViewer: MorphoViewerContainer,
-  imageViewer: ImageViewerContainer,
   metadata: MINDSMetadataContainer,
   dataAccess: DataAccessContainer,
   markdown: MarkdownContainer,

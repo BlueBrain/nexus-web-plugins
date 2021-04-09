@@ -1,5 +1,5 @@
 {
-  "name": "description-viewer",
+  "name": "Description",
   "version": "1.0.0",
   "description": "View decriptions written in markdown",
   "main": "index.tsx",

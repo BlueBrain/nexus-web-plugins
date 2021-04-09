@@ -90,6 +90,18 @@ const ImageCollectionViewerContainer: React.FC<{
     );
   };
 
+  const processImages = (
+    id: string,
+    orgLabel: string,
+    projectLabel: string
+  ) => {
+    return processImageCollection(
+      decodeURIComponent(id),
+      orgLabel,
+      projectLabel
+    );
+  };
+
   const processImageCollection = (
     id: string,
     orgLabel: string,
@@ -142,29 +154,32 @@ const ImageCollectionViewerContainer: React.FC<{
     } | null> | null)[] = [];
 
     if (!isFile(resource as NexusFile) || !isImage(resource as NexusFile)) {
-      if (!resource.distribution) {
-        promises = [];
-      } else if (
-        resource.distribution &&
-        !Array.isArray(resource.distribution)
-      ) {
-        promises = [
-          processImageDistribution(
-            resource.distribution.contentUrl,
-            orgLabel,
-            projectLabel
-          ),
-        ];
+      if (resource.image) {
+        promises = Array.isArray(resource.image)
+          ? resource.image.slice(0, page * OFFSET).map((image: any) => {
+              return processImages(image['@id'], orgLabel, projectLabel);
+            })
+          : [processImages(resource.image['@id'], orgLabel, projectLabel)];
+      } else if (resource.distribution) {
+        promises = Array.isArray(resource.distribution)
+          ? resource.distribution
+              .slice(0, page * OFFSET)
+              .map((distribution: any) => {
+                return processImageDistribution(
+                  distribution.contentUrl,
+                  orgLabel,
+                  projectLabel
+                );
+              })
+          : [
+              processImageDistribution(
+                resource.distribution.contentUrl,
+                orgLabel,
+                projectLabel
+              ),
+            ];
       } else {
-        promises = resource.distribution
-          .slice(0, page * OFFSET)
-          .map((distribution: any) => {
-            return processImageDistribution(
-              distribution.contentUrl,
-              orgLabel,
-              projectLabel
-            );
-          });
+        promises = [];
       }
     } else {
       // Do image stuff
@@ -223,7 +238,7 @@ const ImageCollectionViewerContainer: React.FC<{
   const renderColumns = (data: ImageCollection) => {
     return data?.map((item, index) => {
       return (
-        <Col span={4}>
+        <Col span={4} key={`column-${index}`}>
           <Image
             alt={item.name}
             src={item.imageSrc}
@@ -241,7 +256,7 @@ const ImageCollectionViewerContainer: React.FC<{
   const renderList = (data: ImageCollection) => {
     return data?.map((item, index) => {
       return (
-        <Row>
+        <Row key={`row-${index}`}>
           <Col span={4}>
             <Image
               alt={item.name}
