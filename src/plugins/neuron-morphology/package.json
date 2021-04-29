@@ -8,7 +8,10 @@
   "license": "ISC",
   "mapping": {
     "@type": [
-      "ReconstructedCell"
+      "ReconstructedCell",
+      "ReconstructedPatchedCell",
+      "NeuronMorphology",
+      "ReconstructedWholeBrainCell"
     ]
   }
 }
