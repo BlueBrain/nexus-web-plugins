@@ -78,10 +78,10 @@ const EphysViewerContainer: React.FC<{
       <div style={{ margin: '0 0 1em 0' }}>
         <Radio.Group onChange={handleViewChange} value={view}>
           <Radio.Button value={VIEWS.IMAGE}>
-            Overview <FileImageOutlined />
+            <FileImageOutlined /> Overview
           </Radio.Button>
           <Radio.Button value={VIEWS.CHART}>
-            Interactive Details <LineChartOutlined />
+            <LineChartOutlined /> Interactive Details
           </Radio.Button>
         </Radio.Group>
       </div>

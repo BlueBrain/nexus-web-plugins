@@ -78,14 +78,17 @@ const EphysPlot: React.FC<{
     defaultRepetition || Object.keys(index.data[selectedDataSet].repetitions)[0]
   );
 
-  const [selectedSweeps, setSelectedSweeps] = React.useState<string[]>(
-    index.data[selectedDataSet].repetitions[selectedRepetition].sweeps
-  );
+  const [selectedSweeps, setSelectedSweeps] = React.useState<string[]>([
+    index.data[selectedDataSet].repetitions[selectedRepetition].sweeps[0],
+  ]);
 
   const sweeps: string[] = React.useMemo(() => {
-    return index.data[selectedDataSet]
-      ? index.data[selectedDataSet].repetitions[selectedRepetition].sweeps
-      : [];
+    return (
+      (index.data[selectedDataSet] &&
+        index.data[selectedDataSet].repetitions &&
+        index.data[selectedDataSet].repetitions[selectedRepetition].sweeps) ||
+      []
+    );
   }, [selectedDataSet, selectedRepetition, index]);
 
   const repetitions: Repetition = React.useMemo(() => {
@@ -117,26 +120,25 @@ const EphysPlot: React.FC<{
     : null;
 
   const sweepsOptions = sweeps
-    ? sweeps.map(v => {
-        return (
-          <Select.Option key={v} value={v}>
-            {v}
-          </Select.Option>
-        );
+    ? sweeps.map(sweep => {
+        return {
+          label: sweep,
+          value: sweep,
+        };
       })
-    : null;
+    : [];
 
   const handleStimulusChange = (value: string) => {
     setSelectedDataSet(value);
     setSelectedRepetition(Object.keys(repetitions)[0]);
-    setSelectedSweeps(
-      index.data[value]?.repetitions[selectedRepetition].sweeps
-    );
+    setSelectedSweeps([
+      index.data[value]?.repetitions[Object.keys(repetitions)[0]].sweeps[0],
+    ]);
   };
 
   const handleRepetitionChange = (value: string) => {
     setSelectedRepetition(value);
-    setSelectedSweeps(repetitions[value].sweeps);
+    setSelectedSweeps([repetitions[value].sweeps[0]]);
   };
 
   const handleSelectAllSweeps = () => {
@@ -180,8 +182,10 @@ const EphysPlot: React.FC<{
           {repetitionOptions}
         </Select>
       </div>
-      <div>
-        <Button onClick={handleGoToImage}>View Images</Button>
+      <div style={{ margin: '10px' }}>
+        <Button onClick={handleGoToImage}>
+          <FileImageOutlined /> View Images
+        </Button>
       </div>
       <div style={{ margin: '10px' }}>
         <span>
@@ -200,20 +204,20 @@ const EphysPlot: React.FC<{
             All (<span>{sweeps && sweeps.length}</span> available)
           </Checkbox>
         </span>
-        <br />
-        <span>
-          <Select
+        {sweeps.length > 1 && (
+          <Button type="text" onClick={() => setSelectedSweeps([])}>
+            Clear All
+          </Button>
+        )}
+        <div style={{ marginTop: '10px', width: '50%' }}>
+          <Checkbox.Group
             value={selectedSweeps}
-            mode="tags"
-            placeholder="Please select"
-            onChange={(value: string[]) => {
+            options={sweepsOptions}
+            onChange={(value: any[]) => {
               setSelectedSweeps(value);
             }}
-            style={{ width: '100%' }}
-          >
-            {sweepsOptions}
-          </Select>
-        </span>
+          />
+        </div>
       </div>
       <ResponsePlot
         metadata={selectedMetadata}
