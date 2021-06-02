@@ -101,7 +101,7 @@ export const MINDSMetadataComponent: React.FC<{
         <Descriptions.Item
           label={<span className="metadata-label">Subject</span>}
         >
-          {subject ? subject.species.label : <span className="none">-</span>}
+          {subject ? subject.species?.label : <span className="none">-</span>}
         </Descriptions.Item>
         <Descriptions.Item
           span={5}
@@ -164,13 +164,13 @@ export const MINDSMetadataComponent: React.FC<{
         >
           {!!contribution && Array.isArray(contribution)
             ? contribution.map((contributor, index) => (
-                <>
+                <div key={index}>
                   <span>
                     {contributor.agent}
                     {!!contributor.role ? `: ${contributor.role}` : ''}
                   </span>
                   {index < contribution.length - 1 && <br />}
-                </>
+                </div>
               ))
             : !!contribution && (
                 <span>

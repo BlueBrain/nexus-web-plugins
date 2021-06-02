@@ -122,7 +122,7 @@ export const MINDSMetadataContainer: React.FC<{
         ? resource.contribution
         : [resource.contribution];
       contributors.forEach(contribution => {
-        if (contribution.agent['@id']) {
+        if (contribution.agent && contribution.agent['@id']) {
           promises.push(
             labeledPromise(
               'contribution',
@@ -131,13 +131,19 @@ export const MINDSMetadataContainer: React.FC<{
           );
         } else {
           const contributedBy: ContributedBy = {};
-          const agent = contribution.agent;
-          contributedBy.agent =
-            agent.name ||
-            agent.fullName ||
-            `${agent.givenName}${
-              agent.familyName ? ` ${agent.familyName}` : ''
-            }`;
+
+          if (contribution.agent) {
+            const agent = contribution.agent;
+            contributedBy.agent =
+              agent.name ||
+              agent.fullName ||
+              `${agent.givenName}${
+                agent.familyName ? ` ${agent.familyName}` : ''
+              }`;
+          } else {
+            contributedBy.agent = 'Agent';
+          }
+
           if (contribution.hadRole) {
             contributedBy.role =
               contribution.hadRole.prefLabel || contribution.hadRole.label;

@@ -1,13 +1,16 @@
 {
   "name": "Metadata",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "View MINDS metadata in a table",
   "main": "index.tsx",
   "tags": [],
-  "displayPriority" : "1",
+  "displayPriority": "1",
   "author": "Kenneth Pirman <kenneth.pirman@epfl.ch>",
   "license": "ISC",
   "mapping": {
-    "@type": ["Entity", "Dataset"]
+    "@type": [
+      "Entity",
+      "Dataset"
+    ]
   }
 }
