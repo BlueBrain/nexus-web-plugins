@@ -74,6 +74,7 @@ export default class OrientationViewer {
     this.renderer.setSize(div.clientWidth, div.clientHeight);
 
     this.scene = new THREE.Scene();
+    this.scene.background = new THREE.Color(0xffffff);
     this.camera = new THREE.PerspectiveCamera(
       27,
       div.clientWidth / div.clientHeight,

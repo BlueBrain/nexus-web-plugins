@@ -1,6 +1,6 @@
 {
   "name": "Neuron Morphology",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Displays neuron morphology data in a 3D view",
   "main": "index.tsx",
   "tags": [],
