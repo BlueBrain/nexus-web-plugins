@@ -82,6 +82,8 @@ const EphysPlot: React.FC<{
     index.data[selectedDataSet].repetitions[selectedRepetition].sweeps[0],
   ]);
 
+  const [previewItem, setPreviewItem] = React.useState<string>();
+
   const sweeps: string[] = React.useMemo(() => {
     return (
       (index.data[selectedDataSet] &&
@@ -153,6 +155,12 @@ const EphysPlot: React.FC<{
     goToImage(selectedDataSet, selectedRepetition);
   };
 
+  const previewSweep = (sweep: string) => {
+    if (sweepsOptions.length > 1 && !selectedSweeps.includes(sweep)) {
+      setPreviewItem(sweep);
+    }
+  };
+
   return (
     <>
       <div style={{ margin: '10px' }}>
@@ -209,19 +217,30 @@ const EphysPlot: React.FC<{
             Clear All
           </Button>
         )}
-        <div style={{ marginTop: '10px', width: '50%' }}>
+        <div style={{ marginTop: '10px' }}>
           <Checkbox.Group
             value={selectedSweeps}
-            options={sweepsOptions}
             onChange={(value: any[]) => {
               setSelectedSweeps(value);
+              setPreviewItem(undefined);
             }}
-          />
+          >
+            {sweepsOptions.map(sweep => (
+              <Checkbox
+                style={{ marginLeft: 0 }}
+                onMouseEnter={() => previewSweep(sweep.value)}
+                onMouseLeave={() => setPreviewItem(undefined)}
+                value={sweep.value}
+              >
+                {sweep.label}
+              </Checkbox>
+            ))}
+          </Checkbox.Group>
         </div>
       </div>
       <ResponsePlot
         metadata={selectedMetadata}
-        sweeps={selectedSweeps}
+        sweeps={previewItem ? [...selectedSweeps, previewItem] : selectedSweeps}
         dataset={selectedDataSet}
         options={options}
         zoomRanges={zoomRanges}
@@ -229,7 +248,7 @@ const EphysPlot: React.FC<{
       />
       <StimulusPlot
         metadata={selectedMetadata}
-        sweeps={selectedSweeps}
+        sweeps={previewItem ? [...selectedSweeps, previewItem] : selectedSweeps}
         dataset={selectedDataSet}
         options={options}
         zoomRanges={zoomRanges}

@@ -74,6 +74,7 @@ const ResponsePlot: React.FC<{
             zeroline: false,
           },
           autosize: true,
+          showlegend: true,
         }}
         style={{ width: '100%', height: '100%' }}
         config={{ displaylogo: false }}
