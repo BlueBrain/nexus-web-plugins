@@ -68,13 +68,13 @@ export default class OrientationViewer {
     this.renderer = new THREE.WebGLRenderer({
       canvas,
       context: context || undefined,
+      alpha: true,
     });
-    this.renderer.setClearColor(0xffffff, 0);
+    this.renderer.setClearColor(0x000000, 0);
     this.renderer.setPixelRatio(window.devicePixelRatio);
     this.renderer.setSize(div.clientWidth, div.clientHeight);
 
     this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color(0xffffff);
     this.camera = new THREE.PerspectiveCamera(
       27,
       div.clientWidth / div.clientHeight,
