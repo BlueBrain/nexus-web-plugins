@@ -81,7 +81,7 @@ export default class OrientationViewer {
       1,
       50000
     );
-    const camPos = { x: 0, y: 0, z: 100 };
+    const camPos = { x: 0, y: 100, z: 0 };
     this.camera.lookAt(new THREE.Vector3(0, 0, 0));
     this.camera.position.x = camPos.x;
     this.camera.position.y = camPos.y;

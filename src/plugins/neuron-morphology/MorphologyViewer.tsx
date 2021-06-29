@@ -91,7 +91,9 @@ export const MorphologyViewer: React.FC<{
       throw new Error(`Morphology parsing error: ${error.message}`);
     }
     return () => {
-      morphoViewer && morphoViewer.destroy();
+      if (morphoViewer) {
+        morphoViewer._threeContext = null;
+      }
     };
   }, [ref, data, options]);
 
