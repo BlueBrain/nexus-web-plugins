@@ -92,7 +92,10 @@ export const MorphologyViewer: React.FC<{
     }
     return () => {
       if (morphoViewer) {
-        morphoViewer._threeContext = null;
+        morphoViewer.destroy();
+        if(morphoViewer && morphoViewer._threeContext) {
+          morphoViewer._threeContext = null;
+        }
       }
     };
   }, [ref, data, options]);

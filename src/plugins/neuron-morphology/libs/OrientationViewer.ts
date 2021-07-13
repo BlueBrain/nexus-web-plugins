@@ -81,11 +81,11 @@ export default class OrientationViewer {
       1,
       50000
     );
-    const camPos = { x: 0, y: 100, z: 0 };
+    const camPos = { x: 0, y: 0, z: 100 };
     this.camera.lookAt(new THREE.Vector3(0, 0, 0));
     this.camera.position.x = camPos.x;
-    this.camera.position.y = camPos.y;
-    this.camera.position.z = camPos.z;
+    this.camera.position.z = camPos.y;
+    this.camera.position.y = camPos.z;
     this.scene.add(this.camera);
 
     this.orientationHelper = createOrientationHelper();
