@@ -8,7 +8,7 @@ const createOrientationHelper = (): THREE.Object3D => {
   const orientationHelper = new THREE.Object3D();
 
   const colors = ['red', 'green', 'blue'];
-  const axes = ['X', 'Y', 'Z'];
+  const axes = ['X', 'Z', 'Y'];
 
   // We need to swap Y for Z
   // because three.js uses an uncommon orientation format
@@ -84,8 +84,8 @@ export default class OrientationViewer {
     const camPos = { x: 0, y: 0, z: 100 };
     this.camera.lookAt(new THREE.Vector3(0, 0, 0));
     this.camera.position.x = camPos.x;
-    this.camera.position.z = camPos.y;
-    this.camera.position.y = camPos.z;
+    this.camera.position.y = camPos.y;
+    this.camera.position.z = camPos.z;
     this.scene.add(this.camera);
 
     this.orientationHelper = createOrientationHelper();
