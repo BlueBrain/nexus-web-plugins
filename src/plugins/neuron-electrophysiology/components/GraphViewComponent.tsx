@@ -14,12 +14,10 @@ const GraphViewComponent: React.FC<{
       datasets: DataSets;
     } | null;
   };
-  goToImage: (stimulusType: string, repetition: string) => void;
 }> = ({
   traceCollectionData,
   defaultStimulusType,
   defaultRepetition,
-  goToImage,
 }) => {
   return (
     <div>
@@ -30,24 +28,17 @@ const GraphViewComponent: React.FC<{
             index={traceCollectionData.data.RABIndex}
             defaultRepetition={defaultRepetition}
             defaultStimulusType={defaultStimulusType}
-            goToImage={goToImage}
           />
         )}
         {!traceCollectionData.data && traceCollectionData.loading && (
-          <Empty
-            style={{ padding: '2em' }}
-            description="Fetching new data"
-          ></Empty>
+          <Empty className="p-2em" description="Fetching new data" />
         )}
         {!traceCollectionData.data && !traceCollectionData.loading && (
-          <Empty
-            style={{ padding: '2em' }}
-            description="No data/ No RAB available"
-          ></Empty>
+          <Empty className="p-2em" description="No data/ No RAB available" />
         )}
         {traceCollectionData.error && (
           <Empty
-            style={{ padding: '2em' }}
+            className="p-2em"
             description={`There was a problem loading the required resources: ${traceCollectionData.error.message}`}
           />
         )}

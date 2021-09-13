@@ -1,54 +1,91 @@
 import * as React from 'react';
 import Plot from 'react-plotly.js';
 
-import { convertVolts, Volts } from '../utils/plotHelpers';
-import { TraceData, IndexDataValue, ZoomRanges } from '../EphysPlot';
+import { convertVolts } from '../utils/plotHelpers';
+import { useConfig } from '../hooks/useConfig';
+import { PlotData } from 'plotly.js';
+import { optimizePlotData } from '../utils/optimizeTrace';
+import { PlotProps } from '../types';
 
 const DEFAULT_RESPONSE_UNIT = 'mV';
 
-const ResponsePlot: React.FC<{
-  metadata?: IndexDataValue;
-  sweeps: string[];
-  dataset: string;
-  options: any;
-  zoomRanges: ZoomRanges | null;
-  onZoom: (zoomRanges: ZoomRanges) => void;
-}> = ({ metadata, sweeps, dataset, options, zoomRanges, onZoom }) => {
-  const [responseUnit, setResponseUnit] = React.useState<Volts>(
-    DEFAULT_RESPONSE_UNIT
-  );
-
+const ResponsePlot: React.FC<PlotProps> = ({
+  metadata,
+  setSelectedSweeps,
+  sweeps: {selectedSweeps, previewSweep, allSweeps, colorMapper},
+  dataset,
+  options,
+  zoomRanges,
+  onZoom
+}) => {
   const isVolts = metadata && metadata.v_unit === 'volts';
+  const {config, layout, font, style} = useConfig({selectedSweeps});
 
-  const dataResponse: TraceData[] = React.useMemo(() => {
+  const rawData = React.useMemo(() => {
     const deltaTime = metadata ? metadata?.dt : 1;
-    return sweeps.map(s => {
-      const name = options[`${dataset} ${s} v`]?.name;
-      const y = options[`${dataset} ${s} v`]
-        ? options[`${dataset} ${s} v`].y
+    const zoom = {
+      xstart: zoomRanges?.x[0],
+      xend: zoomRanges?.x[1],
+    }
+    const allSweepsData = allSweeps.map(sweep => {
+      const name = options[`${dataset} ${sweep} v`]?.name;
+      const y = options[`${dataset} ${sweep} v`]
+        ? options[`${dataset} ${sweep} v`].y
         : [];
-      const yConverted = isVolts ? convertVolts(y, responseUnit) : y;
-      const x = y.map((m: any, i: number) => i * deltaTime);
+      const yConverted = isVolts ? convertVolts(y, DEFAULT_RESPONSE_UNIT) : y;
+      const color = colorMapper[sweep];
       return {
-        y: yConverted,
-        x,
         name,
+        y: yConverted,
+        line: {
+         color
+        },
+        sweepName: sweep,
       };
-    });
-  }, [options, dataset, sweeps, metadata, responseUnit]);
+    })
 
-  const onChangeResponseUnits = (event: any) => {
-    setResponseUnit(event.target.value);
-  };
+    return optimizePlotData(allSweepsData, deltaTime, zoom) || [];
+  }, [options, dataset, metadata, zoomRanges, allSweeps, isVolts, colorMapper])
+
+  const selectedResponse: Partial<PlotData>[] = React.useMemo(() => {
+    return rawData?.filter((data) => selectedSweeps.includes(data.sweepName))
+  }, [options, dataset, selectedSweeps, metadata]);
+
+  const previewDataResponse: Partial<PlotData>[] = React.useMemo(() => {
+    return rawData?.map((data: {sweepName: string}) => {
+      const isSelected = selectedSweeps.includes(data.sweepName);
+      const isPreview = data.sweepName === previewSweep;
+      const opacity = isPreview || isSelected ? 1: 0.05;
+      return ({
+        ...data,
+        opacity
+    })})
+  }, [previewSweep]);
+
+  const handleClick = ({data, curveNumber}: Readonly<Plotly.LegendClickEvent>): boolean => {
+    const value: string = (data[curveNumber] as any).sweepName;
+    const isSelected = selectedSweeps.includes(value);
+    if(isSelected) {
+      setSelectedSweeps(selectedSweeps.filter(sweep => sweep!==value));
+    }
+    else {
+      setSelectedSweeps([...selectedSweeps, value]);
+    }
+    return false;
+  }
 
   const xTitle = metadata ? metadata.t_unit : '';
 
-  const yTitle = isVolts ? responseUnit : (metadata && metadata.v_unit) || '';
+  const yTitle = isVolts ? DEFAULT_RESPONSE_UNIT : (metadata && metadata.v_unit) || '';
+
+  const isEmptySelection = !selectedSweeps.length;
 
   return (
     <>
       <Plot
-        data={dataResponse}
+        data={previewSweep ? previewDataResponse : (isEmptySelection ? rawData: selectedResponse)}
+        onLegendClick={handleClick}
+        onDoubleClick={() => false}
         onRelayout={e => {
           const {
             'xaxis.range[0]': x1,
@@ -62,22 +99,24 @@ const ResponsePlot: React.FC<{
           title: 'Response',
           xaxis: {
             title: {
+              font,
               text: `Time (${xTitle})`,
             },
             range: zoomRanges?.x,
           },
           yaxis: {
             title: {
+              font,
               text: `Membrane Potential (${yTitle})`,
             },
             range: zoomRanges?.y,
             zeroline: false,
           },
           autosize: true,
-          showlegend: true,
+          ...layout,
         }}
-        style={{ width: '100%', height: '100%' }}
-        config={{ displaylogo: false }}
+        style={style}
+        config={{ displaylogo: false, ...config }}
       />
     </>
   );

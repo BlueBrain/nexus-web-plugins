@@ -1,3 +1,5 @@
+import { IndexDataValue, ZoomRanges } from "./EphysPlot";
+
 export type Trace = {
   dt: number; // Delta Time
   dur: number; // Duration of Experiment
@@ -25,3 +27,18 @@ export type ZoomRange = {
   x: number[];
   y: number[];
 };
+
+export type PlotProps = {
+  setSelectedSweeps: (sweeps: string[]) => void;
+  metadata?: IndexDataValue;
+  sweeps: {
+    selectedSweeps: string[];
+    previewSweep?: string;
+    allSweeps: string[];
+    colorMapper: {[key: string]: string}
+  },
+  dataset: string;
+  options: any;
+  zoomRanges: ZoomRanges | null;
+  onZoom: (zoomRanges: ZoomRanges) => void;
+}

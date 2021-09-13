@@ -1,9 +1,11 @@
 import * as React from 'react';
-import { Select, Checkbox, Button } from 'antd';
-import { FileImageOutlined } from '@ant-design/icons';
+import { Select, Button } from 'antd';
 
 import StimulusPlot from './StimulusPlot';
 import ResponsePlot from './ResponsePlot';
+import { OptionSelect } from '../components/OptionSelect';
+import DistinctColors from 'distinct-colors';
+import { TraceSelectorGroup } from '../components/TraceSelectorGroup';
 
 export type TraceData = {
   y: any;
@@ -60,13 +62,11 @@ const EphysPlot: React.FC<{
   index: RABIndex;
   defaultStimulusType?: string;
   defaultRepetition?: string;
-  goToImage: (stimulusType: string, repetition: string) => void;
 }> = ({
   options,
   index,
   defaultStimulusType,
   defaultRepetition,
-  goToImage,
 }) => {
   const [zoomRanges, setZoomRanges] = React.useState<ZoomRanges | null>(null);
 
@@ -78,26 +78,29 @@ const EphysPlot: React.FC<{
     defaultRepetition || Object.keys(index.data[selectedDataSet].repetitions)[0]
   );
 
-  const [selectedSweeps, setSelectedSweeps] = React.useState<string[]>([
-    index.data[selectedDataSet].repetitions[selectedRepetition].sweeps[0],
-  ]);
+  const [selectedSweeps, setSelectedSweeps] = React.useState<string[]>([]);
 
   const [previewItem, setPreviewItem] = React.useState<string>();
-
-  const sweeps: string[] = React.useMemo(() => {
-    return (
-      (index.data[selectedDataSet] &&
-        index.data[selectedDataSet].repetitions &&
-        index.data[selectedDataSet].repetitions[selectedRepetition].sweeps) ||
-      []
-    );
-  }, [selectedDataSet, selectedRepetition, index]);
 
   const repetitions: Repetition = React.useMemo(() => {
     return index.data[selectedDataSet]
       ? index.data[selectedDataSet].repetitions
       : {};
   }, [selectedDataSet, index]);
+
+  const { sweeps, colorMapper } = React.useMemo(() => {
+    const selectedData =  index.data[selectedDataSet]
+    if(selectedData && selectedData.repetitions && selectedData.repetitions[selectedRepetition]) {
+      const rawData = repetitions[selectedRepetition].sweeps;
+      const colors = DistinctColors({count: rawData.length});
+      const colorMapper: {[key: string]: string} = rawData.reduce((mapper: object, sweep: string, index) => {
+        return {...mapper, [sweep]:  colors[index].hex()}
+      }, {})
+      return { colorMapper, sweeps: rawData };
+    }
+
+    return { sweeps: [], colorMapper: {}};
+  }, [selectedDataSet, selectedRepetition, index]);
 
   const selectedMetadata: IndexDataValue | undefined = React.useMemo(() => {
     return index.data[selectedDataSet];
@@ -113,147 +116,102 @@ const EphysPlot: React.FC<{
 
   const repetitionOptions = repetitions
     ? Object.keys(repetitions).map(v => {
-        return (
-          <Select.Option key={v} value={v}>
-            {v}
-          </Select.Option>
-        );
-      })
+      return (
+        <Select.Option key={v} value={v}>
+          {v}
+        </Select.Option>
+      );
+    })
     : null;
 
   const sweepsOptions = sweeps
-    ? sweeps.map(sweep => {
-        return {
-          label: sweep,
-          value: sweep,
-        };
-      })
+    ? sweeps.map(sweep => ({ label: sweep, value: sweep }))
     : [];
 
   const handleStimulusChange = (value: string) => {
     setSelectedDataSet(value);
     setSelectedRepetition(Object.keys(repetitions)[0]);
-    setSelectedSweeps([
-      index.data[value]?.repetitions[Object.keys(repetitions)[0]].sweeps[0],
-    ]);
+    setSelectedSweeps([])
+    setZoomRanges(null);
   };
 
   const handleRepetitionChange = (value: string) => {
     setSelectedRepetition(value);
-    setSelectedSweeps([repetitions[value].sweeps[0]]);
+    setSelectedSweeps([]);
+    setZoomRanges(null);
   };
 
-  const handleSelectAllSweeps = () => {
-    if (selectedSweeps.length === sweeps.length) {
-      setSelectedSweeps([]);
-    } else {
-      setSelectedSweeps(sweeps);
+  const handlePreviewSweep = (sweep?: string) => {
+    if(!sweep) {
+      setPreviewItem(undefined);
     }
-  };
-
-  const handleGoToImage = () => {
-    goToImage(selectedDataSet, selectedRepetition);
-  };
-
-  const previewSweep = (sweep: string) => {
-    if (sweepsOptions.length > 1 && !selectedSweeps.includes(sweep)) {
+    else if (sweepsOptions.length > 1 && !selectedSweeps.includes(sweep)) {
       setPreviewItem(sweep);
     }
   };
 
+  const sweepObject = {
+    selectedSweeps,
+    colorMapper,
+    allSweeps: sweeps,
+    previewSweep:  previewItem,
+  }
+
   return (
     <>
-      <div style={{ margin: '10px' }}>
-        <label>
-          <b>Stimulus </b>({Object.keys(index.data).length} available)
-        </label>
-        <Select
+      <div className="ephys-plot-container">
+        <OptionSelect
+          label={{title: 'Stimulus', numberOfAvailable: Object.keys(index.data).length}}
+          options={dataSetOptions}
           value={selectedDataSet}
-          placeholder="Please select"
-          onChange={handleStimulusChange}
-          style={{ width: '100%' }}
-        >
-          {dataSetOptions}
-        </Select>
-      </div>
-      <div style={{ margin: '10px' }}>
-        <label>
-          <b>Repetition </b>
-          {repetitions && `(${Object.keys(repetitions).length} available)`}
-        </label>
-        <Select
-          placeholder="Please select"
+          handleChange={handleStimulusChange}
+        />
+        <OptionSelect
+          label={{title: 'Repetition', numberOfAvailable: Object.keys(repetitions).length}}
+          options={repetitionOptions}
           value={selectedRepetition}
-          onChange={handleRepetitionChange}
-          style={{ width: '100%' }}
-        >
-          {repetitionOptions}
-        </Select>
+          handleChange={handleRepetitionChange}
+          hideWhenSingle
+        />
       </div>
-      <div style={{ margin: '10px' }}>
-        <Button onClick={handleGoToImage}>
-          <FileImageOutlined /> View Images
-        </Button>
-      </div>
-      <div style={{ margin: '10px' }}>
-        <span>
-          <b>Sweeps</b>
-          <Checkbox
-            style={{ margin: '0px 10px 0px 10px' }}
-            indeterminate={
-              sweeps
-                ? selectedSweeps.length > 0 &&
-                  selectedSweeps.length < sweeps.length
-                : false
-            }
-            onChange={handleSelectAllSweeps}
-            checked={selectedSweeps.length === sweeps.length}
-          >
-            All (<span>{sweeps && sweeps.length}</span> available)
-          </Checkbox>
-        </span>
-        {sweeps.length > 1 && (
-          <Button type="text" onClick={() => setSelectedSweeps([])}>
-            Clear All
-          </Button>
-        )}
-        <div style={{ marginTop: '10px' }}>
-          <Checkbox.Group
-            value={selectedSweeps}
-            onChange={(value: any[]) => {
-              setSelectedSweeps(value);
-              setPreviewItem(undefined);
-            }}
-          >
-            {sweepsOptions.map(sweep => (
-              <Checkbox
-                style={{ marginLeft: 0 }}
-                onMouseEnter={() => previewSweep(sweep.value)}
-                onMouseLeave={() => setPreviewItem(undefined)}
-                value={sweep.value}
-              >
-                {sweep.label}
-              </Checkbox>
-            ))}
-          </Checkbox.Group>
-        </div>
+        <div className="sweep-selector-container">
+          <div className="sweep-selector-label"><b>Sweep</b> ({sweeps.length} available)</div>
+          <TraceSelectorGroup
+            handlePreviewSweep={handlePreviewSweep}
+            colorMapper={colorMapper}
+            selectedSweeps={selectedSweeps}
+            previewItem={previewItem}
+            setSelectedSweeps={setSelectedSweeps}
+            sweepsOptions={sweepsOptions}
+          />
+          <span className="sweep-selector-reset-btn">
+            {sweeps.length > 1 && (
+              <Button size="small" onClick={() => {setSelectedSweeps([]); setZoomRanges(null);}}>
+                Reset
+              </Button>
+            )}
+          </span>
       </div>
       <ResponsePlot
         metadata={selectedMetadata}
-        sweeps={previewItem ? [...selectedSweeps, previewItem] : selectedSweeps}
+        sweeps={sweepObject}
         dataset={selectedDataSet}
+        setSelectedSweeps={setSelectedSweeps}
         options={options}
         zoomRanges={zoomRanges}
         onZoom={setZoomRanges}
       />
-      <StimulusPlot
-        metadata={selectedMetadata}
-        sweeps={previewItem ? [...selectedSweeps, previewItem] : selectedSweeps}
-        dataset={selectedDataSet}
-        options={options}
-        zoomRanges={zoomRanges}
-        onZoom={setZoomRanges}
-      />
+      <div className="stimulus-plot">
+        <StimulusPlot
+          setSelectedSweeps={setSelectedSweeps}
+          metadata={selectedMetadata}
+          sweeps={sweepObject}
+          dataset={selectedDataSet}
+          options={options}
+          zoomRanges={zoomRanges}
+          onZoom={setZoomRanges}
+        />
+      </div>
     </>
   );
 };

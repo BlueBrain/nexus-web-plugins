@@ -28,6 +28,7 @@ const EphysViewerContainer: React.FC<{
 
   const stimulusTypes = resource.image
     ? propAsArray<EPhysImageItem>(resource, 'image')
+        .filter(image => image.about.match(/stimulation/i))
         .map(getStimulusTypeString)
         .sort()
     : [];
@@ -67,12 +68,6 @@ const EphysViewerContainer: React.FC<{
     setView(VIEWS.CHART);
   };
 
-  const handleGoToImage = (stimulusType: string, repetition: string) => {
-    setStimulusType(stimulusType);
-    setSelectedRepetition(repetition);
-    setView(VIEWS.IMAGE);
-  };
-
   return (
     <div>
       <div style={{ margin: '0 0 1em 0' }}>
@@ -108,7 +103,6 @@ const EphysViewerContainer: React.FC<{
                 : stimulusType
             }
             defaultRepetition={selectedRepetition}
-            goToImage={handleGoToImage}
           />
         )}
       </div>

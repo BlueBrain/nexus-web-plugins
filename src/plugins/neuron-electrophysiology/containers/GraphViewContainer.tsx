@@ -9,13 +9,11 @@ const GraphViewContainer: React.FC<{
   nexus: NexusClient;
   defaultStimulusType?: string;
   defaultRepetition?: string;
-  goToImage: (stimulusType: string, repetition: string) => void;
 }> = ({
   resource,
   nexus,
   defaultStimulusType,
   defaultRepetition,
-  goToImage,
 }) => {
   const traceCollectionData = useEphysDistribution(resource, nexus);
 
@@ -25,7 +23,6 @@ const GraphViewContainer: React.FC<{
         traceCollectionData,
         defaultRepetition,
         defaultStimulusType,
-        goToImage,
       }}
     />
   );

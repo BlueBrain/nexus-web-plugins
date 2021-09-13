@@ -2,13 +2,8 @@ import * as React from 'react';
 import { NexusClient, Resource } from '@bbp/nexus-sdk';
 
 import { NexusImage } from '../../../common';
-import ImageViewComponent, {
-  ImageItem,
-} from '../components/ImageViewComponent';
-import {
-  EPhysImageItem,
-  useImageCollectionDistribution,
-} from '../hooks/useImageCollectionDistribution';
+import ImageViewComponent, { ImageItem } from '../components/ImageViewComponent';
+import { EPhysImageItem, useImageCollectionDistribution } from '../hooks/useImageCollectionDistribution';
 import { Button, Spin } from 'antd';
 
 // Only fetch three traces at a time.
@@ -110,7 +105,7 @@ const ImageViewContainer: React.FC<{
         }}
       />
       {isLastPage ? null : (
-        <div style={{ marginBottom: '30px' }}>
+        <div className="trace-load-more-btn-container">
           <Spin spinning={imageCollectionData.loading}>
             <Button
               onClick={() => {

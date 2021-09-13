@@ -1,10 +1,9 @@
 import * as React from 'react';
-import { Button, Empty, Select, Spin } from 'antd';
+import { Button, Empty, Select } from 'antd';
 import { LineChartOutlined } from '@ant-design/icons';
 
 import { RemoteData } from '../../../common';
 
-import './stimuli-list.css';
 
 const { Option } = Select;
 
@@ -37,36 +36,32 @@ const ImageSetComponent: React.FC<{
   return (
     <div className="stimuli-list" key={`image-preview-${stimulusType}`}>
       <h3>
-        {stimulusType} ({repLength}{' '}
-        {repLength > 1 ? 'repetitions' : 'repetition'})
+        {stimulusType} {repLength > 1 && `(${repLength} repetitions)`}
       </h3>
-      <div className="reps" style={{ display: 'flex' }}>
+      <div className="trace-repetitions">
         {Object.keys(repetitions).map(repKey => {
           const sweeps = repetitions[Number(repKey)]?.sort((a: any, b: any) => {
             const aType = (a.about || a.fileName)
               .toLowerCase()
               .includes('response');
+
             const bType = (b.about || b.fileName)
               .toLowerCase()
               .includes('response');
+
             if (aType && !bType) {
               return -1;
             }
+
             if (bType && !aType) {
               return 1;
             }
+
             return 0;
           });
           return (
-            <div
-              className="repetition-list"
-              key={`image-preview-${stimulusType}-${repKey}`}
-            >
-              <div
-                style={{
-                  margin: '0 0 1em 0',
-                }}
-              >
+            <div className="repetition-list" key={`image-preview-${stimulusType}-${repKey}`}>
+              <div className="mb-1em">
                 Repetition {repKey}{' '}
                 <Button
                   size="small"
@@ -79,9 +74,7 @@ const ImageSetComponent: React.FC<{
               {sweeps.map((imgData: any, index: any) => {
                 return (
                   <div
-                    style={{
-                      margin: '0 0 1em 0',
-                    }}
+                    className="mb-1em"
                     key={`image-preview-${stimulusType}-${repKey}-${index}`}
                   >
                     {imagePreview({ imageUrl: imgData.imageSrc })}
@@ -122,11 +115,11 @@ const ImageViewComponent: React.FC<{
   }, [imageCollectionData]);
   return (
     <div>
-      <div style={{ margin: '0 0 1em 0' }}>
+      <div className="mb-1em">
         Select Stimulus ({stimulusTypeMap.size} Stimuli)
         <br />
         <Select
-          style={{ width: 200 }}
+          className="stimulus-select"
           placeholder="Select a stimulus"
           value={stimulusType}
           onChange={onStimulusChange}
@@ -134,12 +127,12 @@ const ImageViewComponent: React.FC<{
           <Option value="All">All</Option>
           {Array.from(stimulusTypeMap.entries()).map(([key, amount]) => (
             <Option value={key} key={key}>
-              {key} ({amount})
+              {key} {amount > 1 && `(${amount})`}
             </Option>
           ))}
         </Select>
       </div>
-      <hr style={{ color: '#00000008' }} />
+      <hr className="trace-divider" />
       <div>
         <div>
           {sortedImageCollectionData.map(([stimulusType, { repetitions }]) => {
@@ -150,25 +143,19 @@ const ImageViewComponent: React.FC<{
                 repetitions={repetitions}
                 onRepetitionClicked={onRepetitionClicked}
                 imagePreview={imagePreview}
-              ></ImageSetComponent>
+              />
             );
           })}
           {imageCollectionData.data?.size === 0 && (
-            <Empty
-              style={{ padding: '2em' }}
-              description={'There is no data to show'}
-            ></Empty>
+            <Empty className="p-2em" description={'There is no data to show'} />
           )}
           {imageCollectionData.data?.size !== 0 &&
             imageCollectionData.loading && (
-              <Empty
-                style={{ padding: '2em' }}
-                description="Fetching new stimulus types"
-              ></Empty>
+              <Empty className="p-2em" description="Fetching new stimulus types" />
             )}
           {imageCollectionData.error && (
             <Empty
-              style={{ padding: '2em' }}
+              className="p-2em"
               description={`There was a problem loading the required resources: ${imageCollectionData.error.message}`}
             />
           )}

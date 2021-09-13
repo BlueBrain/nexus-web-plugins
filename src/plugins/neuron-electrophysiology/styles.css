@@ -1,0 +1,113 @@
+.trace-selector-group.ant-checkbox-wrapper {
+  padding-right: 4px;
+  padding-left: 4px;
+  padding-bottom: 5px;
+  margin-left: 0 !important;
+}
+
+.trace-selector-group .trace-selector-cover {
+  background-color: #EEEEEE;
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  display: block;
+  width: 22px;
+  height: 22px;
+  border: 1px solid #EEEEEE;
+  opacity: 1;
+}
+.trace-selector-group .ant-checkbox-inner {
+  width: 22px;
+  height: 22px;
+}
+
+.trace-selector-group:hover .ant-checkbox .trace-selector-cover {
+  opacity:0;
+}
+
+.trace-repetitions {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.stimuli-list {
+  margin: 0.5em 0;
+  padding: 1em;
+  border-radius: 0.5em;
+}
+
+.stimuli-list:nth-child(even) {
+  background-color: #fafafa;
+}
+
+.repetition-list {
+  max-width: 250px;
+  padding: 1em;
+  border-radius: 0.5em;
+}
+
+.repetition-list:nth-child(even) {
+  background-color: #fafafa;
+}
+
+.trace-block-padding {
+  padding: 2em;
+}
+
+.display-flex {
+  display: flex;
+}
+
+.mb-1em {
+  margin-bottom: 1em;
+}
+
+.m-0 {
+  margin: 0;
+}
+
+.p-2em {
+  padding: 2em;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.stimulus-select {
+  width: 200px;
+}
+
+.trace-divider {
+  color: #00000008;
+}
+
+.option-select {
+  margin: 10px;
+  min-width: 260px;
+}
+
+.trace-load-more-btn-container {
+  margin-bottom: 30px;
+}
+
+.ephys-plot-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.sweep-selector-container {
+  margin: 10px 6px;
+}
+
+.stimulus-plot {
+  margin-top: 20px;
+}
+
+.sweep-selector-label {
+  margin-left: 4px;
+}
+
+.sweep-selector-reset-btn {
+  margin-left: 16px
+}

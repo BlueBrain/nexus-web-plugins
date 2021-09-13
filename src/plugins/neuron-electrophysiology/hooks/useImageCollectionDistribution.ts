@@ -16,7 +16,7 @@ const MAX_BYTES_TO_PREVIEW = 3000000;
 export type EPhysImageItem = {
   '@id': string;
   repetition: number;
-  about?: string;
+  about: string;
   stimulusType: {
     '@id': string;
   };
@@ -124,7 +124,7 @@ export function useImageCollectionDistribution(
       };
 
       setData({
-        data: data,
+        data,
         error: null,
         loading: true,
       });

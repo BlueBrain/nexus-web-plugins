@@ -3,53 +3,98 @@ import Plot from 'react-plotly.js';
 import { Radio } from 'antd';
 
 import { convertAmperes, Amperes } from '../utils/plotHelpers';
-import { TraceData, IndexDataValue, ZoomRanges } from '../EphysPlot';
+import { optimizePlotData } from '../utils/optimizeTrace';
+import { useConfig } from '../hooks/useConfig';
+import { PlotData } from 'plotly.js';
+import { PlotProps } from '../types';
 
 const DEFAULT_STIMULUS_UNIT = 'pA';
 
-const StimulusPlot: React.FC<{
-  metadata: IndexDataValue | undefined;
-  sweeps: string[];
-  dataset: string;
-  options: any;
-  zoomRanges: ZoomRanges | null;
-  onZoom: (zoomRanges: ZoomRanges) => void;
-}> = ({ metadata, sweeps, dataset, options, zoomRanges, onZoom }) => {
-  const [stimulusUnit, setStimulusUnit] = React.useState<Amperes>(
-    DEFAULT_STIMULUS_UNIT
-  );
+const StimulusPlot: React.FC<PlotProps> = ({
+  metadata,
+  setSelectedSweeps,
+  sweeps: { selectedSweeps, previewSweep, allSweeps, colorMapper},
+  dataset,
+  options,
+  zoomRanges,
+  onZoom
+}) => {
+  const [stimulusUnit, setStimulusUnit] = React.useState<Amperes>(DEFAULT_STIMULUS_UNIT);
 
   const isAmperes = metadata && metadata.i_unit === 'amperes';
+  const {config, layout, font, style, antBreakpoints} = useConfig({selectedSweeps});
 
-  const dataStimulus: TraceData[] = React.useMemo(() => {
+  const rawData = React.useMemo(() => {
     const deltaTime = metadata ? metadata?.dt : 1;
-    return sweeps.map(s => {
-      const y = options[`${dataset} ${s} i`]
-        ? options[`${dataset} ${s} i`].y
+    const zoom = {
+      xstart: zoomRanges?.x[0],
+      xend: zoomRanges?.x[1],
+    }
+
+    const allSweepsData = allSweeps.map(sweep => {
+      const name = options[`${dataset} ${sweep} i`]?.name;
+      const y = options[`${dataset} ${sweep} i`]
+        ? options[`${dataset} ${sweep} i`].y
         : [];
+
       const yConverted = isAmperes ? convertAmperes(y, stimulusUnit) : y;
-      const name = options[`${dataset} ${s} i`]?.name;
-      const x = y.map((m: any, i: number) => i * deltaTime);
+      const color = colorMapper[sweep];
+
       return {
-        y: yConverted,
-        x,
         name,
+        y: yConverted,
+        line: {
+         color
+        },
+        sweepName: sweep,
       };
+    })
+
+    return optimizePlotData(allSweepsData, deltaTime, zoom) || [];
+  }, [options, dataset, metadata, zoomRanges, allSweeps, isAmperes, colorMapper, stimulusUnit])
+
+  const selectedResponse: Partial<PlotData>[] = React.useMemo(() => {
+    return rawData?.filter((data) => selectedSweeps.includes(data.sweepName))
+  }, [options, dataset, selectedSweeps, metadata]);
+
+  const previewDataResponse: Partial<PlotData>[] = React.useMemo(() => {
+    return rawData?.map((data: {sweepName: string}) => {
+      const isSelected = selectedSweeps.includes(data.sweepName);
+      const isPreview = data.sweepName === previewSweep;
+      const opacity = isPreview || isSelected ? 1: 0.05;
+
+      return { ...data, opacity };
     });
-  }, [options, metadata, dataset, sweeps, stimulusUnit]);
+  }, [previewSweep]);
 
   const onChangeStimulusUnits = (event: any) => {
     setStimulusUnit(event.target.value);
   };
 
-  const xTitle = metadata ? metadata.t_unit : '';
+  const handleClick = ({data, curveNumber}: Readonly<Plotly.LegendClickEvent>): boolean => {
+    const value: string = (data[curveNumber] as any).sweepName;
+    const isSelected = selectedSweeps.includes(value);
+    if(isSelected) {
+      setSelectedSweeps(selectedSweeps.filter(sweep => sweep!==value));
+    }
+    else {
+      setSelectedSweeps([...selectedSweeps, value]);
+    }
 
+    return false;
+  }
+
+  const xTitle = metadata ? metadata.t_unit : '';
   const yTitle = isAmperes ? stimulusUnit : (metadata && metadata.i_unit) || '';
+
+  const isEmptySelection = !selectedSweeps.length;
 
   return (
     <>
       <Plot
-        data={dataStimulus}
+        data={previewSweep ? previewDataResponse : (isEmptySelection ? rawData: selectedResponse)}
+        onLegendClick={handleClick}
+        onDoubleClick={() => false}
         onRelayout={e => {
           const {
             'xaxis.range[0]': x1,
@@ -63,28 +108,31 @@ const StimulusPlot: React.FC<{
           title: 'Stimulus',
           xaxis: {
             title: {
+              font,
               text: `Time (${xTitle})`,
             },
             range: zoomRanges?.x,
           },
           yaxis: {
             title: {
+              font,
               text: `Current (${yTitle})`,
             },
             range: zoomRanges?.y,
             zeroline: false,
           },
           autosize: true,
-          showlegend: true,
+          ...layout,
         }}
-        style={{ width: '100%', height: '100%' }}
-        config={{ displaylogo: false }}
+        style={style}
+        config={{ displaylogo: false, ...config }}
       />
-      {isAmperes && (
+      {isAmperes && antBreakpoints.md && (
         <Radio.Group
           onChange={onChangeStimulusUnits}
           value={stimulusUnit}
           size="small"
+          className="units"
         >
           <Radio.Button value={DEFAULT_STIMULUS_UNIT}>
             {DEFAULT_STIMULUS_UNIT}

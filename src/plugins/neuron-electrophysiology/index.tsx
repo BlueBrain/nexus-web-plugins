@@ -4,6 +4,9 @@ import ReactDOM from 'react-dom';
 import { NexusPluginProps } from '../../common/types';
 import EphysViewerContainer from './EphysViewerContainer';
 
+import './styles.css';
+
+
 export { EphysViewerContainer };
 
 export default ({ ref, resource, nexusClient }: NexusPluginProps<{}>) => {
