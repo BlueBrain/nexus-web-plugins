@@ -130,7 +130,7 @@ const EphysPlot: React.FC<{
 
   const handleStimulusChange = (value: string) => {
     setSelectedDataSet(value);
-    setSelectedRepetition(Object.keys(repetitions)[0]);
+    setSelectedRepetition(Object.keys(index.data[value].repetitions)[0]);
     setSelectedSweeps([])
     setZoomRanges(null);
   };
