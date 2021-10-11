@@ -100,7 +100,7 @@ const ImageViewContainer: React.FC<{
                 org: orgLabel,
                 project: projectLabel,
               }}
-            ></NexusImage>
+            />
           ),
         }}
       />

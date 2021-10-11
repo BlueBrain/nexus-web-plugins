@@ -50,11 +50,11 @@ const ImageSetComponent: React.FC<{
               .includes('response');
 
             if (aType && !bType) {
-              return -1;
+              return 1;
             }
 
             if (bType && !aType) {
-              return 1;
+              return -1;
             }
 
             return 0;
@@ -62,24 +62,27 @@ const ImageSetComponent: React.FC<{
           return (
             <div className="repetition-list" key={`image-preview-${stimulusType}-${repKey}`}>
               <div className="mb-1em">
-                Repetition {repKey}{' '}
+                <h4 className="repetition-label">Repetition {repKey}</h4>
                 <Button
+                  className="interactive-view-btn"
                   size="small"
                   icon={<LineChartOutlined />}
                   onClick={onRepetitionClicked(stimulusType, repKey)}
                 >
-                  Interactive View
+                  <span className="repetition-label"> Repetition {repKey}</span>
+                  <span className="generic-label"> Interactive View</span>
                 </Button>
               </div>
               {sweeps.map((imgData: any, index: any) => {
-                return (
+                return (<>
                   <div
-                    className="mb-1em"
+                    className="mb-1em trace-image-preview"
                     key={`image-preview-${stimulusType}-${repKey}-${index}`}
                   >
+                    <h5 className="trace-type-label">{index === 0 ? 'Stimulus' : 'Recording'}</h5>
                     {imagePreview({ imageUrl: imgData.imageSrc })}
                   </div>
-                );
+                </>);
               })}
             </div>
           );
@@ -115,24 +118,26 @@ const ImageViewComponent: React.FC<{
   }, [imageCollectionData]);
   return (
     <div>
-      <div className="mb-1em">
-        Select Stimulus ({stimulusTypeMap.size} Stimuli)
-        <br />
-        <Select
-          className="stimulus-select"
-          placeholder="Select a stimulus"
-          value={stimulusType}
-          onChange={onStimulusChange}
-        >
-          <Option value="All">All</Option>
-          {Array.from(stimulusTypeMap.entries()).map(([key, amount]) => (
-            <Option value={key} key={key}>
-              {key} {amount > 1 && `(${amount})`}
-            </Option>
-          ))}
-        </Select>
-      </div>
-      <hr className="trace-divider" />
+      {stimulusTypeMap.size > 1 && (<>
+        <div className="mb-1em">
+          Select Stimulus ({stimulusTypeMap.size} available)
+          <br />
+          <Select
+            className="stimulus-select"
+            placeholder="Select a stimulus"
+            value={stimulusType}
+            onChange={onStimulusChange}
+          >
+            <Option value="All">All</Option>
+            {Array.from(stimulusTypeMap.entries()).map(([key, amount]) => (
+              <Option value={key} key={key}>
+                {key} {amount > 1 && `(${amount})`}
+              </Option>
+            ))}
+          </Select>
+        </div>
+        <hr className="trace-divider" />
+      </>)}
       <div>
         <div>
           {sortedImageCollectionData.map(([stimulusType, { repetitions }]) => {

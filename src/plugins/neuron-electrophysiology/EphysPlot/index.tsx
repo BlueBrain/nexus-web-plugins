@@ -107,9 +107,11 @@ const EphysPlot: React.FC<{
   }, [selectedDataSet, index]);
 
   const dataSetOptions = Object.keys(index.data).map(stimulusTypeKey => {
+    const repetitionNum = Object.keys(index.data[stimulusTypeKey].repetitions).length;
+
     return (
       <Select.Option key={stimulusTypeKey} value={stimulusTypeKey}>
-        {stimulusTypeKey}
+        {stimulusTypeKey} {repetitionNum > 1 && `(${repetitionNum})`}
       </Select.Option>
     );
   });
@@ -184,29 +186,29 @@ const EphysPlot: React.FC<{
             setSelectedSweeps={setSelectedSweeps}
             sweepsOptions={sweepsOptions}
           />
-          <span className="sweep-selector-reset-btn">
-            {sweeps.length > 1 && (
+          {sweeps.length > 1 && (
+            <span className="sweep-selector-reset-btn">
               <Button size="small" onClick={() => {setSelectedSweeps([]); setZoomRanges(null);}}>
                 Reset
               </Button>
-            )}
-          </span>
+            </span>
+          )}
       </div>
-      <ResponsePlot
+      <StimulusPlot
+        setSelectedSweeps={setSelectedSweeps}
         metadata={selectedMetadata}
         sweeps={sweepObject}
         dataset={selectedDataSet}
-        setSelectedSweeps={setSelectedSweeps}
         options={options}
         zoomRanges={zoomRanges}
         onZoom={setZoomRanges}
       />
-      <div className="stimulus-plot">
-        <StimulusPlot
-          setSelectedSweeps={setSelectedSweeps}
+      <div className="recording-plot">
+        <ResponsePlot
           metadata={selectedMetadata}
           sweeps={sweepObject}
           dataset={selectedDataSet}
+          setSelectedSweeps={setSelectedSweeps}
           options={options}
           zoomRanges={zoomRanges}
           onZoom={setZoomRanges}

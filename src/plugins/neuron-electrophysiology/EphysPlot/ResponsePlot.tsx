@@ -96,7 +96,7 @@ const ResponsePlot: React.FC<PlotProps> = ({
           onZoom({ x: [x1, x2], y: [y1, y2] });
         }}
         layout={{
-          title: 'Response',
+          title: 'Recording',
           xaxis: {
             title: {
               font,

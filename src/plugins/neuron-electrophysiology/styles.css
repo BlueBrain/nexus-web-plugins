@@ -28,6 +28,8 @@
 .trace-repetitions {
   display: flex;
   flex-wrap: wrap;
+  overflow: hidden;
+  position: relative;
 }
 
 .stimuli-list {
@@ -41,13 +43,9 @@
 }
 
 .repetition-list {
-  max-width: 250px;
+  max-width: 280px;
   padding: 1em;
   border-radius: 0.5em;
-}
-
-.repetition-list:nth-child(even) {
-  background-color: #fafafa;
 }
 
 .trace-block-padding {
@@ -100,7 +98,7 @@
   margin: 10px 6px;
 }
 
-.stimulus-plot {
+.recording-plot {
   margin-top: 20px;
 }
 
@@ -109,5 +107,59 @@
 }
 
 .sweep-selector-reset-btn {
-  margin-left: 16px
+  margin-left: 16px;
+}
+
+.sweep-selector-reset-btn > button {
+  margin-top: calc(0.2em - 1px);
+  vertical-align: top;
+}
+
+.interactive-view-btn > .repetition-label {
+  display: none !important;
+}
+
+.trace-type-label {
+  transform: rotate3d(0, 0, 1, -90deg) translate(-50%, -18px);
+  transform-origin: left bottom;
+  display: none;
+  height: 0;
+  margin: 0;
+}
+
+.repetition-list:nth-child(1) .trace-type-label {
+  display: block;
+}
+
+/* ANT Design SM breakpoint */
+@media (max-width: 768px) {
+  .stimuli-list {
+    padding: 0.4em;
+  }
+
+  .repetition-list {
+    padding: 0.4em;
+    flex: 50% 0 0;
+  }
+
+  .interactive-view-btn {
+    display: block !important;
+    width: 100%;
+  }
+
+  .repetition-label {
+    display: none !important;
+  }
+
+  .generic-label {
+    display: none !important;
+  }
+
+  .interactive-view-btn > .repetition-label {
+    display: inline !important;
+  }
+
+  .repetition-list:nth-child(1) .trace-type-label {
+    display: none;
+  }
 }
