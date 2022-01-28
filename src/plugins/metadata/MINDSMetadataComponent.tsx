@@ -4,6 +4,7 @@ import { Descriptions, Spin } from 'antd';
 import { Resource } from '@bbp/nexus-sdk';
 
 import './metadata-component.css';
+import { labelOf } from '../../common/nexus-tools/nexus-tools';
 
 export type BrainLocation = {
   brainRegion: {
@@ -108,9 +109,9 @@ export const MINDSMetadataComponent: React.FC<{
           label={<span className="metadata-label">Type</span>}
         >
           {!!types && Array.isArray(types)
-            ? types.map(type => (
-                <span>
-                  {type}
+            ? types.map((type, ix) => (
+                <span key={ix}>
+                  {labelOf(type)}
                   <br />
                 </span>
               ))
@@ -120,8 +121,8 @@ export const MINDSMetadataComponent: React.FC<{
           label={<span className="metadata-label">Brain Location</span>}
         >
           {!!brainLocation ? (
-            `${brainLocation?.brainRegion?.label} ${brainLocation?.layer
-              ?.label || ''}`
+            `${brainLocation.brainRegion?.label} ${brainLocation.layer?.label ||
+              ''}`
           ) : (
             <span className="none">-</span>
           )}
@@ -174,7 +175,7 @@ export const MINDSMetadataComponent: React.FC<{
               ))
             : !!contribution && (
                 <span>
-                  {contribution?.agent || '-'}
+                  {contribution.agent || '-'}
                   {!!contribution.role ? `: ${contribution.role}` : ''}
                 </span>
               )}

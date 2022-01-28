@@ -1,7 +1,7 @@
 import { Resource } from '@bbp/nexus-sdk';
 import get from 'lodash/get';
 
-import { Distribution, EncodingFormatEnum } from '../types';
+import { Distribution } from '../types';
 
 interface ParsedNexusUrl {
   deployment: string;
@@ -147,3 +147,10 @@ export const distributionFormatLabel = (distribution: Distribution): string => {
 
 export const propAsArray = <T>(resource: Resource, key: string): [T] =>
   Array.isArray(resource[key]) ? resource[key] : [resource[key]];
+
+// For getting the last part of a uri path as a title or label
+export const labelOf = (inputString: string) => {
+  const slash = inputString.substring(inputString.lastIndexOf('/') + 1);
+  const title = slash.substring(slash.lastIndexOf('#') + 1);
+  return title;
+};
