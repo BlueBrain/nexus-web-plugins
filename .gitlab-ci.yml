@@ -1,4 +1,4 @@
-image: node
+image: node:16.3.0-alpine
 
 variables:
   DOCKER_DRIVER: overlay2
