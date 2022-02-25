@@ -1,11 +1,14 @@
 import * as React from 'react';
-import Plot from 'react-plotly.js';
-
+import Plotly from 'plotly.js-basic-dist';
+import createPlotlyComponent from 'react-plotly.js/factory';
 import { convertVolts } from '../utils/plotHelpers';
 import { useConfig } from '../hooks/useConfig';
 import { PlotData } from 'plotly.js';
 import { optimizePlotData } from '../utils/optimizeTrace';
 import { PlotProps } from '../types';
+
+
+const Plot = createPlotlyComponent(Plotly);
 
 const DEFAULT_RESPONSE_UNIT = 'mV';
 

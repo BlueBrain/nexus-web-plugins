@@ -73,12 +73,10 @@ const ImageViewContainer: React.FC<{
     }
     if (imageCollectionData.data) {
       const totalStimulus = Array.from(stimulusTypeMap.keys()).length;
-      const remaining =
-        totalStimulus - page * PAGINATION_OFFSET - PAGINATION_OFFSET <= 0;
-      return remaining;
+      return totalStimulus - page * PAGINATION_OFFSET - PAGINATION_OFFSET <= 0;
     }
     return false;
-  }, [page, stimulusType, stimulusTypeMap]);
+  }, [page, stimulusType, stimulusTypeMap, imageCollectionData]);
 
   const [projectLabel, orgLabel] = resource._project.split('/').reverse();
 

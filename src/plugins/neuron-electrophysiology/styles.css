@@ -28,7 +28,6 @@
 .trace-repetitions {
   display: flex;
   flex-wrap: wrap;
-  overflow: hidden;
   position: relative;
 }
 
@@ -120,7 +119,7 @@
 }
 
 .trace-type-label {
-  transform: rotate3d(0, 0, 1, -90deg) translate(-50%, -18px);
+  transform: rotate3d(0, 0, 1, -90deg) translate(-50%, -22px);
   transform-origin: left bottom;
   display: none;
   height: 0;
@@ -161,5 +160,35 @@
 
   .repetition-list:nth-child(1) .trace-type-label {
     display: none;
+  }
+}
+
+/* ANT Design SM breakpoint */
+@media (min-width: 576px) {
+  .stimuli-list {
+    padding: 1em;
+  }
+
+  .repetition-list {
+    flex: 33% 0 0;
+  }
+
+  .repetition-list:nth-child(3n+1) .trace-type-label {
+    display: block;
+  }
+}
+
+/* ANT Design LG breakpoint */
+@media (min-width: 992px) {
+  .repetition-list {
+    flex: 25% 0 0;
+  }
+
+  .repetition-list:nth-child(3n+1) .trace-type-label {
+    display: none;
+  }
+
+  .repetition-list:nth-child(4n+1) .trace-type-label {
+    display: block;
   }
 }

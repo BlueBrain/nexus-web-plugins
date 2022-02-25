@@ -2,6 +2,9 @@
 const path = require('path');
 const fs = require('fs');
 
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
+
 
 const pluginEntry = fs.readdirSync('./src/plugins')
   .reduce((pluginEntry, pluginName) => ({
@@ -12,6 +15,9 @@ const pluginEntry = fs.readdirSync('./src/plugins')
 
 module.exports = {
   mode: 'production',
+  plugins: [
+    // new BundleAnalyzerPlugin(),
+  ],
   externals: {
     react: 'react',
     'react-dom': 'react-dom'
