@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { Resource, NexusClient, NexusFile } from '@bbp/nexus-sdk';
-import { Spin, Input, Button, Image, Row, Col, Empty } from 'antd';
-import { chunk } from 'lodash';
+import { Spin, Input, Button, Image, Empty } from 'antd';
 import {
   SortAscendingOutlined,
   SortDescendingOutlined,
 } from '@ant-design/icons';
 import 'antd/dist/antd.css';
+import './image-viewer.css';
 
 type ImageCollection = {
   imageSrc: string;
@@ -67,10 +67,6 @@ const ImageCollectionViewerContainer: React.FC<{
   const isImage = (resource: NexusFile) => {
     return !!resource._mediaType.includes('image');
   };
-
-  const dataChunks = React.useMemo(() => {
-    return chunk(filteredData, 5);
-  }, [filteredData]);
 
   const processImageDistribution = (
     id: string,
@@ -235,56 +231,34 @@ const ImageCollectionViewerContainer: React.FC<{
     );
   }
 
-  const renderColumns = (data: ImageCollection) => {
-    return data?.map((item, index) => {
-      return (
-        <Col span={4} key={`column-${index}`}>
+  const renderList = (data: ImageCollection) =>
+    data?.map((item, index) => (
+      <div key={`row-${index}`} className="image-row">
+        <div className="image-row_image">
           <Image
             alt={item.name}
             src={item.imageSrc}
-            style={{
-              width: '200px',
-              cursor: 'pointer',
-              margin: '10px 10px 10px 10px',
-            }}
+            className="gallery-image"
           />
-        </Col>
-      );
-    });
-  };
-
-  const renderList = (data: ImageCollection) => {
-    return data?.map((item, index) => {
-      return (
-        <Row key={`row-${index}`}>
-          <Col span={4}>
-            <Image
-              alt={item.name}
-              src={item.imageSrc}
-              style={{
-                width: '200px',
-                cursor: 'pointer',
-                margin: '10px 10px 10px 10px',
-              }}
-            />
-          </Col>
-          <Col span={4}>
-            <div style={{ marginTop: '20px', alignItems: 'center' }}>
-              <div>{item.name}</div>
-              <div> Size : {item.size} MB</div>
-            </div>
-          </Col>
-        </Row>
-      );
-    });
-  };
-
-  const renderGrid = () => {
-    return dataChunks.map(d => {
-      return <Row>{renderColumns(d)}</Row>;
-    });
-  };
-
+        </div>
+        <div className="image-row_meta">
+          <div>{item.name}</div>
+          <div> Size : {item.size} MB</div>
+        </div>
+      </div>
+    ));
+  const renderGrid = () => (
+    <div className="image-grid">
+      {filteredData?.map((item, index) => (
+        <Image
+          key={`img-${index}`}
+          alt={item.name}
+          src={item.imageSrc}
+          className="gallery-image"
+        />
+      ))}
+    </div>
+  );
   const renderImageRows = () => {
     return filteredData ? renderList(filteredData) : null;
   };

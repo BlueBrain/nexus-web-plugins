@@ -1,14 +1,28 @@
-.image-collection-viewer {
-  padding: 10rem;
-  display: flex;
-  flex-direction: row;
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 200px);
+  grid-gap: 15px;
+  justify-content: center;
 }
 
-.image {
-  padding: 10rem;
+.image-grid .ant-image {
+  margin: auto;
 }
 
-.yo {
+.gallery-image {
+  max-height: 200px;
+  width: 200px;
+  text-align: center;
+}
+
+.image-row {
   display: flex;
-  flex-direction: row;
+  height: 200px;
+  align-items: center;
+}
+
+.image-row_meta {
+  margin-left: 20px;
+  margin-top: 20px;
+  align-items: center;
 }
