@@ -1,7 +1,11 @@
-image: node:16.3.0
+image: node:16.4.2
 
 variables:
   DOCKER_DRIVER: overlay2
+  KUBERNETES_CPU_LIMIT: 3 # cpu overrides. You can use millicores too, like 1 core and a half would be 1500m
+  KUBERNETES_CPU_REQUEST: 2700m # cpu overrides. You can use millicores too, like 1 core and a half would be 1500m
+  KUBERNETES_MEMORY_LIMIT: 3Gi # memory overrides
+  KUBERNETES_MEMORY_REQUEST: 3Gi # memory overrides
 
 stages:
   - node-modules
@@ -9,7 +13,7 @@ stages:
 
 cache:
   paths:
-  - node_modules/
+    - node_modules/
 
 node-modules:
   stage: node-modules

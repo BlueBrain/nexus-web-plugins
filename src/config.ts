@@ -5,5 +5,5 @@ export default {
   serviceAccountName: 'serviceaccounts',
   clientId: 'bbp-workflow-web',
   redirectUrl: 'http://localhost:3000',
-  environment: 'https://bbp.epfl.ch/nexus/v1',
+  environment: 'https://staging.nexus.ocp.bbp.epfl.ch/v1',
 };
