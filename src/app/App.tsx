@@ -20,7 +20,6 @@ import { EphysViewerContainer } from '../plugins/neuron-electrophysiology';
 import { ImageCollectionViewerContainer } from '../plugins/image-collection-viewer';
 import { MorphoViewerContainer } from '../plugins/neuron-morphology';
 import { MINDSMetadataContainer } from '../plugins/metadata';
-import { DataAccessContainer } from '../plugins/nexus-data-access';
 import { MarkdownContainer } from '../plugins/markdown';
 import { NotebookPreviewContainer } from '../plugins/notebook-preview';
 
@@ -59,7 +58,6 @@ const plugins: { [pluginName: string]: React.FC<any> } = {
   ephysViewer: EphysViewerContainer,
   mophoViewer: MorphoViewerContainer,
   metadata: MINDSMetadataContainer,
-  dataAccess: DataAccessContainer,
   markdown: MarkdownContainer,
   imageCollectionViewer: ImageCollectionViewerContainer,
   notebookPreview: NotebookPreviewContainer,
