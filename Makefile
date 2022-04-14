@@ -1,9 +1,9 @@
 .PHONY: help run_dev test lint style run_qa run_qa_in_docker build_ts build_manifest build_dist build_dist_in_docker build_image push_image
 
 APP_NAME?=studio-plugins
-PROJECT?=bbp-ou-nse
+PROJECT?=fusion
 IMAGE_TAG?=latest
-DOCKER_REGISTRY?=docker-registry-default.ocp.bbp.epfl.ch
+DOCKER_REGISTRY?=bbpgitlab.epfl.ch:5050/nise
 
 NODE_MODULES:=node_modules
 ROOT_NPM:=.npm
@@ -59,7 +59,7 @@ run_qa_in_docker: | $(ROOT_NPM)
 		-w /app \
 		--env HTTP_PROXY="http://bbpproxy.epfl.ch:80/" \
 		--env HTTPS_PROXY="http://bbpproxy.epfl.ch:80/" \
-		--entrypoint /bin/sh \
+		--entrypo
 		node:lts  \
 			-c "make run_qa"
 
