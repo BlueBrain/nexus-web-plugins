@@ -65,7 +65,7 @@ run_qa_in_docker: | $(ROOT_NPM)
 
 build_ts: | $(NODE_MODULES)
 	rm -f dist/*
-	NODE_OPTIONS="--max-old-space-size=1024" npx webpack  
+	NODE_OPTIONS="--max-old-space-size=4096" npx webpack  
 
 build_manifest: build_ts
 	node build-tools/generate-manifest.js
