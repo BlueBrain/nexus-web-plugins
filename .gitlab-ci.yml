@@ -4,8 +4,8 @@ variables:
   DOCKER_DRIVER: overlay2
   KUBERNETES_CPU_LIMIT: 3 # cpu overrides. You can use millicores too, like 1 core and a half would be 1500m
   KUBERNETES_CPU_REQUEST: 2700m # cpu overrides. You can use millicores too, like 1 core and a half would be 1500m
-  KUBERNETES_MEMORY_LIMIT: 3Gi # memory overrides
-  KUBERNETES_MEMORY_REQUEST: 3Gi # memory overrides
+  KUBERNETES_MEMORY_LIMIT: 6Gi # memory overrides
+  KUBERNETES_MEMORY_REQUEST: 6Gi # memory overrides
 
 stages:
   - node-modules
