@@ -243,7 +243,7 @@ const ImageCollectionViewerContainer: React.FC<{
         </div>
         <div className="image-row_meta">
           <div>{item.name}</div>
-          <div> Size : {item.size} MB</div>
+          <div> Size : {item.size / 1000} MB</div>
         </div>
       </div>
     ));
