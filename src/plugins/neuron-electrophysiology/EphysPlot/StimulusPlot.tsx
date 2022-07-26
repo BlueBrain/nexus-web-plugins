@@ -58,7 +58,7 @@ const StimulusPlot: React.FC<PlotProps> = ({
 
   const selectedResponse: Partial<PlotData>[] = React.useMemo(() => {
     return rawData?.filter((data) => selectedSweeps.includes(data.sweepName))
-  }, [options, dataset, selectedSweeps, metadata]);
+  }, [options, dataset, selectedSweeps, metadata, stimulusUnit]);
 
   const previewDataResponse: Partial<PlotData>[] = React.useMemo(() => {
     return rawData?.map((data: {sweepName: string}) => {
