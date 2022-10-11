@@ -243,6 +243,7 @@ export const MINDSMetadataContainer: React.FC<{
           loading: false,
           data: null,
         });
+        throw error;
       });
   }, [resource['@id']]);
 
