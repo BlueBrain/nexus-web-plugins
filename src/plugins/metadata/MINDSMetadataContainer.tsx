@@ -163,21 +163,22 @@ export const MINDSMetadataContainer: React.FC<{
         annotation: Annotation,
         classification: Classification
       ) => {
-        if (!annotation.hasBody) {
+        if (!annotation.hasBody || Array.isArray(annotation.hasBody)) {
           return classification;
         }
+
         if (
-          annotation.hasBody['@type'].some(
-            x => x === 'MType' || x === 'nsg:MType'
-          )
+          [annotation.hasBody['@type']]
+            .flat()
+            .some(x => x === 'MType' || x === 'nsg:MType')
         ) {
           classification.mType =
             annotation.hasBody.prefLabel || annotation.hasBody.label;
         }
         if (
-          annotation.hasBody['@type'].some(
-            x => x === 'EType' || x === 'nsg:EType'
-          )
+          [annotation.hasBody['@type']]
+            .flat()
+            .some(x => x === 'EType' || x === 'nsg:EType')
         ) {
           classification.eType =
             annotation.hasBody.prefLabel || annotation.hasBody.label;
