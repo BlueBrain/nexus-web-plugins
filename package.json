@@ -56,6 +56,7 @@
     "distinct-colors": "^3.0.0",
     "downsample": "^1.4.0",
     "dygraphs": "^2.1.0",
+    "express": "^4.18.2",
     "file-saver": "^2.0.2",
     "handlebars": "^4.7.6",
     "js-yaml": "^3.14.0",

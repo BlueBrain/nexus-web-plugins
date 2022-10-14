@@ -72,6 +72,9 @@ build_manifest: build_ts
 
 build_dist: build_manifest
 
+build_dist_and_host: build_dist
+	node src/server.js
+
 build_dist_in_docker: | $(ROOT_NPM)
 	docker run \
 		--rm \
