@@ -3,41 +3,41 @@ import get from 'lodash/get';
 
 import { Spin } from 'antd';
 
-import { parseUrl, NexusClientContext } from '../';
-import { SimWriterConfigResource } from '../types';
-import SimWriterConfigComponent from './sim-writer-config-component';
+import { parseUrl, NexusClientContext } from '..';
+import { SimCampaignConfigResource } from '../types';
+import SimCampaignConfigComponent from './sim-campaign-config-component';
 
-interface SimWriterConfigContainerProps {
+interface SimCampaignConfigContainerProps {
   resourceId: string;
   org: string;
   project: string;
 }
 
-export const SimWriterConfigContainer = (
-  props: SimWriterConfigContainerProps
+export const SimCampaignConfigContainer = (
+  props: SimCampaignConfigContainerProps
 ) => {
   const { org, project, resourceId } = props;
   const nexus = useContext(NexusClientContext);
 
   const [
-    simWriterConfig,
-    setSimWriterConfig,
-  ] = useState<SimWriterConfigResource | null>(null);
+    simCampaignConfig,
+    setSimCampaignConfig,
+  ] = useState<SimCampaignConfigResource | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const getSimWriterConf = (simWriterResource: SimWriterConfigResource) => {
-      const configUrl = simWriterResource.configuration.url;
+    const getSimCampaignConf = (simCampaignResource: SimCampaignConfigResource) => {
+      const configUrl = simCampaignResource.configuration.contentUrl;
 
-      const tmplUrl = simWriterResource.template.url;
+      const tmplUrl = simCampaignResource.template.contentUrl;
       const tmplIdMatch = tmplUrl.match(/.*\/(.*?)$/);
       const tmplId = tmplIdMatch ? tmplIdMatch[1] : '';
 
-      const targetUrl = get(simWriterResource, 'target.url', '');
+      const targetUrl = get(simCampaignResource, 'target.contentUrl', '');
       const targetIdMatch = targetUrl.match(/.*\/(.*?)$/);
       const targetId = targetIdMatch ? targetIdMatch[1] : '';
 
-      const { name, description, _self } = simWriterResource;
+      const { name, description, _self } = simCampaignResource;
 
       const parsedTmplUrl = parseUrl(tmplUrl);
 
@@ -82,21 +82,21 @@ export const SimWriterConfigContainer = (
     };
 
     nexus.Resource
-      .get<SimWriterConfigResource>(org, project, encodeURIComponent(resourceId))
-      .then(getSimWriterConf)
-      .then(simWriterConfig =>
-        setSimWriterConfig(simWriterConfig as SimWriterConfigResource)
+      .get<SimCampaignConfigResource>(org, project, encodeURIComponent(resourceId))
+      .then(getSimCampaignConf)
+      .then(simCampaignConfig =>
+        setSimCampaignConfig(simCampaignConfig as SimCampaignConfigResource)
       )
       .finally(() => setLoading(false));
   }, []);
 
   return (
     <Spin spinning={loading}>
-      {simWriterConfig && (
-        <SimWriterConfigComponent resource={simWriterConfig} />
+      {simCampaignConfig && (
+        <SimCampaignConfigComponent resource={simCampaignConfig} />
       )}
     </Spin>
   );
 };
 
-export default SimWriterConfigContainer;
+export default SimCampaignConfigContainer;

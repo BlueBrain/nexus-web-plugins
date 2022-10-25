@@ -21,7 +21,7 @@ export const PairRecordingBtn = (props: PairRecordingBtnProps) => {
   const href = `${pairRecordingAppBaseUrl}/circuits/?${query}`;
 
   return (
-    <Button className={props.className} href={href} target="_blank">
+    <Button disabled className={props.className} href={href} target="_blank">
       Open in Pair Recording App
     </Button>
   );

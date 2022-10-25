@@ -3,24 +3,24 @@ import { Collapse, Card } from 'antd';
 import { Controlled as CodeMirror } from 'react-codemirror2';
 import prettyJsonStringify from 'json-stringify-pretty-compact';
 
-import { SimWriterConfigResource } from '../types';
+import { SimCampaignConfigResource } from '../types';
 import { CopyBtn } from '../copy-btn/copy-btn';
 
 import 'codemirror/mode/javascript/javascript';
-import 'codemirror/mode/shell/shell';
 
 import 'codemirror/lib/codemirror.css';
-import 'codemirror/theme/base16-light.css';
+import 'codemirror/theme/duotone-light.css';
 
-import './sim-writer-config.css';
+import './sim-campaign-config.css';
 
-interface SimWriterConfigProps {
-  resource: SimWriterConfigResource;
+
+interface SimCampaignConfigProps {
+  resource: SimCampaignConfigResource;
 }
 
 const { Panel } = Collapse;
 
-const SimWriterConfig = (props: SimWriterConfigProps) => {
+const SimCampaignConfig = (props: SimCampaignConfigProps) => {
   const { resource } = props;
 
   return (
@@ -28,7 +28,7 @@ const SimWriterConfig = (props: SimWriterConfigProps) => {
       <div className="mt">
         <Card
           className="card--no-padding"
-          title="SimWriter configuration"
+          title="Simulation campaign configuration"
           extra={<CopyBtn text={resource._self} label="URL" />}
         >
           <div className="config-info-container">
@@ -36,7 +36,7 @@ const SimWriterConfig = (props: SimWriterConfigProps) => {
               <strong>Name: </strong> {resource.name}
             </p>
             <p>
-              <strong>Description: </strong> {resource.description}
+              <strong>Description: </strong> {resource.description || '-'}
             </p>
           </div>
         </Card>
@@ -47,7 +47,7 @@ const SimWriterConfig = (props: SimWriterConfigProps) => {
           <Panel
             className="panel--no-padding"
             header="Config"
-            key="simWriterConfig"
+            key="simCampaignConfig"
           >
             <CodeMirror
               value={prettyJsonStringify(resource.configuration.data, {
@@ -57,7 +57,7 @@ const SimWriterConfig = (props: SimWriterConfigProps) => {
               options={{
                 mode: { name: 'javascript', json: true },
                 readOnly: true,
-                theme: 'base16-light',
+                theme: 'duotone-light',
                 lineNumbers: true,
                 lineWrapping: true,
               }}
@@ -73,9 +73,9 @@ const SimWriterConfig = (props: SimWriterConfigProps) => {
               <CodeMirror
                 value={resource.template.data}
                 options={{
-                  mode: { name: 'shell' },
+                  mode: { name: 'javascript', json: true },
                   readOnly: true,
-                  theme: 'base16-light',
+                  theme: 'duotone-light',
                   lineNumbers: true,
                   lineWrapping: true,
                 }}
@@ -89,7 +89,7 @@ const SimWriterConfig = (props: SimWriterConfigProps) => {
                 value={resource.target.data}
                 options={{
                   readOnly: true,
-                  theme: 'base16-light',
+                  theme: 'duotone-light',
                   lineNumbers: true,
                   lineWrapping: true,
                 }}
@@ -103,4 +103,4 @@ const SimWriterConfig = (props: SimWriterConfigProps) => {
   );
 };
 
-export default SimWriterConfig;
+export default SimCampaignConfig;

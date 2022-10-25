@@ -15,7 +15,7 @@ import { NexusClientContext } from '../common';
 import { Circuit } from '../plugins/circuit';
 import { Simulation } from '../plugins/simulation';
 import { SimulationCampaign } from '../plugins/simulation-campaign';
-import { SimWriterConfig } from '../plugins/sim-writer-config';
+import { SimCampaignConfig } from '../plugins/sim-campaign-config';
 import { EphysViewerContainer } from '../plugins/neuron-electrophysiology';
 import { ImageCollectionViewerContainer } from '../plugins/image-collection-viewer';
 import { MorphoViewerContainer } from '../plugins/neuron-morphology';
@@ -54,7 +54,7 @@ const plugins: { [pluginName: string]: React.FC<any> } = {
   circuit: Circuit,
   simulation: Simulation,
   simulationCampaign: SimulationCampaign,
-  simWriterConfig: SimWriterConfig,
+  simulationCampaignConfig: SimCampaignConfig,
   ephysViewer: EphysViewerContainer,
   mophoViewer: MorphoViewerContainer,
   metadata: MINDSMetadataContainer,

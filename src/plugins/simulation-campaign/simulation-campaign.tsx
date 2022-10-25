@@ -6,7 +6,7 @@ import BasicInfoComponent from './components/basic-info';
 
 import SimListContainer from './containers/sim-list';
 import CircuitContainer from './containers/circuit';
-import { SimWriterConfigContainer, parseUrl } from '../../common';
+import { SimCampaignConfigContainer, parseUrl } from '../../common';
 import SimAnalysisCarouselContainer from './containers/sim-analysis-carousel';
 import AnalysisPdfContainer from './containers/analysis-pdf';
 import CampAnalysisContainer from './containers/camp-analysis/camp-analysis';
@@ -27,21 +27,21 @@ const SimCampaignContainer = (props: SimCampaignContainerProps) => {
 
   const circuitId = circuitEntry && circuitEntry['@id'];
 
-  const simWriterConfigEntry = (resource.used || []).find(
-    entry => entry['@type'] === 'SimWriterConfiguration'
+  const simCampaignConfigEntry = (resource.used || []).find(
+    entry => entry['@type'] === 'SimCampaignConfiguration'
   );
 
-  const simWriterConfigId = simWriterConfigEntry && simWriterConfigEntry['@id'];
+  const simCampaignConfigId = simCampaignConfigEntry && simCampaignConfigEntry['@id'];
 
   return (
     <div className="simulation-campaign-container">
       <BasicInfoComponent resource={resource} />
 
-      {simWriterConfigId && (
-        <SimWriterConfigContainer
+      {simCampaignConfigId && (
+        <SimCampaignConfigContainer
           org={org}
           project={project}
-          resourceId={simWriterConfigId}
+          resourceId={simCampaignConfigId}
         />
       )}
 

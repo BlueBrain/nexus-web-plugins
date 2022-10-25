@@ -52,7 +52,7 @@ export const BraynsBtn = (props: BraynsBtnProps) => {
       trigger="click"
       title="Open in Brayns"
       visible={popoverVisible}
-      onVisibleChange={visible => setPopoverVisible(visible)}
+      onVisibleChange={visible => setPopoverVisible(false)}
       content={
         <div style={{ width: 240 }}>
           <Form
@@ -124,7 +124,7 @@ export const BraynsBtn = (props: BraynsBtnProps) => {
         </div>
       }
     >
-      <Button className={props.className}>Open in Brayns</Button>
+      <Button disabled className={props.className}>Open in Brayns</Button>
     </Popover>
   );
 };

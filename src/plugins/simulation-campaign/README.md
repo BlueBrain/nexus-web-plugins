@@ -3,7 +3,7 @@
 
 Displays simulation campaign information including:
 * basic info
-* SimWriter parameters:
+* SimCampaign parameters:
   * config
   * template
   * target

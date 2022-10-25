@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from 'antd';
 import { ButtonType, ButtonSize } from 'antd/es/button';
+import { CopyOutlined} from '@ant-design/icons';
 
 import { Copy } from '../copy/copy';
 
@@ -24,7 +25,7 @@ export const CopyBtn = (props: CopyBtnProps) => {
           block={block}
           type={type}
           size={size ? size : 'small'}
-          icon="copy"
+          icon={<CopyOutlined />}
           onClick={() => triggerCopy()}
         >
           {copySuccess ? 'Copied!' : label}

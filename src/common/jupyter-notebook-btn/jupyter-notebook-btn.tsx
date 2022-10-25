@@ -293,9 +293,9 @@ export const JupyterNotebookBtn = (props: JupyterNotebookBtnProps) => {
       trigger="click"
       title="Open Notebook"
       visible={popoverVisible}
-      onVisibleChange={visible => onPopoverVisibleChange(visible)}
+      onVisibleChange={visible => onPopoverVisibleChange(false)}
     >
-      <Button className={props.className}>Open Notebook</Button>
+      <Button disabled className={props.className}>Open Notebook</Button>
     </Popover>
   );
 };

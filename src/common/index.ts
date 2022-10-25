@@ -12,6 +12,6 @@ export * from './file-preview-btn/file-preview-btn';
 export * from './file-download-btn/file-download-btn';
 export * from './file-viewer/file-viewer';
 export * from './nexus-client-context/nexus-client-context';
-export * from './sim-writer-config';
+export * from './sim-campaign-config';
 
 export * from './types';

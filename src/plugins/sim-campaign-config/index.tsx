@@ -3,20 +3,20 @@ import ReactDOM from 'react-dom';
 
 import { NexusPluginProps } from '../../common/types';
 
-import { SimWriterConfig } from './sim-writer-config';
+import { SimCampaignConfig } from './sim-campaign-config';
 
-import { SimWriterConfigResource, NexusClientContext } from '../../common';
+import { SimCampaignConfigResource, NexusClientContext } from '../../common';
 
-export { SimWriterConfig };
+export { SimCampaignConfig };
 
 export default ({
   ref,
   resource,
   nexusClient,
-}: NexusPluginProps<SimWriterConfigResource>) => {
+}: NexusPluginProps<SimCampaignConfigResource>) => {
   ReactDOM.render(
     <NexusClientContext.Provider value={nexusClient}>
-      <SimWriterConfig resource={resource} />
+      <SimCampaignConfig resource={resource} />
     </NexusClientContext.Provider>,
     ref
   );

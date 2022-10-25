@@ -68,19 +68,19 @@ export interface DetailedCircuitResource extends Resource, MINDSResource {
   speciesId?: string;
 }
 
-export interface SimWriterConfigResource extends Resource {
+export interface SimCampaignConfigResource extends Resource {
   name: string;
   description: string;
   template: {
-    url: string;
+    contentUrl: string;
     data: string | undefined;
   };
   configuration: {
-    url: string;
+    contentUrl: string;
     data: string | undefined;
   };
   target?: {
-    url: string;
+    contentUrl: string;
     data: string | undefined;
   };
 }
