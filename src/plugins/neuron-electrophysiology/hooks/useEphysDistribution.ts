@@ -40,7 +40,7 @@ export function useEphysDistribution(resource: Resource, nexus: NexusClient) {
     )
       .then(({ _results }) => {
         const traces = _results.filter(link =>
-          link['@type']?.includes('https://neuroshapes.org/Trace')
+          link['@type']?.includes('https://bbp.epfl.ch/ontologies/core/bmo/TraceWebDataContainer')
         );
         const promises = traces.map(trace =>
           nexus.Resource.get(
