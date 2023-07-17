@@ -2,7 +2,7 @@
 
 APP_NAME?=studio-plugins
 PROJECT?=fusion
-IMAGE_TAG?=2023-07-13-amd64
+IMAGE_TAG?=2023-07-17-amd64
 DOCKER_REGISTRY?=bbpgitlab.epfl.ch:5050/nise
 
 NODE_MODULES:=node_modules
