@@ -112,6 +112,14 @@ export default useEphysDistribution;
  *
  * Process RAB blob Data. Parse and set Index and Data Sets.
  */
+function isValidURL(str: string) {
+  try {
+    new URL(str);
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
 function processRABDistro(
   RABDistro: Distribution,
   nexus: NexusClient,
@@ -122,13 +130,15 @@ function processRABDistro(
   datasets: DataSets;
 }> {
   return new Promise((resolve, reject) => {
-    const resourceIds = RABDistro.contentUrl.split('/');
-
     const [cacheAdd, cacheGet] = useLazyCache<{
       RABIndex: RABIndex;
       datasets: DataSets;
     }>();
-    const cacheKey = resourceIds[resourceIds.length - 1];
+
+    const resourceId = RABDistro.contentUrl.split('/');
+    const lastPart = resourceId[resourceId.length - 1];
+    let cacheKey = isValidURL(lastPart) ? encodeURIComponent(lastPart) : lastPart;
+
     const cacheMatch = cacheGet(cacheKey);
 
     if (cacheMatch) {
@@ -154,7 +164,7 @@ function processRABDistro(
       });
     };
 
-    nexus.File.get(orgLabel, projectLabel, encodeURIComponent(cacheKey), {
+    nexus.File.get(orgLabel, projectLabel, cacheKey, {
       as: 'blob',
     }).then(value => {
       fileReader.readAsArrayBuffer(value as Blob);

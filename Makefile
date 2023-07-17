@@ -2,7 +2,7 @@
 
 APP_NAME?=studio-plugins
 PROJECT?=fusion
-IMAGE_TAG?=latest
+IMAGE_TAG?=2023-07-13-amd64
 DOCKER_REGISTRY?=bbpgitlab.epfl.ch:5050/nise
 
 NODE_MODULES:=node_modules
@@ -89,7 +89,7 @@ build_dist_in_docker: | $(ROOT_NPM)
 			-c "make build_dist"
 
 build_image:
-	docker build -t $(APP_NAME) .
+	docker build -t $(APP_NAME) . --platform=linux/amd64
 
 push_image:
 	docker tag \
