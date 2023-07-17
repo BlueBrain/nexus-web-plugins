@@ -112,14 +112,6 @@ export default useEphysDistribution;
  *
  * Process RAB blob Data. Parse and set Index and Data Sets.
  */
-function isValidURL(str: string) {
-  try {
-    new URL(str);
-    return true;
-  } catch (error) {
-    return false;
-  }
-}
 function processRABDistro(
   RABDistro: Distribution,
   nexus: NexusClient,
