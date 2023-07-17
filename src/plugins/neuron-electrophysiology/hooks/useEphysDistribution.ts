@@ -136,8 +136,7 @@ function processRABDistro(
     }>();
 
     const resourceId = RABDistro.contentUrl.split('/');
-    const lastPart = resourceId[resourceId.length - 1];
-    let cacheKey = isValidURL(lastPart) ? encodeURIComponent(lastPart) : lastPart;
+    const cacheKey = resourceId[resourceId.length - 1];
 
     const cacheMatch = cacheGet(cacheKey);
 
@@ -164,11 +163,17 @@ function processRABDistro(
       });
     };
 
-    nexus.File.get(orgLabel, projectLabel, cacheKey, {
-      as: 'blob',
+    nexus.httpGet({
+      path: RABDistro.contentUrl,
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      context: {
+        parseAs: 'blob',
+      },
     }).then(value => {
       fileReader.readAsArrayBuffer(value as Blob);
-    });
+    })
 
     function parseRABData() {
       const randomAccessBuffer = new RandomAccessBuffer();
