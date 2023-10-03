@@ -2,7 +2,7 @@ import React from 'react';
 import get from 'lodash/get';
 import { Collapse, Input, Button } from 'antd';
 
-import { Copy, DetailedCircuitResource } from '../../../common';
+import { Copy, DetailedCircuitResource } from "../../../common";
 
 interface CircuitProps {
   resource: DetailedCircuitResource;
@@ -11,7 +11,7 @@ interface CircuitProps {
 
 const { Panel } = Collapse;
 
-const DetailedCircuit = (props: CircuitProps) => {
+function DetailedCircuit(props: CircuitProps) {
   const { resource, goToResource } = props;
   const brainRegion = get(resource, 'brainLocation.brainRegion', {}) as {
     label: string;
@@ -98,6 +98,6 @@ const DetailedCircuit = (props: CircuitProps) => {
       </Collapse>
     </div>
   );
-};
+}
 
 export default DetailedCircuit;

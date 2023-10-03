@@ -11,8 +11,7 @@ const MorphoWrapper: React.FC<{
   data: any;
   options: MorphoViewerOptions;
   onPolylineClick: VoidFunction;
-}> = ({ loading, error, data, options, onPolylineClick }) => {
-  return (
+}> = ({ loading, error, data, options, onPolylineClick }) => (
     <div className={loading ? 'morpho-wrapper loading' : 'morpho-wrapper'}>
       <div className="actions">
         <Button size="small" disabled={loading} onClick={onPolylineClick}>
@@ -23,6 +22,5 @@ const MorphoWrapper: React.FC<{
       {data && !error && <MorphologyViewer data={data} options={options} />}
     </div>
   );
-};
 
 export default MorphoWrapper;

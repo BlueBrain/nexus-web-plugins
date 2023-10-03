@@ -8,7 +8,7 @@ import {
   hasImage,
   not,
 } from '../../../common/nexus-maybe';
-import { uniqueArrayOfObjectsByKey } from '../../../common/arrays';
+import uniqueArrayOfObjectsByKey from '../../../common/arrays';
 import { ImageCollection, ImageItem } from '../components/ImageViewComponent';
 
 const MAX_BYTES_TO_PREVIEW = 3000000;
@@ -152,7 +152,7 @@ export function useImageCollectionDistribution(
         });
     } catch (error) {
       setData({
-        error,
+        error: error as any,
         data: null,
         loading: false,
       });

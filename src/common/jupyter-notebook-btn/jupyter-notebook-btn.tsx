@@ -5,7 +5,6 @@ import {
   Button,
   Form,
   Input,
-  TimePicker,
   InputNumber,
   Select,
   Row,
@@ -13,6 +12,7 @@ import {
   notification,
 } from 'antd';
 import { NexusClient } from '@bbp/nexus-sdk';
+import TimePicker from './TimePicker';
 
 import {
   DEFAULT_PARTITION,
@@ -43,12 +43,12 @@ export interface JupyterNotebookBtnProps {
   nexus: NexusClient;
 }
 
-export const JupyterNotebookBtn = (props: JupyterNotebookBtnProps) => {
+export function JupyterNotebookBtn(props: JupyterNotebookBtnProps) {
   const { nexus } = props;
 
   const [popoverVisible, setPopoverVisible] = useState(false);
 
-  const [serverName, setServerName] = useState('');
+  const [serverName] = useState('');
   const [partition, setPartition] = useState(DEFAULT_PARTITION);
   const [cpus, setCpus] = useState(DEFAULT_CPUS);
   const [memory, setMemory] = useState(DEFAULT_MEM);
@@ -227,7 +227,7 @@ export const JupyterNotebookBtn = (props: JupyterNotebookBtnProps) => {
                 format={TIME_FORMAT}
                 minuteStep={15}
                 disabled={configFormDisabled}
-                onChange={time => time && setAllocationTime(time)}
+                onChange={(time: any) => time && setAllocationTime(time)}
               />
             </Form.Item>
             {/* <Form.Item label="Server name">
@@ -293,11 +293,11 @@ export const JupyterNotebookBtn = (props: JupyterNotebookBtnProps) => {
       trigger="click"
       title="Open Notebook"
       visible={popoverVisible}
-      onVisibleChange={visible => onPopoverVisibleChange(false)}
+      onVisibleChange={() => onPopoverVisibleChange(false)}
     >
       <Button disabled className={props.className}>Open Notebook</Button>
     </Popover>
   );
-};
+}
 
 export default JupyterNotebookBtn;

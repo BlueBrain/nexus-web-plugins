@@ -5,8 +5,11 @@ const min = 0;
 
 export default class ScaleViewer {
   private svg: d3.Selection<SVGSVGElement, unknown, null, undefined>;
+
   private scale: d3.ScaleLinear<number, number>;
+
   private axis: d3.Axis<d3.NumberValue>;
+
   constructor(private div: HTMLDivElement, max: number) {
     const { clientWidth: width, clientHeight: height } = div;
     const margins = {

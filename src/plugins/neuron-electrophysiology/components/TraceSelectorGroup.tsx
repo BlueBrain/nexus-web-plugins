@@ -40,19 +40,34 @@ const TraceSelectorGroup: FC<TraceSelectorGroupProps> = ({
             key={sweep.label}
             onMouseEnter={() => { handlePreviewSweep(sweep.value) }}
             onMouseLeave={() => handlePreviewSweep(undefined)}
-            className="ant-checkbox-wrapper trace-selector-group"
+            className="trace-selector-group" // ant-checkbox-wrapper 
+            style={{ marginRight: 3, width: 22, height: 22, display: 'inline-block' }}
           >
-            <span className="ant-checkbox">
+            <span 
+              className="checkbox"
+              style={{
+                position: 'relative',
+                width: 'inherit',
+                height: 'inherit',
+                display: 'inline-block',
+              }}
+            >
               <input
-                className="ant-checkbox-input"
                 checked={isSelected}
                 type="checkbox"
                 value={sweep.label}
                 onChange={handleChange}
+                style={{
+                  height: 0,
+                  position: 'absolute'
+                }}
               />
               <span
-                className="ant-checkbox-inner"
+                className="checkbox-inner"
                 style={{
+                  height: 'inherit',
+                  width: 'inherit',
+                  position: 'absolute',
                   background: (colorMapper[sweep.value] || '#1890ff'),
                   borderColor: isSelected ? '#1890ff' : '#1890ff00',
                 }}

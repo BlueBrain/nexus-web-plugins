@@ -19,7 +19,7 @@ interface NexusImageProps {
   imageData: any;
 }
 
-export const NexusImageComponent = (props: NexusImageProps) => {
+export function NexusImageComponent(props: NexusImageProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [data, setData] = useState<string>();
 
@@ -44,9 +44,9 @@ export const NexusImageComponent = (props: NexusImageProps) => {
       </div>
     </>
   ) : null;
-};
+}
 
-export const NexusImage = (props: NexusImageContainerProps) => {
+export function NexusImage(props: NexusImageContainerProps) {
   const { imageUrl, nexus, org, project } = props;
 
   const [loading, setLoading] = React.useState(true);
@@ -77,6 +77,6 @@ export const NexusImage = (props: NexusImageContainerProps) => {
       {imageData && <NexusImageComponent imageData={imageData} />}
     </div>
   );
-};
+}
 
 export default NexusImage;

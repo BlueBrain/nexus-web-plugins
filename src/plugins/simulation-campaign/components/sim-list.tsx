@@ -92,7 +92,7 @@ function getTableColumns(additionalColumns: string[], simStatuses: string[]) {
   ].filter(Boolean);
 }
 
-const SimulationList = (props: SimulationListProps) => {
+function SimulationList(props: SimulationListProps) {
   const { simulations, goToResource } = props;
 
   const [expanded, setExpanded] = useState(false);
@@ -144,6 +144,6 @@ const SimulationList = (props: SimulationListProps) => {
       </div>
     </div>
   );
-};
+}
 
 export default SimulationList;

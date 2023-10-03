@@ -2,14 +2,14 @@ import React from 'react';
 
 const DEFAULT_REVERT_DELAY = 2500;
 
-type triggerCopy = () => void;
+type TriggerCopy = () => void;
 
 interface CopyProps {
   textToCopy: string;
   revertDelay?: number;
   render(
     copySuccess: boolean,
-    triggerCopy: triggerCopy
+    triggerCopy: TriggerCopy
   ): React.ReactElement<any>;
 }
 

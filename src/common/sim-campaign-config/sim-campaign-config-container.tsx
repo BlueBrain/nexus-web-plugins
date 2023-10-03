@@ -13,9 +13,7 @@ interface SimCampaignConfigContainerProps {
   project: string;
 }
 
-export const SimCampaignConfigContainer = (
-  props: SimCampaignConfigContainerProps
-) => {
+export function SimCampaignConfigContainer(props: SimCampaignConfigContainerProps) {
   const { org, project, resourceId } = props;
   const nexus = useContext(NexusClientContext);
 
@@ -83,6 +81,7 @@ export const SimCampaignConfigContainer = (
 
     nexus.Resource
       .get<SimCampaignConfigResource>(org, project, encodeURIComponent(resourceId))
+      // @ts-ignore
       .then(getSimCampaignConf)
       .then(simCampaignConfig =>
         setSimCampaignConfig(simCampaignConfig as SimCampaignConfigResource)
@@ -97,6 +96,6 @@ export const SimCampaignConfigContainer = (
       )}
     </Spin>
   );
-};
+}
 
 export default SimCampaignConfigContainer;

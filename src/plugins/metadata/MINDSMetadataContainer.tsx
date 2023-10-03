@@ -18,8 +18,7 @@ const promiseAlmost = (r: Promise<any>[]) =>
 // wraps each promise in an object
 // whose key is the label provided
 // and whose value is the resolved promise
-const labeledPromise = (label: string, promise: Promise<any>) => {
-  return new Promise((resolve, reject) => {
+const labeledPromise = (label: string, promise: Promise<any>) => new Promise((resolve, reject) => {
     promise
       .then((value: any) => {
         resolve({
@@ -28,15 +27,13 @@ const labeledPromise = (label: string, promise: Promise<any>) => {
       })
       .catch(reject);
   });
-};
 
 const resolveContribution = (
   orgLabel: string,
   projectLabel: string,
   contribution: Contribution,
   nexus: NexusClient
-) => {
-  return new Promise((resolve, reject) => {
+) => new Promise((resolve, reject) => {
     try {
       if (!contribution.agent) {
         return reject(new Error('No Agent'));
@@ -65,7 +62,6 @@ const resolveContribution = (
       reject(error);
     }
   });
-};
 
 export const MINDSMetadataContainer: React.FC<{
   resource: Resource;
@@ -133,7 +129,7 @@ export const MINDSMetadataContainer: React.FC<{
           const contributedBy: ContributedBy = {};
 
           if (contribution.agent) {
-            const agent = contribution.agent;
+            const {agent} = contribution;
             contributedBy.agent =
               agent.name ||
               agent.fullName ||
@@ -156,7 +152,7 @@ export const MINDSMetadataContainer: React.FC<{
     }
 
     // Resolve Annotations
-    if (!!resource.annotation) {
+    if (resource.annotation) {
       let classification: Classification = {};
 
       const addClassification = (
@@ -208,8 +204,7 @@ export const MINDSMetadataContainer: React.FC<{
         // will not overwrite eachother when combined
         // this will make the value an array instead
         const data = (values as { [label: string]: any }[]).reduce(
-          (memo, value) => {
-            return {
+          (memo, value) => ({
               ...memo,
               ...Object.keys(value).reduce((valueObj, key) => {
                 if (memo[key]) {
@@ -226,8 +221,7 @@ export const MINDSMetadataContainer: React.FC<{
                   [key]: value[key],
                 };
               }, {}),
-            };
-          },
+            }),
           {}
         );
 

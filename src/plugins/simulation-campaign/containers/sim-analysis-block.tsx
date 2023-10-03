@@ -4,7 +4,7 @@ import sortBy from 'lodash/sortBy';
 import { Button } from 'antd';
 import Icon from '@ant-design/icons';
 
-import { NexusImage, NexusClientContext } from '../../../common';
+import { NexusImage, NexusClientContext } from "../../../common";
 import SimAnalysisBlock from '../components/sim-analysis-block';
 
 interface SimAnalysisReport {
@@ -23,7 +23,7 @@ interface SimAnalysisBlockContainerProps {
   goToResource?: (selfUrl: string) => void;
 }
 
-const SimAnalysisBlockContainer = (props: SimAnalysisBlockContainerProps) => {
+function SimAnalysisBlockContainer(props: SimAnalysisBlockContainerProps) {
   const { analysisReports, goToResource } = props;
   const nexus = useContext(NexusClientContext);
 
@@ -56,12 +56,12 @@ const SimAnalysisBlockContainer = (props: SimAnalysisBlockContainerProps) => {
         : ''}
 
       <div className="text-center mt">
-        <Button onClick={() => goToResource && goToResource(simulationSelf)}>
+        <Button onClick={() => goToResource && goToResource(simulationSelf! as string)}>
           <Icon type="more" />
         </Button>
       </div>
     </SimAnalysisBlock>
   );
-};
+}
 
 export default SimAnalysisBlockContainer;

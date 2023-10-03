@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { NexusClient, Resource } from '@bbp/nexus-sdk';
-import { Distribution, RemoteData } from '../../../common';
+import { Distribution, RemoteData } from "../../../common";
 import RandomAccessBuffer from '../utils/RandomAccessBuffer';
 import { DataSets, RABIndex, TraceData } from '../EphysPlot';
 import useLazyCache from './useLazyCache';
@@ -62,8 +62,8 @@ export function useEphysDistribution(resource: Resource, nexus: NexusClient) {
           return processRABDistro(
             rabTrace.distribution,
             nexus,
-            orgLabel,
-            projectLabel
+            // orgLabel,
+            // projectLabel
           );
         }
       })
@@ -115,13 +115,13 @@ export default useEphysDistribution;
 function processRABDistro(
   RABDistro: Distribution,
   nexus: NexusClient,
-  orgLabel: string,
-  projectLabel: string
+  // orgLabel: string,
+  // projectLabel: string
 ): Promise<{
   RABIndex: RABIndex;
   datasets: DataSets;
 }> {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     const [cacheAdd, cacheGet] = useLazyCache<{
       RABIndex: RABIndex;
       datasets: DataSets;
@@ -178,7 +178,7 @@ function processRABDistro(
       // In order to ignore it, use < length -1
       while (i < dataSets.length - 1) {
         const dataSet = randomAccessBuffer.getDataset(dataSets[i]) as RABIndex;
-        const y = dataSet.data['numericalData'];
+        const y = dataSet.data.numericalData;
         const label: string = dataSets[i].trim();
         const data: TraceData = {
           y,

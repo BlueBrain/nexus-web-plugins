@@ -1,8 +1,8 @@
 import * as React from 'react';
 import ReactDOM from 'react-dom';
+import { NexusPluginProps } from "../../common/types";
 import ImageCollectionViewerContainer from './ImageCollectionViewerContainer';
 
-import { NexusPluginProps } from '../../common/types';
 
 export { ImageCollectionViewerContainer };
 

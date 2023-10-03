@@ -7,7 +7,7 @@ import {
   parseUrl,
   DetailedCircuitResource,
   NexusClientContext,
-} from '../../../common';
+} from "../../../common";
 import Circuit from '../components/circuit';
 
 interface CircuitContainerProps {
@@ -29,7 +29,7 @@ function getQuery(resourceId: string) {
   `;
 }
 
-const CircuitContainer = (props: CircuitContainerProps) => {
+function CircuitContainer(props: CircuitContainerProps) {
   const { resourceId, goToResource } = props;
   const nexus = useContext(NexusClientContext);
 
@@ -80,6 +80,6 @@ const CircuitContainer = (props: CircuitContainerProps) => {
       {resource && <Circuit resource={resource} goToResource={goToResource} />}
     </Spin>
   );
-};
+}
 
 export default CircuitContainer;

@@ -2,14 +2,14 @@ import React from 'react';
 import moment from 'moment';
 import { Row, Col } from 'antd';
 
+import { ActivityStatus } from "../../../common";
 import { SimulationCampaignResource } from '../types';
-import { ActivityStatus } from '../../../common';
 
 interface BasicInfoProps {
   resource: SimulationCampaignResource;
 }
 
-const BasicInfo = (props: BasicInfoProps) => {
+function BasicInfo(props: BasicInfoProps) {
   const { resource } = props;
 
   const startedAtTime = moment(resource.startedAtTime).format('L HH:mm');
@@ -25,7 +25,7 @@ const BasicInfo = (props: BasicInfoProps) => {
         <Col span={8}>
           <div className="white-box">
             <strong className="mr">Started:</strong>
-            <span className="float-right">{startedAtTime}</span>
+            <span>{startedAtTime}</span>
           </div>
         </Col>
         <Col span={8}>
@@ -45,6 +45,6 @@ const BasicInfo = (props: BasicInfoProps) => {
       </Row>
     </div>
   );
-};
+}
 
 export default BasicInfo;

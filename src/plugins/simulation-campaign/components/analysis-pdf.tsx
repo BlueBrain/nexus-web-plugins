@@ -6,7 +6,7 @@ interface AnalysisPdfProps {
   src: string;
 }
 
-const AnalysisPdf = (props: AnalysisPdfProps) => {
+function AnalysisPdf(props: AnalysisPdfProps) {
   return (
     <div className="mt">
       <h3>Cumulative campaign analysis report</h3>
@@ -19,6 +19,6 @@ const AnalysisPdf = (props: AnalysisPdfProps) => {
       </object>
     </div>
   );
-};
+}
 
 export default AnalysisPdf;

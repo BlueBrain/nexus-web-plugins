@@ -5,14 +5,12 @@ import { NexusClient, Resource } from '@bbp/nexus-sdk';
 import NotebookPreview from './NotebookPreview';
 import { Notebook } from './types';
 
-const isNotebookFile = (url: string) => {
-  return url.split('.').pop() === 'ipynb';
-};
+const isNotebookFile = (url: string) => url.split('.').pop() === 'ipynb';
 
 const NotebookPreviewContainer: React.FC<{
   resource: Resource;
   nexus: NexusClient;
-}> = ({ resource, nexus }) => {
+}> = ({ resource }) => {
   const [code, setCode] = React.useState<Notebook>();
   const [loading, setLoading] = React.useState<boolean>(true);
 
@@ -22,9 +20,7 @@ const NotebookPreviewContainer: React.FC<{
       setLoading(true);
 
       fetch(resource.url)
-        .then(response => {
-          return response.json();
-        })
+        .then(response => response.json())
         .then(response => {
           setCode(response);
           setLoading(false);

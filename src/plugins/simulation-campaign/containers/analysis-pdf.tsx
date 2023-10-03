@@ -6,7 +6,7 @@ import {
   parseUrl,
   mapSparqlResults,
   NexusClientContext,
-} from '../../../common';
+} from "../../../common";
 import { SimulationCampaignResource } from '../types';
 
 import AnalysisPdf from '../components/analysis-pdf';
@@ -39,7 +39,7 @@ function getQuery(resourceId: string) {
   `;
 }
 
-const AnalysisPdfContainer = (props: AnalysisPdfContainerProps) => {
+function AnalysisPdfContainer(props: AnalysisPdfContainerProps) {
   const { resource } = props;
   const nexus = useContext(NexusClientContext);
 
@@ -67,6 +67,7 @@ const AnalysisPdfContainer = (props: AnalysisPdfContainerProps) => {
   useEffect(() => {
     nexus.View.sparqlQuery(org, project, DEFAULT_SPARQL_VIEW_ID, query)
       .then(extractPdfUrl)
+      // @ts-ignore
       .then(downloadPdf)
       .then(createSrc)
       .then(src => setSrc(src));
@@ -75,6 +76,6 @@ const AnalysisPdfContainer = (props: AnalysisPdfContainerProps) => {
   }, []);
 
   return src ? <AnalysisPdf src={src} /> : <div />;
-};
+}
 
 export default AnalysisPdfContainer;

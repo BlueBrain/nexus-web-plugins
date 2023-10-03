@@ -8,6 +8,7 @@ import { Button, Modal, Spin } from 'antd';
 import { ButtonType, ButtonSize } from 'antd/es/button';
 import prettyJsonStringify from 'json-stringify-pretty-compact';
 import { Controlled as CodeMirror } from 'react-codemirror2';
+import noop from 'lodash/noop';
 
 import 'codemirror/mode/javascript/javascript';
 
@@ -24,18 +25,14 @@ interface ViewerComponentProps<T> {
   fileContent: T;
 }
 
-const ImageViewer: FunctionComponent<ViewerComponentProps<Blob>> = props => {
-  return <span>test</span>;
-};
+const ImageViewer: FunctionComponent<ViewerComponentProps<Blob>> = () => <span>test</span>;
 
 const PdfViewer: FunctionComponent<ViewerComponentProps<Blob>> = props => {
   const [pdfObjectUrl] = useState<string>(
     URL.createObjectURL(props.fileContent)
   );
 
-  useEffect(() => {
-    return () => URL.revokeObjectURL(pdfObjectUrl);
-  }, []);
+  useEffect(() => () => URL.revokeObjectURL(pdfObjectUrl), []);
 
   return (
     <object
@@ -70,7 +67,7 @@ const JsonViewer: FunctionComponent<ViewerComponentProps<string>> = props => {
         lineWrapping: true,
         viewportMargin: Infinity,
       }}
-      onBeforeChange={() => {}}
+      onBeforeChange={noop}
       editorDidMount={editor => setEditor(editor)}
     />
   );
@@ -97,7 +94,7 @@ interface FilePreviewBtnProps {
   type?: ButtonType;
   block?: boolean;
   icon?: string;
-
+  children: React.ReactNode;
   distribution: Distribution;
 }
 
@@ -130,7 +127,7 @@ export const FilePreviewBtn: FunctionComponent<FilePreviewBtnProps> = props => {
         getFileOpts
       );
     } catch (error) {
-      setError(error);
+      setError(error as any);
     }
 
     setFileContent(content);
@@ -150,7 +147,7 @@ export const FilePreviewBtn: FunctionComponent<FilePreviewBtnProps> = props => {
       <Button
         block={block}
         type={type}
-        size={size ? size : 'small'}
+        size={size || 'small'}
         icon={icon}
         onClick={() => show()}
       >

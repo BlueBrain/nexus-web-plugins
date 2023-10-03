@@ -13,7 +13,7 @@ interface CopyBtnProps {
   block?: boolean;
 }
 
-export const CopyBtn = (props: CopyBtnProps) => {
+export function CopyBtn(props: CopyBtnProps) {
   const { label, size, type, block, text } = props;
 
   // TODO: use children instead of label
@@ -24,7 +24,7 @@ export const CopyBtn = (props: CopyBtnProps) => {
         <Button
           block={block}
           type={type}
-          size={size ? size : 'small'}
+          size={size || 'small'}
           icon={<CopyOutlined />}
           onClick={() => triggerCopy()}
         >
@@ -33,6 +33,6 @@ export const CopyBtn = (props: CopyBtnProps) => {
       )}
     />
   );
-};
+}
 
 export default CopyBtn;

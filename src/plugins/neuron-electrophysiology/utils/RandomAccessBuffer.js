@@ -97,9 +97,9 @@ const ENDIANNESS_FLAG = {
 
 // get the endianness of the current platform
 function getPlatformEndianness() {
-  let a = new Uint32Array([0x12345678]);
-  let b = new Uint8Array(a.buffer, a.byteOffset, a.byteLength);
-  return b[0] != 0x12 ? ENDIANNESS_FLAG.LITTLE : ENDIANNESS_FLAG.BIG;
+  const a = new Uint32Array([0x12345678]);
+  const b = new Uint8Array(a.buffer, a.byteOffset, a.byteLength);
+  return b[0] !== 0x12 ? ENDIANNESS_FLAG.LITTLE : ENDIANNESS_FLAG.BIG;
 }
 
 /**
@@ -153,8 +153,8 @@ class RandomAccessBuffer {
     this._rawBuff = buff;
     this._dataView = new DataView(buff);
 
-    let headerBytelength = this._dataView.getUint32(3, true);
-    let headerByteOffset = 4 + MAGIC_NUMBER.length; // the 4 is because the header length is a uint32
+    const headerBytelength = this._dataView.getUint32(3, true);
+    const headerByteOffset = 4 + MAGIC_NUMBER.length; // the 4 is because the header length is a uint32
 
     const textIndex = new TextDecoder().decode(
       new Uint8Array(buff, headerByteOffset, headerBytelength)
@@ -237,7 +237,7 @@ class RandomAccessBuffer {
    * @return {ArrayBuffer}
    */
   _getDatasetAsByte(codecMeta) {
-    let byteOffset = this._dataByteOffset + codecMeta.byteOffset;
+    const byteOffset = this._dataByteOffset + codecMeta.byteOffset;
     let subBuffer = this._rawBuff.slice(
       byteOffset,
       byteOffset + codecMeta.byteLength
@@ -267,7 +267,7 @@ class RandomAccessBuffer {
       );
     }
 
-    let buffer = this._getDatasetAsByte(codecMeta);
+    const buffer = this._getDatasetAsByte(codecMeta);
     let numericalData = null;
 
     // If the platform has the same endianness as what is encoded in this dataset,
@@ -282,14 +282,14 @@ class RandomAccessBuffer {
     // This copies the buffer another time so it's not the best, but most platform
     // are little endian (Intel) so this should not happen too often.
     else {
-      let isLittleEndian = codecMeta.endianness === ENDIANNESS_FLAG.LITTLE;
-      let bytesPerElement = BYTES_PER_TYPE[codecMeta.type];
-      let numberOfElements = codecMeta.byteLength / bytesPerElement;
+      const isLittleEndian = codecMeta.endianness === ENDIANNESS_FLAG.LITTLE;
+      const bytesPerElement = BYTES_PER_TYPE[codecMeta.type];
+      const numberOfElements = codecMeta.byteLength / bytesPerElement;
       numericalData = new TYPED_ARRAYS_PER_TYPE[codecMeta.type](
         numberOfElements
       );
-      let view = new DataView(buffer);
-      let viewGetterName = DATAVIEW_GETTERS_PER_TYPE[codecMeta.type];
+      const view = new DataView(buffer);
+      const viewGetterName = DATAVIEW_GETTERS_PER_TYPE[codecMeta.type];
       for (let i = 0; i < numberOfElements; i++) {
         numericalData[i] = view[viewGetterName](
           i * bytesPerElement,
@@ -299,7 +299,7 @@ class RandomAccessBuffer {
     }
 
     return {
-      numericalData: numericalData,
+      numericalData,
       shape: codecMeta.shape,
       strides: codecMeta.strides,
     };
@@ -312,8 +312,8 @@ class RandomAccessBuffer {
    * @return {string}
    */
   _getText(codecMeta) {
-    let buffer = this._getDatasetAsByte(codecMeta);
-    let text = new TextDecoder().decode(buffer);
+    const buffer = this._getDatasetAsByte(codecMeta);
+    const text = new TextDecoder().decode(buffer);
     return text;
   }
 
@@ -324,7 +324,7 @@ class RandomAccessBuffer {
    * @return {Object}
    */
   _getObject(codecMeta) {
-    let text = this._getText(codecMeta);
+    const text = this._getText(codecMeta);
     let obj = null;
     try {
       obj = yaml.safeLoad(text);
@@ -346,9 +346,9 @@ class RandomAccessBuffer {
    * @return {Object} Of the shape {data, metadata}
    */
   getDataset(datasetName) {
-    let entry = this._getEntry(datasetName);
+    const entry = this._getEntry(datasetName);
 
-    let codecMeta = entry.codecMeta;
+    const {codecMeta} = entry;
     let data = null;
 
     if (TYPES.NUMERICALS.includes(codecMeta.type)) {
@@ -362,17 +362,17 @@ class RandomAccessBuffer {
     }
 
     return {
-      data: data,
-      //metadata: JSON.parse(JSON.stringify(entry.metadata)) // A copy is shared so that no modification of the returned data alters the original dataset
+      data,
+      // metadata: JSON.parse(JSON.stringify(entry.metadata)) // A copy is shared so that no modification of the returned data alters the original dataset
       metadata: yaml.safeLoad(yaml.safeDump(entry.metadata)), // make a copy using yaml codec to conserve more than with JSON (Infinity, type, etc.)
     };
   }
 
   // TODO
-  digNumericalDataset(datasetName, position) {}
+  // digNumericalDataset(datasetName, position) {}
 
   // TODO
-  digInBuffer(datasetName, byteOffset, byteLength) {}
+  // digInBuffer(datasetName, byteOffset, byteLength) {}
 
   /**
    * @private
@@ -383,7 +383,7 @@ class RandomAccessBuffer {
    * @return {Object}
    */
   _getEntry(datasetName) {
-    let dataset = this._rabIndex.filter(entry => entry.name === datasetName);
+    const dataset = this._rabIndex.filter(entry => entry.name === datasetName);
     if (dataset.length === 0) {
       throw new Error(
         `There is no dataset "${datasetName}" in this RandomAccessBuffer.`
@@ -399,7 +399,7 @@ class RandomAccessBuffer {
    * @return {Object}
    */
   getMetadata(datasetName) {
-    let entry = this._getEntry(datasetName); // will throw if don't exist
+    const entry = this._getEntry(datasetName); // will throw if don't exist
     return entry.metadata;
   }
 
@@ -410,7 +410,7 @@ class RandomAccessBuffer {
    * @return {string}
    */
   getDatasetType(datasetName) {
-    let entry = this._getEntry(datasetName); // will throw if don't exist
+    const entry = this._getEntry(datasetName); // will throw if don't exist
     return entry.codecMeta.type;
   }
 }

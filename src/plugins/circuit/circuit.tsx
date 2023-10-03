@@ -13,14 +13,15 @@ import {
   BraynsBtn,
   JupyterNotebookBtn,
   PairRecordingBtn,
-} from '../../common/';
+} from '../../common';
+
 
 export interface CircuitProps {
   resource: DetailedCircuitResource;
   nexus: NexusClient;
 }
 
-export const Circuit = (props: CircuitProps) => {
+export function Circuit(props: CircuitProps) {
   const { resource, nexus } = props;
 
   const circuitConfigPath = get(resource, 'circuitConfigPath.url', '').replace(
@@ -92,6 +93,6 @@ export const Circuit = (props: CircuitProps) => {
       )}
     </div>
   );
-};
+}
 
 export default Circuit;

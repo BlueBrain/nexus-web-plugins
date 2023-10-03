@@ -1,9 +1,9 @@
-import React, { FunctionComponent, ReactNode } from 'react';
+import React, { FC, ReactNode } from 'react';
 import { Divider, Row, Col } from 'antd';
 import moment from 'moment';
 
+import { ActivityStatus, CopyBtn } from "../../../../common";
 import { CampaignAnalysisResource } from '../../types';
-import { ActivityStatus, CopyBtn } from '../../../../common';
 
 import './camp-analysis-activity.css';
 
@@ -16,7 +16,7 @@ interface CampAnalysisActivityProps {
 
 const TIME_FORMAT = 'DD/MM/YY HH:mm';
 
-const CampAnalysisActivity: FunctionComponent<CampAnalysisActivityProps> = props => {
+const CampAnalysisActivity: FC<CampAnalysisActivityProps> = props => {
   const { analysis, configBtn, footer, reportPreview } = props;
 
   const started = moment(analysis.startedAtTime).format(TIME_FORMAT);

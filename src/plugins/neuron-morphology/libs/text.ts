@@ -30,14 +30,14 @@ export const createTextCanvas = (text: string, textProps: TextProps) => {
 
   const textMetrics = ctx.measureText(text);
 
-  const width = textMetrics.width;
+  const {width} = textMetrics;
   const height = fontSize;
 
   // Resize canvas to match text size
   canvas.width = width;
   canvas.height = height;
-  canvas.style.width = width + 'px';
-  canvas.style.height = height + 'px';
+  canvas.style.width = `${width}px`;
+  canvas.style.height = `${height}px`;
 
   // Re-apply font since canvas is resized.
   ctx.font = `${fontSize}px ${font}`;

@@ -1,11 +1,4 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Button } from 'antd';
-
-import {
-  CampaignAnalysisResource as Analysis,
-  CampaignAnalysisConfigResource as Config,
-  CampaignAnalysisReportResource as Report,
-} from '../../types';
 
 import {
   FilePreviewBtn,
@@ -14,7 +7,13 @@ import {
   FileDownloadBtn,
   FileViewer,
   distributionFormatLabel,
-} from '../../../../common';
+} from "../../../../common";
+import {
+  CampaignAnalysisResource as Analysis,
+  CampaignAnalysisConfigResource as Config,
+  CampaignAnalysisReportResource as Report,
+} from '../../types';
+
 
 import CampAnalysisActivity from '../../components/camp-analysis/camp-analysis-activity';
 
@@ -23,11 +22,11 @@ interface CampAnalysisActivityProps {
   goToResource?: (selfUrl: string) => void;
 }
 
-const CampAnalysisActivityContainer = (props: CampAnalysisActivityProps) => {
+function CampAnalysisActivityContainer(props: CampAnalysisActivityProps) {
   const { analysisReportId } = props;
   const nexus = useContext(NexusClientContext);
 
-  const [loading, setLoading] = useState(true);
+  const [, setLoading] = useState(true);
 
   const [analysis, setAnalysis] = useState<Analysis | null>(null);
   const [configResource, setConfigResource] = useState<Config | null>(null);
@@ -88,6 +87,6 @@ const CampAnalysisActivityContainer = (props: CampAnalysisActivityProps) => {
   ) : (
     <span>Loading</span>
   );
-};
+}
 
 export default CampAnalysisActivityContainer;

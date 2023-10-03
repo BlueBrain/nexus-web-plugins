@@ -49,9 +49,13 @@ const createOrientationHelper = (): THREE.Object3D => {
 
 export default class OrientationViewer {
   private renderer: THREE.WebGLRenderer | null;
+
   private scene: THREE.Scene | null;
+
   private camera: THREE.Camera | null;
+
   private orientationHelper: THREE.Object3D;
+
   private requestedAnimationFrameID: number = 0;
 
   public followCamera: THREE.Camera | null = null;

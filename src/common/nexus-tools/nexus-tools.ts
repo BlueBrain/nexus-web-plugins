@@ -126,11 +126,9 @@ export const mapSparqlResults = (
 // TODO: add the rest (png, jpeg, etc.)
 const VIEWABLE_ENCODING_FORMATS = ['application/pdf', 'application/json'];
 
-export const isViewable = (distribution?: Distribution) => {
-  return distribution
+export const isViewable = (distribution?: Distribution) => distribution
     ? VIEWABLE_ENCODING_FORMATS.includes(distribution.encodingFormat)
     : false;
-};
 
 const ENCODING_FORMAT_LABEL: { [format: string]: string } = {
   'application/pdf': 'PDF',
@@ -138,12 +136,10 @@ const ENCODING_FORMAT_LABEL: { [format: string]: string } = {
   'application/x-hdf5': 'HDF5',
 };
 
-export const distributionFormatLabel = (distribution: Distribution): string => {
-  return (
+export const distributionFormatLabel = (distribution: Distribution): string => (
     ENCODING_FORMAT_LABEL[distribution.encodingFormat] ||
     distribution.encodingFormat.split('/').slice(-1)[0]
   );
-};
 
 export const propAsArray = <T>(resource: Resource, key: string): [T] =>
   Array.isArray(resource[key]) ? resource[key] : [resource[key]];

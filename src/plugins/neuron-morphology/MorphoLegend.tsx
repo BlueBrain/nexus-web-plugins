@@ -5,8 +5,7 @@ import './morpho-legend.css';
 const MorphoLegend: React.FC<{
   isInterneuron: boolean;
   hasApproximatedSoma: boolean;
-}> = ({ isInterneuron, hasApproximatedSoma }) => {
-  return (
+}> = ({ isInterneuron, hasApproximatedSoma }) => (
     <div className="morpho-legend">
       <ul>
         <li className="soma">Soma {hasApproximatedSoma && '(Approximated)'}</li>
@@ -24,6 +23,5 @@ const MorphoLegend: React.FC<{
       </ul>
     </div>
   );
-};
 
 export default MorphoLegend;

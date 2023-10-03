@@ -1,5 +1,5 @@
 import useBreakpoint from "antd/lib/grid/hooks/useBreakpoint";
-import { ScreenMap } from "antd/lib/_util/responsiveObserve";
+import { ScreenMap } from "antd/lib/_util/responsiveObserver";
 import { Config, Font, Layout } from "plotly.js";
 import { CSSProperties } from "react";
 

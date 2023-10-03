@@ -6,7 +6,7 @@ import {
   parseUrl,
   mapSparqlResults,
   NexusClientContext,
-} from '../../../common';
+} from "../../../common";
 import { SimulationCampaignResource } from '../types';
 
 import SimulationAnalysisCarousel from '../components/sim-analysis-carousel';
@@ -83,9 +83,7 @@ function getQuery(resourceId: string) {
   `;
 }
 
-const SimAnalysisCarouselContainer = (
-  props: SimAnalysisCarouselContainerProps
-) => {
+function SimAnalysisCarouselContainer(props: SimAnalysisCarouselContainerProps) {
   const { resource } = props;
   const nexus = useContext(NexusClientContext);
 
@@ -130,6 +128,6 @@ const SimAnalysisCarouselContainer = (
   ) : (
     <div />
   );
-};
+}
 
 export default SimAnalysisCarouselContainer;

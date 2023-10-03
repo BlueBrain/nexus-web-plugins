@@ -1,14 +1,14 @@
 import React from 'react';
 import { Input, Button, Row, Col } from 'antd';
 
+import { Copy } from "../../../common";
 import { SimulationResource } from '../types';
-import { Copy } from '../../../common';
 
 interface BasicInfoProps {
   resource: SimulationResource;
 }
 
-const BasicInfo = (props: BasicInfoProps) => {
+function BasicInfo(props: BasicInfoProps) {
   const { resource } = props;
   const slurmLogPath = `${resource.path}/slurm-${resource.jobId}.out`;
 
@@ -65,6 +65,6 @@ const BasicInfo = (props: BasicInfoProps) => {
       </Row>
     </div>
   );
-};
+}
 
 export default BasicInfo;

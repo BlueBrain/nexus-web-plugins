@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { Select, Button } from 'antd';
 
+import DistinctColors from 'distinct-colors';
 import StimulusPlot from './StimulusPlot';
 import ResponsePlot from './ResponsePlot';
 import { OptionSelect } from '../components/OptionSelect';
-import DistinctColors from 'distinct-colors';
 import { TraceSelectorGroup } from '../components/TraceSelectorGroup';
 
 export type TraceData = {
@@ -82,29 +82,23 @@ const EphysPlot: React.FC<{
 
   const [previewItem, setPreviewItem] = React.useState<string>();
 
-  const repetitions: Repetition = React.useMemo(() => {
-    return index.data[selectedDataSet]
+  const repetitions: Repetition = React.useMemo(() => index.data[selectedDataSet]
       ? index.data[selectedDataSet].repetitions
-      : {};
-  }, [selectedDataSet, index]);
+      : {}, [selectedDataSet, index]);
 
   const { sweeps, colorMapper } = React.useMemo(() => {
     const selectedData =  index.data[selectedDataSet]
     if(selectedData && selectedData.repetitions && selectedData.repetitions[selectedRepetition]) {
       const rawData = repetitions[selectedRepetition].sweeps;
       const colors = DistinctColors({count: rawData.length});
-      const colorMapper: {[key: string]: string} = rawData.reduce((mapper: object, sweep: string, index) => {
-        return {...mapper, [sweep]:  colors[index].hex()}
-      }, {})
+      const colorMapper: {[key: string]: string} = rawData.reduce((mapper: object, sweep: string, index) => ({...mapper, [sweep]:  colors[index].hex()}), {})
       return { colorMapper, sweeps: rawData };
     }
 
     return { sweeps: [], colorMapper: {}};
   }, [selectedDataSet, selectedRepetition, index]);
 
-  const selectedMetadata: IndexDataValue | undefined = React.useMemo(() => {
-    return index.data[selectedDataSet];
-  }, [selectedDataSet, index]);
+  const selectedMetadata: IndexDataValue | undefined = React.useMemo(() => index.data[selectedDataSet], [selectedDataSet, index]);
 
   const dataSetOptions = Object.keys(index.data).map(stimulusTypeKey => {
     const repetitionNum = Object.keys(index.data[stimulusTypeKey].repetitions).length;
@@ -117,13 +111,11 @@ const EphysPlot: React.FC<{
   });
 
   const repetitionOptions = repetitions
-    ? Object.keys(repetitions).map(v => {
-      return (
+    ? Object.keys(repetitions).map(v => (
         <Select.Option key={v} value={v}>
           {v}
         </Select.Option>
-      );
-    })
+      ))
     : null;
 
   const sweepsOptions = sweeps

@@ -1,19 +1,18 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import Icon from '@ant-design/icons';
 
 import CampAnalysisActivityContainer from './camp-analysis-activity';
-import { NexusClientContext } from '../../../../common';
 
 import CampAnalysis from '../../components/camp-analysis/camp-analysis';
 import CampAnalysisBlock from '../../components/camp-analysis/camp-analysis-block';
 
 interface CampAnalysisContainerProps {
-  simId: string;
+  simId?: string;
   goToResource?: (selfUrl: string) => void;
 }
 
-const CampAnalysisContainer = (props: CampAnalysisContainerProps) => {
-  const nexus = useContext(NexusClientContext);
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function CampAnalysisContainer(props: CampAnalysisContainerProps) {
 
   const analysisList = [
     [
@@ -31,7 +30,7 @@ const CampAnalysisContainer = (props: CampAnalysisContainerProps) => {
   return (
     <CampAnalysis>
       {analysisList.map((analysisReportIds, idx) => (
-        <CampAnalysisBlock key={idx}>
+        <CampAnalysisBlock key={`campAnalysisBlock-${idx}`}>
           {analysisReportIds.map((analysisReportId, analysisReportIdx) => (
             <span key={analysisReportId}>
               <CampAnalysisActivityContainer
@@ -52,6 +51,6 @@ const CampAnalysisContainer = (props: CampAnalysisContainerProps) => {
       ))}
     </CampAnalysis>
   );
-};
+}
 
 export default CampAnalysisContainer;

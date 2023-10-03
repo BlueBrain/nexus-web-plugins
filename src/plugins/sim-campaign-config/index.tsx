@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { NexusPluginProps } from '../../common/types';
+import { NexusPluginProps } from "../../common/types";
 
+import { SimCampaignConfigResource, NexusClientContext } from "../../common";
 import { SimCampaignConfig } from './sim-campaign-config';
 
-import { SimCampaignConfigResource, NexusClientContext } from '../../common';
 
 export { SimCampaignConfig };
 

@@ -4,7 +4,7 @@ import { Descriptions, Spin } from 'antd';
 import { Resource } from '@bbp/nexus-sdk';
 
 import './metadata-component.css';
-import { labelOf } from '../../common/nexus-tools/nexus-tools';
+import { labelOf } from "../../common/nexus-tools/nexus-tools";
 
 export type BrainLocation = {
   brainRegion: {
@@ -92,8 +92,7 @@ export const MINDSMetadataComponent: React.FC<{
   contribution,
   license,
   loading,
-}) => {
-  return (
+}) => (
     <Spin spinning={loading}>
       <Descriptions
         column={{ xxl: 2, xl: 2, lg: 2, md: 1, sm: 1, xs: 1 }}
@@ -120,7 +119,7 @@ export const MINDSMetadataComponent: React.FC<{
         <Descriptions.Item
           label={<span className="metadata-label">Brain Location</span>}
         >
-          {!!brainLocation ? (
+          {brainLocation ? (
             `${brainLocation.brainRegion?.label} ${brainLocation.layer?.label ||
               ''}`
           ) : (
@@ -130,7 +129,7 @@ export const MINDSMetadataComponent: React.FC<{
         <Descriptions.Item
           label={<span className="metadata-label">Object of Study</span>}
         >
-          {!!objectOfStudy ? (
+          {objectOfStudy ? (
             objectOfStudy.label
           ) : (
             <span className="none">-</span>
@@ -168,7 +167,7 @@ export const MINDSMetadataComponent: React.FC<{
                 <div key={index}>
                   <span>
                     {contributor.agent}
-                    {!!contributor.role ? `: ${contributor.role}` : ''}
+                    {contributor.role ? `: ${contributor.role}` : ''}
                   </span>
                   {index < contribution.length - 1 && <br />}
                 </div>
@@ -176,15 +175,15 @@ export const MINDSMetadataComponent: React.FC<{
             : !!contribution && (
                 <span>
                   {contribution.agent || '-'}
-                  {!!contribution.role ? `: ${contribution.role}` : ''}
+                  {contribution.role ? `: ${contribution.role}` : ''}
                 </span>
               )}
         </Descriptions.Item>
         <Descriptions.Item
           label={<span className="metadata-label">License</span>}
         >
-          {!!license ? (
-            <a href={license['@id']} target="_blank">
+          {license ? (
+            <a href={license['@id']} target="_blank" rel="noreferrer">
               License
             </a>
           ) : (
@@ -194,6 +193,5 @@ export const MINDSMetadataComponent: React.FC<{
       </Descriptions>
     </Spin>
   );
-};
 
 export default MINDSMetadataComponent;

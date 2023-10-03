@@ -4,8 +4,8 @@ import { Radio } from 'antd';
 import { RadioChangeEvent } from 'antd/lib/radio';
 import { FileImageOutlined, LineChartOutlined } from '@ant-design/icons';
 
+import { propAsArray } from "../../common";
 import { EPhysImageItem } from './hooks/useImageCollectionDistribution';
-import { propAsArray } from '../../common';
 import ImageViewContainer from './containers/ImageViewContainer';
 import GraphViewContainer from './containers/GraphViewContainer';
 

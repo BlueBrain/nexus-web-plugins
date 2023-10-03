@@ -1,6 +1,6 @@
 import { Resource } from '@bbp/nexus-sdk';
 
-import { ResourceLink } from '../../common';
+import { ResourceLink } from "../../common";
 
 export enum SimulationStatusEnum {
   RUNNING = 'Running',

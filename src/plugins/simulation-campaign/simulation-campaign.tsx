@@ -1,12 +1,12 @@
 import React from 'react';
 
+import { SimCampaignConfigContainer, parseUrl } from "../../common";
 import { SimulationCampaignResource as SimCampaignResource } from './types';
 
 import BasicInfoComponent from './components/basic-info';
 
 import SimListContainer from './containers/sim-list';
 import CircuitContainer from './containers/circuit';
-import { SimCampaignConfigContainer, parseUrl } from '../../common';
 import SimAnalysisCarouselContainer from './containers/sim-analysis-carousel';
 import AnalysisPdfContainer from './containers/analysis-pdf';
 import CampAnalysisContainer from './containers/camp-analysis/camp-analysis';
@@ -16,7 +16,7 @@ interface SimCampaignContainerProps {
   goToResource?: (selfUrl: string) => void;
 }
 
-const SimCampaignContainer = (props: SimCampaignContainerProps) => {
+function SimCampaignContainer(props: SimCampaignContainerProps) {
   const { resource } = props;
 
   const { org, project } = parseUrl(resource._project);
@@ -70,6 +70,6 @@ const SimCampaignContainer = (props: SimCampaignContainerProps) => {
       />
     </div>
   );
-};
+}
 
 export default SimCampaignContainer;

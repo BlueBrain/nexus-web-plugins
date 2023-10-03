@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { NexusPluginProps } from '../../common/types';
+import { NexusPluginProps } from "../../common/types";
 
 import { SimulationResource } from './types';
 import Simulation from './simulation';

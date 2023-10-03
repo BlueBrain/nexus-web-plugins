@@ -1,6 +1,6 @@
 import { Resource } from '@bbp/nexus-sdk';
 
-import { ActivityStatusEnum, ResourceLink, Distribution } from '../../common';
+import { ActivityStatusEnum, ResourceLink, Distribution } from "../../common";
 
 export interface Simulation {
   startedAtTime: string;
