@@ -3,14 +3,12 @@ import React, {
   useEffect,
   useCallback,
   Component,
-  ComponentProps,
 } from 'react';
 import { User } from 'oidc-client';
 import { NexusClient } from '@bbp/nexus-sdk';
 import get from 'lodash/get';
 import { Form, Input, Select, Button, notification } from 'antd';
 
-import { NexusClientContext } from '../common';
 
 import { Circuit } from '../plugins/circuit';
 import { Simulation } from '../plugins/simulation';
@@ -22,13 +20,17 @@ import { MorphoViewerContainer } from '../plugins/neuron-morphology';
 import { MINDSMetadataContainer } from '../plugins/metadata';
 import { MarkdownContainer } from '../plugins/markdown';
 import { NotebookPreviewContainer } from '../plugins/notebook-preview';
+import { NexusClientContext } from '../common';
 
 import './app.css';
 
-class ErrorBoundary extends Component {
-  state = {
-    hasError: false,
-  };
+class ErrorBoundary extends Component<{ children: React.ReactNode }, { hasError: boolean }> {
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      hasError: false,
+    }
+  }
 
   componentDidCatch() {
     this.setState({ hasError: true });
@@ -47,7 +49,7 @@ const { Option } = Select;
 
 interface AppProps {
   nexus: NexusClient;
-  user: User;
+  user?: User;
 }
 
 const plugins: { [pluginName: string]: React.FC<any> } = {
@@ -65,7 +67,7 @@ const plugins: { [pluginName: string]: React.FC<any> } = {
 
 const pluginNames = Object.keys(plugins);
 
-export const App = (props: AppProps) => {
+function App(props: AppProps) {
   const { nexus } = props;
 
   const configRaw = localStorage.getItem('config');
@@ -98,8 +100,8 @@ export const App = (props: AppProps) => {
 
     setLoading(true);
     nexus.Resource.get(org, project, encodeURIComponent(resourceId))
-      .then(resource => setResource(resource as any))
-      .catch(err => {
+      .then((resource: any) => setResource(resource as any))
+      .catch((err: Error) => {
         notification.error({
           message: get(err, '@type', 'Error'),
           description: get(err, 'reason', err.message),
@@ -232,6 +234,6 @@ export const App = (props: AppProps) => {
       )}
     </div>
   );
-};
+}
 
 export default App;
