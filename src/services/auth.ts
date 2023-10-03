@@ -5,7 +5,7 @@ import { UserManager, User, WebStorageStateStore } from 'oidc-client';
 import config from '../config';
 
 function getConfig(realm?: Realm) {
-  return {
+  return ({
     userStore: new WebStorageStateStore({ store: window.localStorage }),
     authority: realm ? realm._issuer : '',
     client_id: config.clientId,
@@ -14,7 +14,7 @@ function getConfig(realm?: Realm) {
     post_logout_redirect_uri: config.redirectUrl,
     response_type: 'id_token token',
     loadUserInfo: true,
-  };
+  });
 }
 
 function getAccessToken(): string | null {
@@ -33,7 +33,7 @@ export const setToken: Link = (operation: Operation, forward?: Link) => {
   const token = localStorage.getItem(config.bearerTokenKey);
   if (!token) console.log('No access token in localstorage');
   const nextHeaders: any = { ...operation.headers };
-  token && (nextHeaders['Authorization'] = `Bearer ${token}`);
+  token && (nextHeaders.Authorization = `Bearer ${token}`);
 
   const nextOperation = {
     ...operation,
@@ -54,8 +54,8 @@ export async function setUpSession(): Promise<[UserManager, User | null]> {
   );
 
   const user = window.location.hash
-    ? await userManager.signinRedirectCallback()
-    : await userManager.getUser();
+      ? await userManager.signinRedirectCallback() 
+      : await userManager.getUser();
 
   window.history.pushState(
     '',
@@ -72,9 +72,9 @@ export async function setUpSession(): Promise<[UserManager, User | null]> {
     if (user.expired || !user.access_token) {
       await userManager.signinRedirect();
     }
-
     saveAccessToken(user.access_token);
-  } else {
+  } 
+  else {
     deleteAccessToken();
     userManager.signinRedirect();
   }
