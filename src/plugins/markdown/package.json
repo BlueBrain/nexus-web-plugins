@@ -5,8 +5,8 @@
   "main": "index.tsx",
   "tags": [],
   "displayPriority": "1",
-  "author": "Kenneth Pirman <kenneth.pirman@epfl.ch>",
-  "license": "ISC",
+  "author": "Blue Brain Project, EPFL",
+  "license": "Apache-2.0",
   "mapping": {
     "description": {}
   }
