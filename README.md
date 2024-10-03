@@ -1,6 +1,6 @@
-# BBP Studio plugins
+# nexus-web-plugins
 
-This project contains BBP Studio plugins and a development environment for them.
+This repository contains open sourced [plugins for Nexus Fusion](https://bluebrainnexus.io/docs/fusion/plugins.html).
 
 ## Development
 
@@ -46,3 +46,9 @@ $ make push_image
 
 Note that `push_image` target isn't dependent on `build_image`, so it will **push current version**
 of the image present.
+
+## Funding & Acknowledgment
+
+The development of this software was supported by funding to the Blue Brain Project, a research center of the École polytechnique fédérale de Lausanne (EPFL), from the Swiss government's ETH Board of the Swiss Federal Institutes of Technology.
+
+Copyright © 2015-2024 Blue Brain Project/EPFL
