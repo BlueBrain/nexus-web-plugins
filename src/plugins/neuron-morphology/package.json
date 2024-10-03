@@ -4,8 +4,8 @@
   "description": "Displays neuron morphology data in a 3D view",
   "main": "index.tsx",
   "tags": [],
-  "author": "Kenneth Pirman <kenneth.pirman@epfl.ch>",
-  "license": "ISC",
+  "author": "Blue Brain Project, EPFL",
+  "license": "Apache-2.0",
   "mapping": {
     "@type": [
       "ReconstructedCell",

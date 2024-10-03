@@ -4,9 +4,11 @@
   "description": "Displays simulation details",
   "main": "index.tsx",
   "tags": [],
-  "author": "NSE(Neuroscientific Software Engineering) <bbp-ou-nse@groupes.epfl.ch>",
-  "license": "BSD-3-Clause",
+  "author": "Blue Brain Project, EPFL",
+  "license": "Apache-2.0",
   "mapping": {
-    "@type": ["Simulation"]
+    "@type": [
+      "Simulation"
+    ]
   }
 }

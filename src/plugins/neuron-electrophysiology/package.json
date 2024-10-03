@@ -4,8 +4,8 @@
   "description": "Displays neuron electrophysiological data",
   "main": "index.tsx",
   "tags": [],
-  "author": "Kenneth Pirman <kenneth.pirman@epfl.ch>",
-  "license": "ISC",
+  "author": "Blue Brain Project, EPFL",
+  "license": "Apache-2.0",
   "mapping": {
     "@type": [
       "Trace"
