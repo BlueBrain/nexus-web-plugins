@@ -74,7 +74,7 @@
     "query-string": "6.3.0",
     "rc-picker": "^3.14.4",
     "react": "^18.2.0",
-    "react-codemirror2": "^6.0.0",
+    "react-codemirror2": "8.0.0",
     "react-dom": "^18.2.0",
     "react-image-lightbox": "^5.1.1",
     "react-markdown": "^5.0.2",
