@@ -6,7 +6,7 @@
   "tags": [],
   "displayPriority": "1",
   "author": "Blue Brain Project, EPFL",
-  "license": "Apache-2.0",
+  "license": "BSD-3-Clause",
   "mapping": {
     "description": {}
   }
