@@ -1,0 +1,22 @@
+name: Build
+
+on: push
+
+jobs:
+  install_packages:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set-up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 16
+          cache: 'npm'
+
+      - name: Install Node.js packages
+        run: npm ci
+
+      - name: Build ts
+        run: make build_ts
