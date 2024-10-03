@@ -14,15 +14,9 @@ jobs:
         with:
           node-version: 16
           cache: 'npm'
+          cache-dependency-path: './package-lock.json'
 
-      - name: Cache node modules # Caches node_modules folder for subsequent pushes to the same branch
-        uses: actions/cache@v4
-        with:
-          path: node_modules
-          key: node_modules-${{hashFiles('package-lock.json')}}
-          restore-keys: node_modules- # Take any latest cache if failed to find it for current package-lock.json
-
-      - name: Install Node.js packages
+      - name: Install packages
         run: npm ci
 
       - name: Build ts
