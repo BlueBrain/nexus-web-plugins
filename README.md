@@ -1,6 +1,6 @@
-# BBP Studio plugins
+# Nexus Fusion plugins
 
-This project contains BBP Studio plugins and a development environment for them.
+This project contains Nexus Fusion Plugins that were originally developed for Blue Blrain and a development environment for them.
 
 ## Development
 
