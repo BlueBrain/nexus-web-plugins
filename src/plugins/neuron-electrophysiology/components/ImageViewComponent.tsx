@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Button, Empty, Select } from 'antd';
 import { LineChartOutlined } from '@ant-design/icons';
 
-import { RemoteData } from '../../../common';
+import { RemoteData } from "../../../common";
 
 
 const { Option } = Select;
@@ -73,17 +73,13 @@ const ImageSetComponent: React.FC<{
                   <span className="generic-label"> Interactive View</span>
                 </Button>
               </div>
-              {sweeps.map((imgData: any, index: any) => {
-                return (<>
-                  <div
+              {sweeps.map((imgData: any, index: any) => (<div
                     className="mb-1em trace-image-preview"
                     key={`image-preview-${stimulusType}-${repKey}-${index}`}
                   >
                     <h5 className="trace-type-label">{index === 0 ? 'Stimulus' : 'Recording'}</h5>
                     {imagePreview({ imageUrl: imgData.imageSrc })}
-                  </div>
-                </>);
-              })}
+                  </div>))}
             </div>
           );
         })}
@@ -107,19 +103,17 @@ const ImageViewComponent: React.FC<{
   onStimulusChange,
   onRepetitionClicked,
 }) => {
-  const sortedImageCollectionData = React.useMemo(() => {
-    return [...(imageCollectionData.data?.entries() || [])].sort(
+  const sortedImageCollectionData = React.useMemo(() => [...(imageCollectionData.data?.entries() || [])].sort(
       ([stimulusTypeA], [stimulusTypeB]) => {
         const textA = stimulusTypeA.toUpperCase();
         const textB = stimulusTypeB.toUpperCase();
         return textA < textB ? -1 : textA > textB ? 1 : 0;
       }
-    );
-  }, [imageCollectionData]);
+    ), [imageCollectionData]);
   return (
     <div>
       {stimulusTypeMap.size > 1 && (<>
-        <div className="mb-1em">
+        <div>
           Select Stimulus ({stimulusTypeMap.size} available)
           <br />
           <Select
@@ -140,8 +134,7 @@ const ImageViewComponent: React.FC<{
       </>)}
       <div>
         <div>
-          {sortedImageCollectionData.map(([stimulusType, { repetitions }]) => {
-            return (
+          {sortedImageCollectionData.map(([stimulusType, { repetitions }]) => (
               <ImageSetComponent
                 key={stimulusType}
                 stimulusType={stimulusType}
@@ -149,10 +142,9 @@ const ImageViewComponent: React.FC<{
                 onRepetitionClicked={onRepetitionClicked}
                 imagePreview={imagePreview}
               />
-            );
-          })}
+            ))}
           {imageCollectionData.data?.size === 0 && (
-            <Empty className="p-2em" description={'There is no data to show'} />
+            <Empty className="p-2em" description="There is no data to show" />
           )}
           {imageCollectionData.data?.size !== 0 &&
             imageCollectionData.loading && (

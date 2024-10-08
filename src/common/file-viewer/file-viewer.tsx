@@ -9,6 +9,7 @@ import { ButtonType, ButtonSize } from 'antd/es/button';
 import prettyJsonStringify from 'json-stringify-pretty-compact';
 import { Controlled as CodeMirror } from 'react-codemirror2';
 import Lightbox from 'react-image-lightbox';
+import noop from 'lodash/noop';
 
 import 'codemirror/mode/javascript/javascript';
 
@@ -32,17 +33,15 @@ interface ImageViewerProps {
   onClose: Function;
 }
 
-const ImageViewer = (props: ImageViewerProps) => {
+function ImageViewer(props: ImageViewerProps) {
   const { imageBlob, onClose } = props;
 
   const [imageObjectUrl] = useState<string>(URL.createObjectURL(imageBlob));
 
-  useEffect(() => {
-    return () => URL.revokeObjectURL(imageObjectUrl);
-  }, []);
+  useEffect(() => () => URL.revokeObjectURL(imageObjectUrl), []);
 
   return <Lightbox mainSrc={imageObjectUrl} onCloseRequest={() => onClose()} />;
-};
+}
 
 interface NexusImageProps {
   distribution: Distribution;
@@ -51,7 +50,7 @@ interface NexusImageProps {
   onClick?: Function;
 }
 
-const NexusImage = (props: NexusImageProps) => {
+function NexusImage(props: NexusImageProps) {
   const { distribution, alt, className, onClick } = props;
   const nexus = useContext(NexusClientContext);
 
@@ -91,6 +90,8 @@ const NexusImage = (props: NexusImageProps) => {
 
   if (imageObjectUrl) {
     return (
+      
+      // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
       <img
         className={className}
         src={imageObjectUrl}
@@ -101,16 +102,14 @@ const NexusImage = (props: NexusImageProps) => {
   }
 
   return <span>Error loading image</span>;
-};
+}
 
 const PdfViewer: FunctionComponent<ViewerComponentProps<Blob>> = props => {
   const [objectUrl] = useState<string>(URL.createObjectURL(props.fileContent));
 
   const fullObjectUrl = `${objectUrl}#view=fit`;
 
-  useEffect(() => {
-    return () => URL.revokeObjectURL(objectUrl);
-  }, []);
+  useEffect(() => () => URL.revokeObjectURL(objectUrl), []);
 
   return (
     <object
@@ -123,8 +122,7 @@ const PdfViewer: FunctionComponent<ViewerComponentProps<Blob>> = props => {
   );
 };
 
-const JsonViewer: FunctionComponent<ViewerComponentProps<string>> = props => {
-  return (
+const JsonViewer: FunctionComponent<ViewerComponentProps<string>> = props => (
     <CodeMirror
       value={prettyJsonStringify(props.fileContent, {
         indent: '  ',
@@ -137,10 +135,9 @@ const JsonViewer: FunctionComponent<ViewerComponentProps<string>> = props => {
         lineNumbers: true,
         lineWrapping: true,
       }}
-      onBeforeChange={() => {}}
+      onBeforeChange={noop}
     />
   );
-};
 
 // TODO: merge encoding and type objects into one
 const fileDownloadEncoding = {
@@ -164,7 +161,7 @@ interface FilePreviewBtnProps {
   type?: ButtonType;
   block?: boolean;
   icon?: string;
-
+  children?: React.ReactNode;
   mainDistribution: Distribution;
   previewDistribution?: Distribution;
 }
@@ -206,7 +203,7 @@ export const FileViewer: FunctionComponent<FilePreviewBtnProps> = props => {
         getFileOpts
       );
     } catch (error) {
-      setError(error);
+      setError(error as any);
     }
 
     setFileContent(content);
@@ -235,7 +232,7 @@ export const FileViewer: FunctionComponent<FilePreviewBtnProps> = props => {
         <Button
           block={block}
           type={type}
-          size={size ? size : 'small'}
+          size={size || 'small'}
           icon={icon}
           onClick={() => show()}
         >

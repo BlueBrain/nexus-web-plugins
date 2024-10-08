@@ -5,7 +5,7 @@ import {
   SortAscendingOutlined,
   SortDescendingOutlined,
 } from '@ant-design/icons';
-import 'antd/dist/antd.css';
+// import 'antd/dist/antd.css';
 import './image-viewer.css';
 
 type ImageCollection = {
@@ -60,13 +60,9 @@ const ImageCollectionViewerContainer: React.FC<{
           ),
     [resource, data, search, sortDirection]
   );
-  const isFile = (resource: NexusFile) => {
-    return resource['@type'] === 'File';
-  };
+  const isFile = (resource: NexusFile) => resource['@type'] === 'File';
 
-  const isImage = (resource: NexusFile) => {
-    return !!resource._mediaType.includes('image');
-  };
+  const isImage = (resource: NexusFile) => !!resource._mediaType.includes('image');
 
   const processImageDistribution = (
     id: string,
@@ -90,36 +86,29 @@ const ImageCollectionViewerContainer: React.FC<{
     id: string,
     orgLabel: string,
     projectLabel: string
-  ) => {
-    return processImageCollection(
+  ) => processImageCollection(
       decodeURIComponent(id),
       orgLabel,
       projectLabel
     );
-  };
 
   const processImageCollection = (
     id: string,
     orgLabel: string,
     projectLabel: string
-  ) => {
-    return nexus.Resource.get(
+  ) => nexus.Resource.get(
       orgLabel,
       projectLabel,
       encodeURIComponent(id)
     ).then(resource => {
       const MAX_BYTES_TO_PREVIEW = 3000000;
 
-      const isFile = (resource: NexusFile) => {
-        return resource['@type'] === 'File';
-      };
+      const isFile = (resource: NexusFile) => resource['@type'] === 'File';
 
-      const isImage = (resource: NexusFile) => {
-        return !!resource._mediaType.includes('image');
-      };
+      const isImage = (resource: NexusFile) => !!resource._mediaType.includes('image');
 
       if (!isFile(resource as NexusFile) || !isImage(resource as NexusFile)) {
-        console.warn(`${resource['@id']} is not an image File`);
+        console.warn(`${(resource as NexusFile)['@id']} is not an image File`);
         return null;
       }
       if (
@@ -137,7 +126,6 @@ const ImageCollectionViewerContainer: React.FC<{
         resource as Resource
       );
     });
-  };
 
   React.useEffect(() => {
     const [projectLabel, orgLabel, ...rest] = resource._project
@@ -152,21 +140,17 @@ const ImageCollectionViewerContainer: React.FC<{
     if (!isFile(resource as NexusFile) || !isImage(resource as NexusFile)) {
       if (resource.image) {
         promises = Array.isArray(resource.image)
-          ? resource.image.slice(0, page * OFFSET).map((image: any) => {
-              return processImages(image['@id'], orgLabel, projectLabel);
-            })
+          ? resource.image.slice(0, page * OFFSET).map((image: any) => processImages(image['@id'], orgLabel, projectLabel))
           : [processImages(resource.image['@id'], orgLabel, projectLabel)];
       } else if (resource.distribution) {
         promises = Array.isArray(resource.distribution)
           ? resource.distribution
               .slice(0, page * OFFSET)
-              .map((distribution: any) => {
-                return processImageDistribution(
+              .map((distribution: any) => processImageDistribution(
                   distribution.contentUrl,
                   orgLabel,
                   projectLabel
-                );
-              })
+                ))
           : [
               processImageDistribution(
                 resource.distribution.contentUrl,
@@ -192,9 +176,7 @@ const ImageCollectionViewerContainer: React.FC<{
     Promise.all(promises)
       .then(imageSrcList => {
         setData({
-          data: (imageSrcList.filter((image: any) => {
-            return !!image?.imageSrc;
-          }) as unknown) as ImageCollection,
+          data: (imageSrcList.filter((image: any) => !!image?.imageSrc) as unknown) as ImageCollection,
           error: null,
           loading: false,
         });
@@ -259,9 +241,7 @@ const ImageCollectionViewerContainer: React.FC<{
       ))}
     </div>
   );
-  const renderImageRows = () => {
-    return filteredData ? renderList(filteredData) : null;
-  };
+  const renderImageRows = () => filteredData ? renderList(filteredData) : null;
 
   if (filteredData) {
     return (

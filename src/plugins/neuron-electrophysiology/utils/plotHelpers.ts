@@ -30,9 +30,9 @@ export const convertVolts = (values: number[], toUnits: Volts) => {
 export const convertAmperes = (values: number[], toUnits: Amperes) => {
   switch (toUnits) {
     case 'pA':
-      return values.map((value: number) => value * Math.pow(10, 12));
+      return values.map((value: number) => value * 10**12);
     case 'nA':
-      return values.map((value: number) => value * Math.pow(10, 9));
+      return values.map((value: number) => value * 10**9);
     case 'A':
     default:
       return values;

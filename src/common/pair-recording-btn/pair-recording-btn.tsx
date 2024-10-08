@@ -12,7 +12,7 @@ export interface PairRecordingBtnProps {
   className?: string;
 }
 
-export const PairRecordingBtn = (props: PairRecordingBtnProps) => {
+export function PairRecordingBtn(props: PairRecordingBtnProps) {
   const params = {
     name: props.name,
     path: props.configPath,
@@ -25,6 +25,6 @@ export const PairRecordingBtn = (props: PairRecordingBtnProps) => {
       Open in Pair Recording App
     </Button>
   );
-};
+}
 
 export default PairRecordingBtn;

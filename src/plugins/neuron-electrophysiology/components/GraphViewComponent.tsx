@@ -18,8 +18,7 @@ const GraphViewComponent: React.FC<{
   traceCollectionData,
   defaultStimulusType,
   defaultRepetition,
-}) => {
-  return (
+}) => (
     <div>
       <Spin spinning={traceCollectionData.loading}>
         {!!traceCollectionData.data && (
@@ -45,6 +44,5 @@ const GraphViewComponent: React.FC<{
       </Spin>
     </div>
   );
-};
 
 export default GraphViewComponent;

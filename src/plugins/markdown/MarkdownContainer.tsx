@@ -4,11 +4,11 @@ import Handlebars from 'handlebars';
 import { match, when } from 'ts-pattern';
 import { NexusClient, Resource } from '@bbp/nexus-sdk';
 
+import useAsyncCall from "../../common/hooks/useAsyncCall";
 import MarkdownComponent from './MarkdownComponent';
-import useAsyncCall from '../../common/hooks/useAsyncCall';
 
 const parseMarkdown = async (resource: Resource): Promise<string> =>
-  Handlebars.compile(resource['description'])(resource);
+  Handlebars.compile(resource.description)(resource);
 
 const MarkdownContainer: React.FC<{
   resource: Resource;

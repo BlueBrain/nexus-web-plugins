@@ -46,6 +46,7 @@ module.exports = {
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js', 'css'],
+    fallback: { "buffer": require.resolve("buffer/") }
   },
   output: {
     path: path.join(__dirname, 'dist'),

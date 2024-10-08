@@ -1,4 +1,4 @@
-export function uniqueArrayOfObjectsByKey<T extends object, U extends keyof T>(
+function uniqueArrayOfObjectsByKey<T extends object, U extends keyof T>(
   array: T[],
   key: U
 ) {
@@ -9,3 +9,6 @@ export function uniqueArrayOfObjectsByKey<T extends object, U extends keyof T>(
       } as T)
   );
 }
+
+
+export default uniqueArrayOfObjectsByKey;

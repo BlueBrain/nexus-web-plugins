@@ -1,17 +1,12 @@
-import React, { useState, useEffect, useContext } from 'react';
-
-import { NexusClientContext } from '../../../../common';
+import React from 'react';
 
 interface CampAnalysisBlockProps {
   campaignAnalisysActivitySelfs: string[];
   goToResource?: (selfUrl: string) => void;
 }
 
-const CampAnalysisBlock = (props: CampAnalysisBlockProps) => {
-  const { campaignAnalisysActivitySelfs, goToResource } = props;
-  const nexus = useContext(NexusClientContext);
-
+function CampAnalysisBlock(props: CampAnalysisBlockProps) {
   return <span>test</span>;
-};
+}
 
 export default CampAnalysisBlockProps;

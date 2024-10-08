@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { NexusPluginProps, NexusClientContext } from '../../common';
+import { NexusPluginProps, NexusClientContext } from "../../common";
 
 import SimulationCampaign from './simulation-campaign';
 import { SimulationCampaignResource } from './types';

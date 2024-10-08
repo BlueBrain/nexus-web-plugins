@@ -23,6 +23,7 @@ export function waitServerReady(
   serverName?: string
 ): Promise<ApiServer> {
   return new Promise((resolve, reject) => {
+    // eslint-disable-next-line consistent-return
     const check = async () => {
       const url = `${JUPYTER_HUB_BASE_URL}/hub/api/users/${userName}`;
 

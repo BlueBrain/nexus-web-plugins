@@ -1,7 +1,7 @@
 import * as React from 'react';
 import ReactDOM from 'react-dom';
 
-import { NexusPluginProps } from '../../common/types';
+import { NexusPluginProps } from "../../common/types";
 import EphysViewerContainer from './EphysViewerContainer';
 
 import './styles.css';

@@ -1,9 +1,9 @@
 import * as React from 'react';
 import Plotly from 'plotly.js-basic-dist';
 import createPlotlyComponent from 'react-plotly.js/factory';
+import { PlotData } from 'plotly.js';
 import { convertVolts } from '../utils/plotHelpers';
 import { useConfig } from '../hooks/useConfig';
-import { PlotData } from 'plotly.js';
 import { optimizePlotData } from '../utils/optimizeTrace';
 import { PlotProps } from '../types';
 
@@ -50,20 +50,16 @@ const ResponsePlot: React.FC<PlotProps> = ({
     return optimizePlotData(allSweepsData, deltaTime, zoom) || [];
   }, [options, dataset, metadata, zoomRanges, allSweeps, isVolts, colorMapper])
 
-  const selectedResponse: Partial<PlotData>[] = React.useMemo(() => {
-    return rawData?.filter((data) => selectedSweeps.includes(data.sweepName))
-  }, [options, dataset, selectedSweeps, metadata]);
+  const selectedResponse: Partial<PlotData>[] = React.useMemo(() => rawData?.filter((data) => selectedSweeps.includes(data.sweepName)), [options, dataset, selectedSweeps, metadata]);
 
-  const previewDataResponse: Partial<PlotData>[] = React.useMemo(() => {
-    return rawData?.map((data: {sweepName: string}) => {
+  const previewDataResponse: Partial<PlotData>[] = React.useMemo(() => rawData?.map((data: {sweepName: string}) => {
       const isSelected = selectedSweeps.includes(data.sweepName);
       const isPreview = data.sweepName === previewSweep;
       const opacity = isPreview || isSelected ? 1: 0.05;
       return ({
         ...data,
         opacity
-    })})
-  }, [previewSweep]);
+    })}), [previewSweep]);
 
   const handleClick = ({data, curveNumber}: Readonly<Plotly.LegendClickEvent>): boolean => {
     const value: string = (data[curveNumber] as any).sweepName;
@@ -84,11 +80,12 @@ const ResponsePlot: React.FC<PlotProps> = ({
   const isEmptySelection = !selectedSweeps.length;
 
   return (
-    <>
-      <Plot
+    <Plot
+        // @ts-ignore
+        // eslint-disable-next-line no-nested-ternary
         data={previewSweep ? previewDataResponse : (isEmptySelection ? rawData: selectedResponse)}
         onLegendClick={handleClick}
-        onDoubleClick={() => false}
+        onDoubleClick={() => undefined}
         onRelayout={e => {
           const {
             'xaxis.range[0]': x1,
@@ -98,6 +95,7 @@ const ResponsePlot: React.FC<PlotProps> = ({
           } = e;
           onZoom({ x: [x1, x2], y: [y1, y2] });
         }}
+        // @ts-ignore
         layout={{
           title: 'Recording',
           xaxis: {
@@ -119,9 +117,9 @@ const ResponsePlot: React.FC<PlotProps> = ({
           ...layout,
         }}
         style={style}
+        // @ts-ignore
         config={{ displaylogo: false, ...config }}
       />
-    </>
   );
 };
 

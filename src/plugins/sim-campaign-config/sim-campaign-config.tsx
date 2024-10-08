@@ -4,13 +4,13 @@ import {
   SimCampaignConfigResource,
   SimCampaignConfigContainer,
   parseUrl,
-} from '../../common';
+} from "../../common";
 
 export interface SimCampaignConfigProps {
   resource: SimCampaignConfigResource;
 }
 
-export const SimCampaignConfig = (props: SimCampaignConfigProps) => {
+export function SimCampaignConfig(props: SimCampaignConfigProps) {
   const { resource } = props;
 
   const { org, project } = parseUrl(resource._project);
@@ -22,6 +22,6 @@ export const SimCampaignConfig = (props: SimCampaignConfigProps) => {
       resourceId={resource['@id']}
     />
   );
-};
+}
 
 export default SimCampaignConfig;

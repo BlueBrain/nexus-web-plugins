@@ -20,7 +20,7 @@ const DEFAULT_PARTITION = PARTITIONS[0];
 const DEFAULT_CPUS = 36;
 const DEFAULT_MEM = 192;
 
-export const BraynsBtn = (props: BraynsBtnProps) => {
+export function BraynsBtn(props: BraynsBtnProps) {
   const [popoverVisible, setPopoverVisible] = useState(false);
 
   const [partition, setPartition] = useState(DEFAULT_PARTITION);
@@ -52,7 +52,7 @@ export const BraynsBtn = (props: BraynsBtnProps) => {
       trigger="click"
       title="Open in Brayns"
       visible={popoverVisible}
-      onVisibleChange={visible => setPopoverVisible(false)}
+      onVisibleChange={() => setPopoverVisible(false)}
       content={
         <div style={{ width: 240 }}>
           <Form
@@ -127,6 +127,6 @@ export const BraynsBtn = (props: BraynsBtnProps) => {
       <Button disabled className={props.className}>Open in Brayns</Button>
     </Popover>
   );
-};
+}
 
 export default BraynsBtn;

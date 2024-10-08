@@ -1,0 +1,32 @@
+{
+  "extends": [
+    "airbnb",
+    "airbnb-typescript",
+    "plugin:lodash/recommended",
+    "prettier"
+  ],
+  "rules": {
+    "variable-name": [0, "allow-pascal-case"],
+    "import/no-extraneous-dependencies": [0, { "devDependencies": true }],
+    "@typescript-eslint/no-unused-expressions": 0,
+    "@typescript-eslint/no-use-before-define": 0,
+    "jsx-a11y/click-events-have-key-events": 0,
+    "react/function-component-definition": 0,
+    "lodash/prefer-lodash-typecheck": 0,
+    "react/destructuring-assignment": 0,
+    "@typescript-eslint/no-shadow": 0,
+    "lodash/prefer-lodash-method": 0,
+    "import/no-relative-packages": 0,
+    "react/require-default-props": 0,
+    "import/no-named-as-default": 0,
+    "react/no-unused-prop-types": 0,
+    "no-increment-decrement": 0,
+    "no-underscore-dangle": 0,
+    "no-param-reassign": 0,
+    "func-names": 0,
+    "no-console": 0
+  },
+  "parserOptions": {
+    "project": ["./tsconfig.json"]
+  }
+}

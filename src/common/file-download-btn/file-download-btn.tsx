@@ -13,7 +13,7 @@ interface FileDownloadBtnProps {
   type?: ButtonType;
   block?: boolean;
   icon?: string;
-
+  children: React.ReactNode;
   distribution: Distribution;
 }
 
@@ -31,7 +31,7 @@ export const FileDownloadBtn: FunctionComponent<FileDownloadBtnProps> = props =>
   const notifyError = (err: Error) =>
     notification.error({
       message: 'Error',
-      description: get(err, 'message', err),
+      description: <span>{JSON.stringify(get(err, 'message', err))}</span>,
     });
 
   const download = async () => {
@@ -43,7 +43,7 @@ export const FileDownloadBtn: FunctionComponent<FileDownloadBtnProps> = props =>
         as: 'blob',
       })) as Blob;
     } catch (err) {
-      notifyError(err);
+      notifyError(err as any);
     }
 
     setLoading(false);
@@ -56,7 +56,7 @@ export const FileDownloadBtn: FunctionComponent<FileDownloadBtnProps> = props =>
     <Button
       block={block}
       type={type}
-      size={size ? size : 'small'}
+      size={size || 'small'}
       disabled={loading}
       icon={loading ? 'loading' : icon}
       onClick={() => download()}

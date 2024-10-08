@@ -6,8 +6,7 @@ import 'codemirror/theme/elegant.css';
 
 import { Cell } from '../types';
 
-const PythonCell: React.FC<{ cell: Cell }> = ({ cell }) => {
-  return (
+const PythonCell: React.FC<{ cell: Cell }> = ({ cell }) => (
     <div className="code-cell">
       <CodeMirror
         value={Array.isArray(cell.source) ? cell.source.join('') : cell.source}
@@ -21,6 +20,5 @@ const PythonCell: React.FC<{ cell: Cell }> = ({ cell }) => {
       />
     </div>
   );
-};
 
 export default PythonCell;

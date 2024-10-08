@@ -88,7 +88,7 @@ export const MorphologyViewer: React.FC<{
       };
       morphoViewer.addMorphology(parsedFile, morphoViewerOptions);
     } catch (error) {
-      throw new Error(`Morphology parsing error: ${error.message}`);
+      throw new Error(`Morphology parsing error: ${(error as any).message}`);
     }
     return () => {
       if (morphoViewer) {
@@ -173,17 +173,17 @@ export const MorphologyViewer: React.FC<{
         }
       />
       <div>
-        <div className="morpho-viewer" ref={ref}></div>
+        <div className="morpho-viewer" ref={ref} />
         <div
           className="scale"
           ref={scaleRef}
           onClick={handleOrientationClick}
-        ></div>
+         />
         <div
           className="orientation"
           ref={orientationRef}
           onClick={handleOrientationClick}
-        ></div>
+         />
       </div>
     </>
   );

@@ -18,10 +18,10 @@ const badgeStatus: BadgeStatus = {
   Done: 'success',
 };
 
-export const ActivityStatus = (props: ActivityStatusProps) => {
+export function ActivityStatus(props: ActivityStatusProps) {
   const { status } = props;
 
   return <Badge status={badgeStatus[status]} text={status} />;
-};
+}
 
 export default ActivityStatus;

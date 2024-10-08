@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { NexusClient, Resource } from '@bbp/nexus-sdk';
 
-import { NexusImage } from '../../../common';
+import { Button, Spin } from 'antd';
+import { NexusImage } from "../../../common";
 import ImageViewComponent, { ImageItem } from '../components/ImageViewComponent';
 import { EPhysImageItem, useImageCollectionDistribution } from '../hooks/useImageCollectionDistribution';
-import { Button, Spin } from 'antd';
 
 // Only fetch three traces at a time.
 const PAGINATION_OFFSET = 3;
@@ -30,10 +30,8 @@ const ImageViewContainer: React.FC<{
   onStimulusChange,
 }) => {
   const [page, setPage] = React.useState<number>(0);
-  const scrollRef = React.useRef<HTMLDivElement | null>(null);
 
-  const imageFilterPredicate = React.useMemo(() => {
-    return (image: EPhysImageItem) => {
+  const imageFilterPredicate = React.useMemo(() => (image: EPhysImageItem) => {
       const typeString = getStimulusTypeString(image);
       // Pagination logic. When stimulusType is All, filter out types that does not belong to the page.
       // All stimulusTypes before the current page will already be in the imageCollection (useImageCollectionDistribution).
@@ -50,17 +48,14 @@ const ImageViewContainer: React.FC<{
         return true;
       }
       return false;
-    };
-  }, [stimulusType, page]);
+    }, [stimulusType, page]);
 
-  const resultsFilterPredicate = React.useMemo(() => {
-    return (imageItem: ImageItem) => {
+  const resultsFilterPredicate = React.useMemo(() => (imageItem: ImageItem) => {
       if (stimulusType === 'All') {
         return true;
       }
       return imageItem.stimulusType === stimulusType;
-    };
-  }, [stimulusType]);
+    }, [stimulusType]);
 
   const imageCollectionData = useImageCollectionDistribution(resource, nexus, {
     imageFilterPredicate,

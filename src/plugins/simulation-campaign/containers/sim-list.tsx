@@ -2,13 +2,13 @@ import React, { useEffect, useState, useContext } from 'react';
 import { Spin } from 'antd';
 import { DEFAULT_SPARQL_VIEW_ID } from '@bbp/nexus-sdk';
 
-import { SimulationCampaignResource, Simulation } from '../types';
-
 import {
   parseUrl,
   mapSparqlResults,
   NexusClientContext,
-} from '../../../common';
+} from "../../../common";
+import { SimulationCampaignResource, Simulation } from '../types';
+
 import SimList from '../components/sim-list';
 
 interface SimListContainerProps {
@@ -78,7 +78,7 @@ const sparqlMapperConf = {
   ],
 };
 
-const SimListContainer = (props: SimListContainerProps) => {
+function SimListContainer(props: SimListContainerProps) {
   const { resource, goToResource } = props;
   const nexus = useContext(NexusClientContext);
 
@@ -109,6 +109,6 @@ const SimListContainer = (props: SimListContainerProps) => {
       )}
     </Spin>
   );
-};
+}
 
 export default SimListContainer;

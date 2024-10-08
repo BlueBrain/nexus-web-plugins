@@ -3,10 +3,10 @@ import Plotly from 'plotly.js-basic-dist';
 import createPlotlyComponent from 'react-plotly.js/factory';
 import { Radio } from 'antd';
 
+import { PlotData } from 'plotly.js';
 import { convertAmperes, Amperes } from '../utils/plotHelpers';
 import { optimizePlotData } from '../utils/optimizeTrace';
 import { useConfig } from '../hooks/useConfig';
-import { PlotData } from 'plotly.js';
 import { PlotProps } from '../types';
 
 const Plot = createPlotlyComponent(Plotly);
@@ -56,19 +56,15 @@ const StimulusPlot: React.FC<PlotProps> = ({
     return optimizePlotData(allSweepsData, deltaTime, zoom) || [];
   }, [options, dataset, metadata, zoomRanges, allSweeps, isAmperes, colorMapper, stimulusUnit])
 
-  const selectedResponse: Partial<PlotData>[] = React.useMemo(() => {
-    return rawData?.filter((data) => selectedSweeps.includes(data.sweepName))
-  }, [options, dataset, selectedSweeps, metadata, stimulusUnit]);
+  const selectedResponse: Partial<PlotData>[] = React.useMemo(() => rawData?.filter((data) => selectedSweeps.includes(data.sweepName)), [options, dataset, selectedSweeps, metadata, stimulusUnit]);
 
-  const previewDataResponse: Partial<PlotData>[] = React.useMemo(() => {
-    return rawData?.map((data: {sweepName: string}) => {
+  const previewDataResponse: Partial<PlotData>[] = React.useMemo(() => rawData?.map((data: {sweepName: string}) => {
       const isSelected = selectedSweeps.includes(data.sweepName);
       const isPreview = data.sweepName === previewSweep;
       const opacity = isPreview || isSelected ? 1: 0.05;
 
       return { ...data, opacity };
-    });
-  }, [previewSweep]);
+    }), [previewSweep]);
 
   const onChangeStimulusUnits = (event: any) => {
     setStimulusUnit(event.target.value);
@@ -95,9 +91,11 @@ const StimulusPlot: React.FC<PlotProps> = ({
   return (
     <>
       <Plot
+        // @ts-ignore
+        // eslint-disable-next-line no-nested-ternary
         data={previewSweep ? previewDataResponse : (isEmptySelection ? rawData: selectedResponse)}
         onLegendClick={handleClick}
-        onDoubleClick={() => false}
+        onDoubleClick={() => undefined}
         onRelayout={e => {
           const {
             'xaxis.range[0]': x1,
@@ -107,6 +105,7 @@ const StimulusPlot: React.FC<PlotProps> = ({
           } = e;
           onZoom({ x: [x1, x2], y: [y1, y2] });
         }}
+        // @ts-ignore
         layout={{
           title: 'Stimulus',
           xaxis: {
@@ -128,6 +127,7 @@ const StimulusPlot: React.FC<PlotProps> = ({
           ...layout,
         }}
         style={style}
+        // @ts-ignore
         config={{ displaylogo: false, ...config }}
       />
       {isAmperes && antBreakpoints.md && (

@@ -14,7 +14,7 @@ export interface SimulationProps {
   nexus: NexusClient;
 }
 
-export const Simulation = (props: SimulationProps) => {
+export function Simulation(props: SimulationProps) {
   const { resource, nexus } = props;
 
   return (
@@ -24,6 +24,6 @@ export const Simulation = (props: SimulationProps) => {
       <SlurmInfoComponent resource={resource} />
     </div>
   );
-};
+}
 
 export default Simulation;

@@ -6,8 +6,7 @@ import { Cell, Notebook } from './types';
 
 import './NotebookPreview.css';
 
-const NotebookPreview: React.FC<{ notebook?: Notebook }> = ({ notebook }) => {
-  return (
+const NotebookPreview: React.FC<{ notebook?: Notebook }> = ({ notebook }) => (
     <div className="notebook-preview">
       {notebook &&
         notebook.cells.map((cell: Cell, index: number) => {
@@ -23,6 +22,5 @@ const NotebookPreview: React.FC<{ notebook?: Notebook }> = ({ notebook }) => {
         })}
     </div>
   );
-};
 
 export default NotebookPreview;

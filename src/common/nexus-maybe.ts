@@ -29,9 +29,7 @@ export const hasIdOf = (id: string) => (resource: Resource) =>
 
 // Get useful info about a resource
 export const isDeprecated = (resource: Resource) => !!resource._deprecated;
-export const hasImage = (resource: Resource) => {
-  return !!resource._mediaType?.includes('image');
-};
+export const hasImage = (resource: Resource) => !!resource._mediaType?.includes('image');
 export const isView = isOfType(VIEW);
 export const isElasticView = isOfType(ES_VIEW);
 export const isCompositeView = isOfType(COMPOSITE_VIEW);
@@ -41,8 +39,6 @@ export const isDefaultElasticView = chainPredicates([
 ]);
 export const isSparqlView = isOfType(SPARQL_VIEW);
 export const isFile = isOfType(NEXUS_FILE_TYPE);
-export const toPromise = (func: Function) => {
-  return function() {
+export const toPromise = (func: Function) => function() {
     return Promise.resolve(func(...arguments));
   };
-};

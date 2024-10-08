@@ -20,7 +20,7 @@ interface SimCampaignConfigProps {
 
 const { Panel } = Collapse;
 
-const SimCampaignConfig = (props: SimCampaignConfigProps) => {
+function SimCampaignConfig(props: SimCampaignConfigProps) {
   const { resource } = props;
 
   return (
@@ -101,6 +101,6 @@ const SimCampaignConfig = (props: SimCampaignConfigProps) => {
       </div>
     </div>
   );
-};
+}
 
 export default SimCampaignConfig;

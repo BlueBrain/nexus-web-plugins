@@ -16,12 +16,12 @@
   border: 1px solid #EEEEEE;
   opacity: 1;
 }
-.trace-selector-group .ant-checkbox-inner {
+.trace-selector-group .checkbox-inner {
   width: 22px;
   height: 22px;
 }
 
-.trace-selector-group:hover .ant-checkbox .trace-selector-cover {
+.trace-selector-group:hover .checkbox .trace-selector-cover {
   opacity:0;
 }
 

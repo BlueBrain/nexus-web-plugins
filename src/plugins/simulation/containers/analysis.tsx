@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Col, Row } from 'antd';
 import { DEFAULT_SPARQL_VIEW_ID, NexusClient } from '@bbp/nexus-sdk';
 
-import { parseUrl, mapSparqlResults, NexusImage } from '../../../common';
+import { parseUrl, mapSparqlResults, NexusImage } from "../../../common";
 import { SimulationResource } from '../types';
 
 import './analysis.css';
@@ -54,7 +54,7 @@ const sparqlMapperConfig = {
   ],
 };
 
-const AnalysisContainer = (props: AnalysisContainerProps) => {
+function AnalysisContainer(props: AnalysisContainerProps) {
   const { resource, nexus } = props;
 
   const simId = resource['@id'];
@@ -96,6 +96,6 @@ const AnalysisContainer = (props: AnalysisContainerProps) => {
       </Row>
     </div>
   );
-};
+}
 
 export default AnalysisContainer;

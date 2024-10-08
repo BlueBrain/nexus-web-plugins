@@ -5,11 +5,12 @@
  */
 const express = require('express');
 const path = require('path');
+
 const app = express();
 
 app.use(
   express.static(path.join(__dirname, '../dist'), {
-    setHeaders: function(res, path) {
+    setHeaders(res) {
       res.set('Access-Control-Allow-Origin', '*');
     },
   })
@@ -18,7 +19,6 @@ app.use(
 const port = process.env.PORT || 8080;
 
 app.listen(port, () => {
-  // tslint:disable-next-line:no-console
   console.log(
     `\n\nPlugins Server is up and running on port ${port}.
     \nThe plugins manifest file should be accessible here: http://localhost:${port}/manifest.json

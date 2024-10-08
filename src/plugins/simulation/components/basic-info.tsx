@@ -3,13 +3,13 @@ import moment from 'moment';
 import { Badge, Input, Button, Row, Col } from 'antd';
 import { NexusClient } from '@bbp/nexus-sdk';
 
-import { SimulationResource } from '../types';
 import {
   Copy,
   BraynsBtn,
   JupyterNotebookBtn,
   PairRecordingBtn,
-} from '../../../common';
+} from "../../../common";
+import { SimulationResource } from '../types';
 
 interface BadgeStatus {
   [simStatus: string]:
@@ -32,7 +32,7 @@ const badgeStatus: BadgeStatus = {
   Done: 'success',
 };
 
-const BasicInfo = (props: BasicInfoProps) => {
+function BasicInfo(props: BasicInfoProps) {
   const { resource, nexus } = props;
   const { status } = resource;
 
@@ -52,7 +52,7 @@ const BasicInfo = (props: BasicInfoProps) => {
         <Col span={8}>
           <div className="white-box">
             <strong className="mr">Started:</strong>
-            <span className="float-right">{startedAtTime}</span>
+            <span>{startedAtTime}</span>
           </div>
         </Col>
         <Col span={8}>
@@ -111,6 +111,6 @@ const BasicInfo = (props: BasicInfoProps) => {
       )}
     </div>
   );
-};
+}
 
 export default BasicInfo;
