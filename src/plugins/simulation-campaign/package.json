@@ -4,9 +4,11 @@
   "description": "Displays simulation campaign details",
   "main": "index.tsx",
   "tags": [],
-  "author": "NSE(Neuroscientific Software Engineering) <bbp-ou-nse@groupes.epfl.ch>",
+  "author": "Blue Brain Project, EPFL",
   "license": "BSD-3-Clause",
   "mapping": {
-    "@type": ["SimulationCampaign"]
+    "@type": [
+      "SimulationCampaign"
+    ]
   }
 }

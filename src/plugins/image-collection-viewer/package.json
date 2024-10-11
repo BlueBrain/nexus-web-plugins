@@ -4,8 +4,8 @@
   "description": "View image files in Nexus Web",
   "main": "index.tsx",
   "tags": [],
-  "author": "Dhanesh Neela Mana <dhanesh.neelamana@epfl.ch>",
-  "license": "ISC",
+  "author": "Blue Brain Project, EPFL",
+  "license": "BSD-3-Clause",
   "mapping": [
     {
       "image": {}

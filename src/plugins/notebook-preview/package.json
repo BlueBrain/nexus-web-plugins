@@ -4,8 +4,8 @@
   "description": "Preview Jupyter Notebooks in Fusion",
   "main": "index.tsx",
   "tags": [],
-  "author": "Natalia Stafeeva <natalia.stafeeva@epfl.ch>",
-  "license": "ISC",
+  "author": "Blue Brain Project, EPFL",
+  "license": "BSD-3-Clause",
   "mapping": {
     "@type": [
       "SoftwareSourceCode"
